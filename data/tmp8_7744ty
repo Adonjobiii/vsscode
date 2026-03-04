@@ -1,0 +1,11 @@
+{
+  "name": "f",
+  "age": 17,
+  "class": "12th Grade",
+  "preferred_course": "Computer Science and Engineering",
+  "interests": [
+    "Pure Science (Physics/Math)",
+    "Education & Research",
+    "Environment & Sustainability"
+  ]
+}

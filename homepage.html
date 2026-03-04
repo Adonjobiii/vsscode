@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luminous - Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    .profile-dropdown { display: none; position: absolute; right: 0; margin-top: 0.5rem; background: rgba(80,80,80,0.9); border-radius: 0.5rem; box-shadow: 0 4px 8px rgba(0,0,0,0.2); width: 200px; padding: 1rem; }
+    .profile-wrapper:hover .profile-dropdown { display: block; }
+    .menu-item.active { background: #374151; border-left: 4px solid #22c55e; color: #f9fafb; font-weight: 700; }
+  </style>
+</head>
+<body class="min-h-screen bg-gray-800 flex">
+
+  <!-- Sidebar Menu -->
+  <aside class="w-64 bg-gray-700 shadow-lg h-screen sticky top-0 p-6 flex flex-col gap-4">
+    <div class="flex items-center justify-between">
+      <h2 class="text-xl font-bold text-gray-100">Menu</h2>
+    </div>
+    <nav class="flex flex-col gap-2">
+      <a href="#" class="menu-item flex items-center gap-3 px-4 py-3 rounded-md text-gray-200 hover:bg-gray-600 hover:text-white transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M2 12h20"/></svg>
+        <span>Skills</span></a>
+      <a href="#" class="menu-item flex items-center gap-3 px-4 py-3 rounded-md text-gray-200 hover:bg-gray-600 hover:text-white transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        <span>Assessment</span></a>
+      <a href="#" class="menu-item flex items-center gap-3 px-4 py-3 rounded-md text-gray-200 hover:bg-gray-600 hover:text-white transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 9l-1 9-2-5H7l7-7z"/></svg>
+        <span>Recommendation</span></a>
+      <a href="#" class="menu-item flex items-center gap-3 px-4 py-3 rounded-md text-gray-200 hover:bg-gray-600 hover:text-white transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19.5V6.5L12 3l8 3.5v13"/><path d="M12 22V8"/></svg>
+        <span>Courses</span></a>
+      <a href="#" class="menu-item flex items-center gap-3 px-4 py-3 rounded-md text-gray-200 hover:bg-gray-600 hover:text-white transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Profile</span></a>
+      <a href="#" class="menu-item flex items-center gap-3 px-4 py-3 rounded-md text-gray-200 hover:bg-gray-600 hover:text-white transition">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M19 9l-6 6-4-4-3 3"/></svg>
+        <span>Current Trends</span></a>
+    </nav>
+  </aside>
+
+  <!-- Main Section -->
+  <div class="flex-1 flex flex-col">
+    <!-- Navbar -->
+    <nav class="bg-gray-700 shadow flex justify-end items-center px-6 py-4">
+      <div class="relative profile-wrapper">
+        <img src="https://www.svgrepo.com/show/452030/avatar-default.svg" alt="Profile" class="w-10 h-10 rounded-full cursor-pointer border">
+        <div class="profile-dropdown">
+          <p class="font-semibold text-gray-200">John Doe</p>
+          <p class="text-sm text-gray-400">johndoe@email.com</p>
+          <hr class="my-2 border-gray-600">
+          <a href="#" class="block text-sm text-gray-300 hover:text-white">View Profile</a>
+          <a href="#" class="block text-sm text-gray-300 hover:text-white">Settings</a>
+          <a href="#" class="block text-sm text-red-500 hover:text-red-700">Logout</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex flex-col items-center justify-start p-10 gap-10">
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-10">
+        <button class="bg-green-400 shadow-xl rounded-2xl p-16 text-center text-xl font-bold text-black hover:bg-green-500 hover:shadow-2xl hover:scale-110 transition flex flex-col items-center gap-3">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M2 12h20"/></svg>
+          Skills
+        </button>
+        <button onclick="gotoassesment()" class="bg-blue-400 shadow-xl rounded-2xl p-16 text-center text-xl font-bold text-black hover:bg-blue-500 hover:shadow-2xl hover:scale-110 transition flex flex-col items-center gap-3">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Assessment
+        </button>
+        <button class="bg-yellow-400 shadow-xl rounded-2xl p-16 text-center text-xl font-bold text-black hover:bg-yellow-500 hover:shadow-2xl hover:scale-110 transition flex flex-col items-center gap-3">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 9l-1 9-2-5H7l7-7z"/></svg>
+          Recommendation
+        </button>
+        <button class="bg-purple-400 shadow-xl rounded-2xl p-16 text-center text-xl font-bold text-black hover:bg-purple-500 hover:shadow-2xl hover:scale-110 transition flex flex-col items-center gap-3">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 19.5V6.5L12 3l8 3.5v13"/><path d="M12 22V8"/></svg>
+          Courses
+        </button>
+        <button class="bg-pink-400 shadow-xl rounded-2xl p-16 text-center text-xl font-bold text-black hover:bg-pink-500 hover:shadow-2xl hover:scale-110 transition flex flex-col items-center gap-3">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Profile
+        </button>
+        <button class="bg-orange-400 shadow-xl rounded-2xl p-16 text-center text-xl font-bold text-black hover:bg-orange-500 hover:shadow-2xl hover:scale-110 transition flex flex-col items-center gap-3">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M19 9l-6 6-4-4-3 3"/></svg>
+          Current Trends
+        </button>
+      </div>
+
+      <!-- Histogram Graph Section -->
+      <div class="w-full max-w-4xl bg-gray-700 rounded-xl shadow-xl p-6">
+        <h3 class="text-xl font-bold text-green-400 mb-4">Career recommendation according to your assessment</h3>
+        <canvas id="careerChart"></canvas>
+      </div>
+
+      <!-- Similar Professions Section -->
+      <div class="w-full max-w-6xl grid grid-cols-2 md:grid-cols-4 gap-8 mt-8">
+        <button class="bg-teal-400 shadow-xl rounded-2xl p-8 text-center text-md font-bold text-black hover:bg-teal-500 hover:shadow-2xl hover:scale-110 transition flex flex-col items-center gap-2">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 3h18v18H3z"/></svg>
+          Engineering Careers
+        </button>
+        <button class="bg-red-400 shadow-xl rounded-2xl p-8 text-center text-md font-bold text-black hover:bg-red-500 hover:shadow-2xl hover:scale-110 transition flex flex-col items-center gap-2">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+          Medical Careers
+        </button>
+        <button class="bg-indigo-400 shadow-xl rounded-2xl p-8 text-center text-md font-bold text-black hover:bg-indigo-500 hover:shadow-2xl hover:scale-110 transition flex flex-col items-center gap-2">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 21h16V7H4v14z"/><path d="M12 3v4"/></svg>
+          Law Careers
+        </button>
+        <button class="bg-cyan-400 shadow-xl rounded-2xl p-8 text-center text-md font-bold text-black hover:bg-cyan-500 hover:shadow-2xl hover:scale-110 transition flex flex-col items-center gap-2">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8"/></svg>
+          Arts Careers
+        </button>
+        <button class="bg-lime-400 shadow-xl rounded-2xl p-8 text-center text-md font-bold text-black hover:bg-lime-500 hover:shadow-2xl hover:scale-110 transition flex flex-col items-center gap-2">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18"/></svg>
+          Education Careers
+        </button>
+        <button class="bg-fuchsia-400 shadow-xl rounded-2xl p-8 text-center text-md font-bold text-black hover:bg-fuchsia-500 hover:shadow-2xl hover:scale-110 transition flex flex-col items-center gap-2">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 3h18v12H3z"/><path d="M8 21h8v-6H8z"/></svg>
+          IT Careers
+        </button>
+        <button class="bg-amber-400 shadow-xl rounded-2xl p-8 text-center text-md font-bold text-black hover:bg-amber-500 hover:shadow-2xl hover:scale-110 transition flex flex-col items-center gap-2">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18"/><path d="M3 9h18"/></svg>
+          Business Careers
+        </button>
+        <button class="bg-sky-400 shadow-xl rounded-2xl p-8 text-center text-md font-bold text-black hover:bg-sky-500 hover:shadow-2xl hover:scale-110 transition flex flex-col items-center gap-2">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="14"/><path d="M3 9h18"/></svg>
+          Banking Careers
+        </button>
+      </div>
+
+      <!-- Pie Chart Section -->
+      <div class="w-full max-w-xl bg-gray-700 rounded-xl shadow-xl p-6 mt-8 flex flex-col items-start">
+        <h3 class="text-xl font-bold text-green-400 mb-4">Current Student Interests in Careers</h3>
+        <div class="flex items-start gap-6 w-full">
+          <div class="w-1/2">
+            <canvas id="careerPieChart"></canvas>
+          </div>
+          <div id="pieLegend" class="text-gray-200 text-sm flex flex-col gap-2"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+     function gotoassesment() {
+      window.location.href = "assesment.html";
+    }
+    const items = document.querySelectorAll('.menu-item');
+    if (items.length) items[0].classList.add('active');
+    items.forEach(el => {
+      el.addEventListener('click', () => {
+        items.forEach(i => i.classList.remove('active'));
+        el.classList.add('active');
+      });
+    });
+
+    // Histogram Chart
+    const ctx = document.getElementById('careerChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Engineering', 'Medicine', 'Law', 'Arts', 'Education', 'IT', 'Business', 'Banking'],
+        datasets: [{
+          label: 'Importance',
+          data: [85, 90, 70, 60, 65, 95, 80, 75],
+          backgroundColor: ['#22c55e','#3b82f6','#f59e0b','#a855f7','#ec4899','#ef4444','#06b6d4','#38bdf8'],
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false }, tooltip: { callbacks: { label: (context) => context.dataset.label + ': ' + context.raw + '%' } } },
+        scales: {
+          y: { beginAtZero: true, max: 100, ticks: { color: '#f9fafb' }, grid: { color: '#374151' } },
+          x: { ticks: { color: '#f9fafb' }, grid: { color: '#374151' } }
+        }
+      }
+    });
+
+        // Pie Chart
+    const ctxPie = document.getElementById('careerPieChart').getContext('2d');
+    const pieData = {
+      labels: ['Engineering', 'Medicine', 'Law', 'Arts', 'Education', 'IT', 'Business', 'Banking'],
+      datasets: [{
+        label: 'Student Interests',
+        data: [30, 25, 10, 8, 7, 12, 5, 3],
+        backgroundColor: ['#22c55e','#3b82f6','#f59e0b','#a855f7','#ec4899','#ef4444','#06b6d4','#38bdf8'],
+        borderWidth: 0
+      }]
+    };
+
+    const pieChart = new Chart(ctxPie, {
+      type: 'pie',
+      data: pieData,
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } }
+      }
+    });
+
+    // Custom Legend
+    const legendContainer = document.getElementById('pieLegend');
+    pieData.labels.forEach((label, i) => {
+      const item = document.createElement('div');
+      item.classList.add('flex', 'items-center', 'gap-2');
+      item.innerHTML = `
+        <span class="w-4 h-4 rounded-full inline-block" style="background-color:${pieData.datasets[0].backgroundColor[i]}"></span>
+        <span>${label} - ${pieData.datasets[0].data[i]}%</span>
+      `;
+      legendContainer.appendChild(item);
+    });
+  </script>
+</body>   

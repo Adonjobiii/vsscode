@@ -1,0 +1,32 @@
+{
+  "name": "f",
+  "age": 17,
+  "class": "12th Grade",
+  "preferred_course": "Computer Science and Engineering",
+  "interests": [
+    "Pure Science (Physics/Math)",
+    "Education & Research",
+    "Environment & Sustainability"
+  ],
+  "career_profiler_recommendation": "Chemical Engineering / Biotechnology / Biomedical",
+  "career_profiler_confidence": 45.86666666666667,
+  "career_priority_list": [
+    "Chemical Engineering",
+    "Biotechnology Engineering",
+    "Information Technology"
+  ],
+  "aptitude_recommendation": "Civil Engineering (CE)",
+  "aptitude_confidence_max": 32.0,
+  "aptitude_confidence_map": {
+    "Computer Science (CSE)": 21.0,
+    "Electronics & Communication (ECE)": 11.0,
+    "Mechanical Engineering (ME)": 8.0,
+    "Civil Engineering (CE)": 32.0,
+    "Biotechnology": 24.0,
+    "Chemical Engineering (CH)": 2.0,
+    "Electrical & Electronics (EEE)": 2.0,
+    "Aerospace Engineering": 0.0,
+    "Industrial Engineering": 0.0
+  },
+  "aptitude_scores": {}
+}

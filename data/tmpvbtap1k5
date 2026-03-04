@@ -1,0 +1,18 @@
+{
+  "name": "f",
+  "age": 17,
+  "class": "12th Grade",
+  "preferred_course": "Computer Science and Engineering",
+  "interests": [
+    "Pure Science (Physics/Math)",
+    "Education & Research",
+    "Environment & Sustainability"
+  ],
+  "career_profiler_recommendation": "Chemical Engineering / Biotechnology / Biomedical",
+  "career_profiler_confidence": 45.86666666666667,
+  "career_priority_list": [
+    "Chemical Engineering",
+    "Biotechnology Engineering",
+    "Information Technology"
+  ]
+}

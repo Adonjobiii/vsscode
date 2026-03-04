@@ -1,0 +1,48 @@
+{
+  "Logical": [
+    {
+      "id": "L1",
+      "q": "What is 2+2?",
+      "options": {
+        "A": "3",
+        "B": "4",
+        "C": "5",
+        "D": "6"
+      }
+    },
+    {
+      "id": "L2",
+      "q": "Which number comes next in sequence 2,4,6...?",
+      "options": {
+        "A": "8",
+        "B": "7",
+        "C": "9",
+        "D": "5"
+      }
+    }
+  ],
+  "Algorithmic": [
+    {
+      "id": "A1",
+      "q": "Sort complexity of bubble sort (worst)?",
+      "options": {
+        "A": "O(n)",
+        "B": "O(n log n)",
+        "C": "O(n^2)",
+        "D": "O(log n)"
+      }
+    }
+  ],
+  "System": [
+    {
+      "id": "S1",
+      "q": "What does CPU stand for?",
+      "options": {
+        "A": "Central Processing Unit",
+        "B": "Computer Primary Unit",
+        "C": "Central Protocol Unit",
+        "D": "Control Processing Unit"
+      }
+    }
+  ]
+}
