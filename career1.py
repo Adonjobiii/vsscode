@@ -53,6 +53,8 @@ except Exception:
 # Import all dependencies, configuration, and ML logic
 from config_data import *
 from ml_logic import DataProcessor, MLModelTrainer
+from commerce_aptitude_questions import get_test_questions as get_commerce_test_questions
+from commerce_config import determine_commerce_interests, determine_commerce_course_by_aptitude
 
 # Global Initialization (Load data and train/load models once)
 DATA_PROCESSOR = DataProcessor()
@@ -381,10 +383,10 @@ class CareerProfilerPart1:
                      font=("Arial", 12), wraplength=700, justify="left", 
                      bg=COLOR_BG_CONTENT, fg=COLOR_BG_NAV).pack(anchor="w", padx=20)
         
-        continue_button = tk.Button(result_frame, text="Continue to Personality Assessment (Part 2) →", font=("Arial", 12, "bold"), 
-                                     command=self.parent.show_personality_test, 
-                                     bg=COLOR_CURRENT_Q_NAV, fg=COLOR_BUTTON_TEXT)
-        continue_button.pack(pady=20)
+        continue_button = tk.Button(result_frame, text="Continue to Aptitude Test (Part 2) →", font=("Arial", 12, "bold"), 
+                                     command=lambda: self.parent.show_aptitude_test(recommended_stream, self.priority_list), 
+                                     bg=COLOR_ANSWERED, fg=COLOR_BUTTON_TEXT)
+        continue_button.pack(pady=30)
 
 # ====================================================================
 # Part 2: Aptitude Test (Skills)
@@ -429,22 +431,28 @@ class AptitudeTestPart2:
         self.section_question_map = defaultdict(list)
         self.section_question_indices = {}
         
-        # Check for global availability of QUESTIONS (from DataProcessor)
-        global QUESTIONS
+        # Check track
+        track = self.parent.user_data.get('assessment_track', 'engineering')
         
-        available_categories = [cat for cat in sorted(QUESTIONS.keys()) if QUESTIONS[cat]]
-        QUESTIONS_PER_CATEGORY = 7
-        
-        for section in available_categories:
-            qs = QUESTIONS[section]
+        if track == 'commerce':
+            # Use specialized commerce questions
+            questions = get_commerce_test_questions()
+            for q in questions:
+                all_selected_questions.append(q)
+        else:
+            # Check for global availability of QUESTIONS (from DataProcessor)
+            global QUESTIONS
+            available_categories = [cat for cat in sorted(QUESTIONS.keys()) if QUESTIONS[cat]]
+            QUESTIONS_PER_CATEGORY = 7
             
-            if section in APTITUDE_MODEL_CATEGORIES:
-                k = min(QUESTIONS_PER_CATEGORY, len(qs)) 
-                if k == 0: continue
-            
-                qs_selected = random.sample(qs, k)
-                for q in qs_selected:
-                    all_selected_questions.append({**q, "category": section})
+            for section in available_categories:
+                qs = QUESTIONS[section]
+                if section in APTITUDE_MODEL_CATEGORIES:
+                    k = min(QUESTIONS_PER_CATEGORY, len(qs)) 
+                    if k == 0: continue
+                    qs_selected = random.sample(qs, k)
+                    for q in qs_selected:
+                        all_selected_questions.append({**q, "category": section})
 
         random.shuffle(all_selected_questions)
 
@@ -762,8 +770,8 @@ class AptitudeTestPart2:
         else:
             tk.Label(result_frame, text="(Matplotlib not available for chart)", fg="red", bg=COLOR_BG_CONTENT).pack()
         
-        final_button = tk.Button(result_frame, text="View Final Combined Recommendation →", font=("Arial", 12, "bold"), 
-                                     command=self.parent.show_final_recommendation, 
+        final_button = tk.Button(result_frame, text="Proceed to Personality Assessment →", font=("Arial", 12, "bold"), 
+                                     command=self.parent.show_personality_test, 
                                      bg=COLOR_CURRENT_Q_NAV, fg=COLOR_BUTTON_TEXT)
         final_button.pack(pady=20)
 
@@ -983,6 +991,9 @@ class QuizApp:
         self.current_part = PersonalityAssessmentApp(self.container, self)
         
     def show_final_recommendation(self):
+        track = self.user_data.get('assessment_track', 'engineering')
+        is_commerce = (track == 'commerce')
+        
         interest_recommendation = self.user_data.get('career_profiler_recommendation', 'N/A')
         priority_list = self.user_data.get('career_priority_list', [])
         aptitude_recommendation = self.user_data.get('aptitude_recommendation', 'N/A')
@@ -990,6 +1001,7 @@ class QuizApp:
         aptitude_confidence_map = self.user_data.get('aptitude_confidence_map', {})
         preferred_course = self.user_data.get('preferred_course', 'N/A')
         user_interests = self.user_data.get('interests', [])
+        personality_results = self.user_data.get('personality_results', {})
         
         for widget in self.container.winfo_children():
             widget.destroy()
@@ -1006,99 +1018,58 @@ class QuizApp:
         result_canvas.pack(side="left", fill="both", expand=True, padx=(40, 0), pady=40)
         result_scrollbar.pack(side="right", fill="y", pady=40)
 
-        tk.Label(result_frame, text="✨ FINAL CAREER RECOMMENDATION ✨", font=("Arial", 20, "bold"), bg=COLOR_BG_CONTENT, fg=COLOR_BG_DARK).pack(pady=(0, 20))
+        header_text = "✨ FINAL COMMERCE & FINANCE REPORT ✨" if is_commerce else "✨ FINAL CAREER RECOMMENDATION ✨"
+        tk.Label(result_frame, text=header_text, font=("Arial", 20, "bold"), bg=COLOR_BG_CONTENT, fg=COLOR_BG_DARK).pack(pady=(0, 20))
         
-        def get_boom_display_text(course_cluster):
-            COURSE_CLUSTER_TO_BOOM_CODE = {
-                "Computer Science (CSE) / Information Technology (IT)": ["CS", "IT"], "Electronics & Communication (ECE) / Electrical & Electronics (EEE)": ["EC", "EE"],
-                "Mechanical Engineering / Aerospace Engineering": ["ME", "AE"], "Civil Engineering": ["CE"], "Chemical Engineering / Biotechnology / Biomedical": ["CH", "BT"],
-                "Computer Science (CSE)": ["CS"], "Information Technology (IT)": ["IT"], "Electronics & Communication (ECE)": ["EC"], 
-                "Mechanical Engineering (ME)": ["ME"], "Civil Engineering (CE)": ["CE"], "Biotechnology": ["BT"], "Chemical Engineering (CH)": ["CH"], 
-                "Electrical & Electronics (EEE)": ["EE"], "Aerospace Engineering": ["AE"], "Industrial Engineering": ["IE"],
-            }
-            
-            max_boom = 0
-            for cluster_name, codes in COURSE_CLUSTER_TO_BOOM_CODE.items():
-                if cluster_name in course_cluster or course_cluster in cluster_name:
-                    for code in codes:
-                        boom_value = BOOM_PERCENTAGE_DATA.get(code, 0)
-                        if boom_value > max_boom:
-                            max_boom = boom_value
-            
-            return f"(🔥 {max_boom:.2f}% Boom)" if max_boom > 0 else "(Boom data N/A)"
-            
-        preferred_course_confidence = 0
-        
-        if preferred_course in aptitude_confidence_map:
-            preferred_course_confidence = aptitude_confidence_map[preferred_course]
+        # --- Profile Info ---
+        tk.Label(result_frame, text=f"Profile: {self.user_data.get('name', 'User')} | Track: {track.title()}", font=("Arial", 12), bg=COLOR_BG_CONTENT, fg=COLOR_BG_NAV).pack(anchor="w", pady=(5, 15))
+
+        # --- Section 1: Interest Match ---
+        tk.Label(result_frame, text="1. Primary Interest Match", font=("Arial", 16, "bold"), bg=COLOR_BG_CONTENT, fg=COLOR_BG_DARK).pack(anchor="w", pady=(10, 5))
+        if is_commerce:
+            # Commerce interest match
+            interest_rec = self.user_data.get('career_recommendation', {})
+            course = interest_rec.get('course', 'N/A')
+            tk.Label(result_frame, text=f"Top Match: {course}", font=("Arial", 13, "bold"), bg=COLOR_BG_CONTENT, fg=COLOR_ANSWERED).pack(anchor="w", padx=20)
+            tk.Label(result_frame, text="Your expressed interests and priorities suggest a strong alignment with this commerce field.", font=("Arial", 11), bg=COLOR_BG_CONTENT, fg=COLOR_BG_NAV, wraplength=700).pack(anchor="w", padx=20, pady=5)
         else:
-            for apt_key, conf in aptitude_confidence_map.items():
-                if apt_key in preferred_course or preferred_course in apt_key:
-                    preferred_course_confidence = max(preferred_course_confidence, conf)
-
-
-        # --- Display User Profile Info ---
-        tk.Label(result_frame, text=f"Profile: {self.user_data.get('name', 'User')} ({self.user_data.get('class', 'N/A')})", font=("Arial", 12), bg=COLOR_BG_CONTENT, fg=COLOR_BG_NAV).pack(anchor="w", pady=(5, 5))
+            # Engineering interest match
+            tk.Label(result_frame, text=f"Top Match: {interest_recommendation}", font=("Arial", 13, "bold"), bg=COLOR_BG_CONTENT, fg=COLOR_ANSWERED).pack(anchor="w", padx=20)
+            tk.Label(result_frame, text="Based on your task preferences and vocational interests.", font=("Arial", 11), bg=COLOR_BG_CONTENT, fg=COLOR_BG_NAV).pack(anchor="w", padx=20, pady=5)
         tk.Label(result_frame, text=f"Stated Preference: {preferred_course}", font=("Arial", 12, 'bold'), bg=COLOR_BG_CONTENT, fg=COLOR_BG_DARK).pack(anchor="w", padx=20)
         tk.Label(result_frame, text=f"Aptitude Confidence for Preference: {preferred_course_confidence:.2f}%", font=("Arial", 12), bg=COLOR_BG_CONTENT, fg=COLOR_BG_NAV).pack(anchor="w", padx=20)
 
 
-        # --- FINAL VERDICT & ALTERNATIVE LOGIC ---
-        tk.Label(result_frame, text="\n--- FINAL VERDICT ---", font=("Arial", 16, "bold"), bg=COLOR_BG_CONTENT, fg=COLOR_BG_DARK).pack(pady=(15, 10))
-        
-        if preferred_course_confidence >= 60.0:
-            # --- STRONG MATCH ---
-            final_message = f"**EXCELLENT MATCH (Confidence {preferred_course_confidence:.2f}%):** Your measured aptitude strongly supports your interest in **{preferred_course}**. This path offers the best chance for long-term success and job satisfaction."
-            final_color = COLOR_ANSWERED
+        # --- Section 2: Cognitive Aptitude Match ---
+        tk.Label(result_frame, text="\n2. Cognitive Aptitude Match", font=("Arial", 16, "bold"), bg=COLOR_BG_CONTENT, fg=COLOR_BG_DARK).pack(anchor="w", pady=(10, 5))
+        if is_commerce:
+            # Aptitude match based on commerce-specific logic
+            apt_rec_data = determine_commerce_course_by_aptitude(self.user_data.get('aptitude_scores', {}))
+            rec_stream = apt_rec_data.get('recommended_stream', 'N/A')
+            conf = apt_rec_data.get('confidence', 0)
+            tk.Label(result_frame, text=f"Best Fit based on Thinking Skills: {rec_stream} ({conf:.1f}%)", font=("Arial", 13, "bold"), bg=COLOR_BG_CONTENT, fg=COLOR_PRIMARY).pack(anchor="w", padx=20)
             
-            tk.Label(result_frame, text=final_message, font=("Arial", 13, "bold"), bg=COLOR_BG_CONTENT, fg=final_color, wraplength=700).pack(pady=10)
+            # Show probabilities bar chart (Top 5)
+            probs = apt_rec_data.get('probabilities', {})
+            if probs and MATPLOTLIB_AVAILABLE:
+                try:
+                    fig, ax = plt.subplots(figsize=(6, 3))
+                    courses = list(probs.keys())
+                    vals = list(probs.values())
+                    ax.barh(courses, vals, color="#2C3E50")
+                    ax.set_title("Top Specialization Matches (%)")
+                    plt.tight_layout()
+                    canvas = FigureCanvasTkAgg(fig, master=result_frame)
+                    canvas.draw()
+                    canvas.get_tk_widget().pack(pady=10)
+                except: pass
+        else:
+            tk.Label(result_frame, text=f"Top Aptitude Match: {aptitude_recommendation} ({aptitude_confidence:.1f}%)", font=("Arial", 13, "bold"), bg=COLOR_BG_CONTENT, fg=COLOR_PRIMARY).pack(anchor="w", padx=20)
+            sorted_confidences = sorted(aptitude_confidence_map.items(), key=lambda item: item[1], reverse=True)
+            for i, (course, conf) in enumerate(sorted_confidences[:5]):
+                 tk.Label(result_frame, text=f"• {course}: {conf:.2f}%", font=("Arial", 11), bg=COLOR_BG_CONTENT, fg=COLOR_BG_NAV).pack(anchor="w", padx=40)
 
-        elif 40.0 <= preferred_course_confidence < 60.0:
-            # --- MODERATE MATCH ---
-            final_message = f"**MODERATE MATCH (Confidence {preferred_course_confidence:.2f}%):** You have solid potential for **{preferred_course}**, but your skills also align well with other options. You can pursue this course, but should also seriously investigate your next best engineering and non-engineering alternatives (See breakdown below)."
-            final_color = COLOR_MODERATE
-            
-            tk.Label(result_frame, text=final_message, font=("Arial", 13, "bold"), bg=COLOR_BG_CONTENT, fg=final_color, wraplength=700).pack(pady=10)
-
-        else: # Below 40.0%
-            # --- LOW MATCH ---
-            final_message = f"**LOW MATCH (Confidence {preferred_course_confidence:.2f}%):** Your current aptitude scores indicate a significant potential challenge in **{preferred_course}**. We highly recommend exploring alternative paths related to your interests."
-            tk.Label(result_frame, text=final_message, font=("Arial", 13, "bold"), bg=COLOR_BG_CONTENT, fg=COLOR_UNANSWERED, wraplength=700).pack(pady=(10, 5))
-            
-            # Suggest NON-ENGINEERING alternatives based on interests
-            alternative_streams = set()
-            for user_int in user_interests:
-                if user_int in INTEREST_TO_NON_ENGINEERING_MAP:
-                    alternative_streams.update(INTEREST_TO_NON_ENGINEERING_MAP[user_int])
-            
-            tk.Label(result_frame, text="\nBased on your general interests, consider these **NON-ENGINEERING** alternatives:", font=("Arial", 12, "bold"), bg=COLOR_BG_CONTENT, fg=COLOR_ALERT).pack(anchor="w", padx=20, pady=5)
-            
-            if alternative_streams:
-                for i, stream in enumerate(sorted(list(alternative_streams))[:5]):
-                    tk.Label(result_frame, 
-                             text=f"- {stream}", 
-                             font=("Arial", 11), bg=COLOR_BG_CONTENT, fg=COLOR_BG_NAV).pack(anchor="w", padx=40)
-            else:
-                tk.Label(result_frame, text="No specific non-engineering alternatives found based on your broad interests. Review the Detailed Breakdown for best-fit engineering branches.", font=("Arial", 11), bg=COLOR_BG_CONTENT, fg=COLOR_BG_NAV).pack(anchor="w", padx=20)
-
-
-        # --- Detailed Model Breakdown ---
-        ttk.Separator(result_frame, orient='horizontal').pack(fill='x', pady=15, padx=20)
-        
-        tk.Label(result_frame, text="3. Detailed Model Breakdown (Engineering Focus)", font=("Arial", 14, "bold"), bg=COLOR_BG_CONTENT, fg=COLOR_BG_DARK).pack(anchor="w", pady=(10, 5))
-        
-        tk.Label(result_frame, text=f"Aptitude Model's Top 5 Predictions (General Fit):", font=("Arial", 12, "bold"), bg=COLOR_BG_CONTENT, fg=COLOR_BG_NAV).pack(anchor="w", padx=20, pady=5)
-        
-        sorted_confidences = sorted(aptitude_confidence_map.items(), key=lambda item: item[1], reverse=True)
-        
-        for i, (stream, confidence) in enumerate(sorted_confidences[:5]):
-            rank_color = COLOR_ANSWERED if i == 0 else COLOR_BG_NAV
-            tk.Label(result_frame, 
-                     text=f"Rank {i+1}: {stream} {get_boom_display_text(stream)} (Confidence: {confidence:.2f}%)", 
-                     font=("Arial", 11), bg=COLOR_BG_CONTENT, fg=rank_color).pack(anchor="w", padx=40)
-        
-        # --- Personality Info ---
-        ttk.Separator(result_frame, orient='horizontal').pack(fill='x', pady=15, padx=20)
+        # --- Section 3: Personality Insights ---
         tk.Label(result_frame, text="Career Personality Profile", font=("Arial", 14, "bold"), bg=COLOR_BG_CONTENT, fg=COLOR_BG_DARK).pack(anchor="w", pady=(10, 5))
         
         p_rec = self.user_data.get('personality_rec_career', "N/A")
@@ -1481,10 +1452,8 @@ class PersonalityAssessmentApp:
         self.parent.user_data['personality_facet_results'] = facet_results
         self.parent.user_data['personality_rec_career'] = rec_career
         
-        # Proceed to Aptitude Test
-        recommended_stream = self.parent.user_data.get('career_profiler_recommendation', 'N/A')
-        priority_list = self.parent.user_data.get('career_priority_list', [])
-        self.parent.show_aptitude_test(recommended_stream, priority_list)
+        # Proceed to Final Recommendation
+        self.parent.show_final_recommendation()
         return
 
         # 3. SAVE TO MONGODB (THE "BACK DIRECTORY")

@@ -1,0 +1,171 @@
+
+[DB] MongoDB Atlas connection: SUCCESSFUL
+
+[DATA] Aptitude bank: Loaded from local JSON database
+Loading existing Career Model.
+Loading existing Aptitude Model.
+DEBUG: Starting server on 127.0.0.1:5000
+ * Serving Flask app 'app'
+ * Debug mode: off
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5000
+Press CTRL+C to quit
+DEBUG: Accessing index route
+127.0.0.1 - - [07/Mar/2026 11:01:25] "HEAD / HTTP/1.1" 200 -
+DEBUG: Accessing index route
+127.0.0.1 - - [07/Mar/2026 11:02:48] "HEAD / HTTP/1.1" 200 -
+DEBUG: Accessing index route
+127.0.0.1 - - [07/Mar/2026 11:03:59] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:04:00] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [07/Mar/2026 11:05:08] "POST /api/signup HTTP/1.1" 400 -
+127.0.0.1 - - [07/Mar/2026 11:05:09] "POST /api/signup HTTP/1.1" 400 -
+127.0.0.1 - - [07/Mar/2026 11:05:09] "POST /api/signup HTTP/1.1" 400 -
+127.0.0.1 - - [07/Mar/2026 11:05:09] "POST /api/signup HTTP/1.1" 400 -
+127.0.0.1 - - [07/Mar/2026 11:05:09] "POST /api/signup HTTP/1.1" 400 -
+127.0.0.1 - - [07/Mar/2026 11:05:09] "POST /api/signup HTTP/1.1" 400 -
+127.0.0.1 - - [07/Mar/2026 11:05:09] "POST /api/signup HTTP/1.1" 400 -
+127.0.0.1 - - [07/Mar/2026 11:05:13] "POST /api/signup HTTP/1.1" 400 -
+127.0.0.1 - - [07/Mar/2026 11:05:13] "POST /api/signup HTTP/1.1" 400 -
+127.0.0.1 - - [07/Mar/2026 11:05:13] "POST /api/signup HTTP/1.1" 400 -
+127.0.0.1 - - [07/Mar/2026 11:05:14] "POST /api/signup HTTP/1.1" 400 -
+127.0.0.1 - - [07/Mar/2026 11:05:14] "POST /api/signup HTTP/1.1" 400 -
+127.0.0.1 - - [07/Mar/2026 11:05:14] "POST /api/signup HTTP/1.1" 400 -
+127.0.0.1 - - [07/Mar/2026 11:05:14] "POST /api/signup HTTP/1.1" 400 -
+127.0.0.1 - - [07/Mar/2026 11:05:14] "POST /api/signup HTTP/1.1" 400 -
+127.0.0.1 - - [07/Mar/2026 11:05:14] "POST /api/signup HTTP/1.1" 400 -
+127.0.0.1 - - [07/Mar/2026 11:05:15] "POST /api/signup HTTP/1.1" 400 -
+127.0.0.1 - - [07/Mar/2026 11:05:15] "POST /api/signup HTTP/1.1" 400 -
+127.0.0.1 - - [07/Mar/2026 11:05:15] "POST /api/signup HTTP/1.1" 400 -
+127.0.0.1 - - [07/Mar/2026 11:05:15] "POST /api/signup HTTP/1.1" 400 -
+127.0.0.1 - - [07/Mar/2026 11:05:16] "POST /api/signup HTTP/1.1" 400 -
+127.0.0.1 - - [07/Mar/2026 11:05:16] "POST /api/signup HTTP/1.1" 400 -
+127.0.0.1 - - [07/Mar/2026 11:05:16] "POST /api/signup HTTP/1.1" 400 -
+127.0.0.1 - - [07/Mar/2026 11:05:16] "POST /api/signup HTTP/1.1" 400 -
+127.0.0.1 - - [07/Mar/2026 11:05:16] "POST /api/signup HTTP/1.1" 400 -
+127.0.0.1 - - [07/Mar/2026 11:05:16] "POST /api/signup HTTP/1.1" 400 -
+127.0.0.1 - - [07/Mar/2026 11:05:16] "POST /api/signup HTTP/1.1" 400 -
+127.0.0.1 - - [07/Mar/2026 11:05:17] "POST /api/signup HTTP/1.1" 400 -
+127.0.0.1 - - [07/Mar/2026 11:05:17] "POST /api/signup HTTP/1.1" 400 -
+127.0.0.1 - - [07/Mar/2026 11:05:17] "POST /api/signup HTTP/1.1" 400 -
+DEBUG: Accessing index route
+127.0.0.1 - - [07/Mar/2026 11:05:22] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:05:27] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [07/Mar/2026 11:05:36] "POST /api/signup HTTP/1.1" 400 -
+127.0.0.1 - - [07/Mar/2026 11:05:40] "GET /signin.html HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:05:50] "POST /api/login HTTP/1.1" 401 -
+127.0.0.1 - - [07/Mar/2026 11:05:51] "POST /api/login HTTP/1.1" 401 -
+127.0.0.1 - - [07/Mar/2026 11:05:56] "GET /login/google HTTP/1.1" 302 -
+OAuth Flow Failed (Likely Missing Credentials): mismatching_state: CSRF Warning! State not equal in request and response.
+127.0.0.1 - - [07/Mar/2026 11:05:56] "GET /authorize/google HTTP/1.1" 302 -
+127.0.0.1 - - [07/Mar/2026 11:05:56] "GET /homepage.html HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:05:57] "GET /api/user_profile HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:05:57] "GET /api/profile_options HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:05:57] "GET /api/course_catalogue HTTP/1.1" 200 -
+DEBUG: Accessing index route
+127.0.0.1 - - [07/Mar/2026 11:06:22] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:06:24] "GET /login/google HTTP/1.1" 302 -
+OAuth Flow Failed (Likely Missing Credentials): mismatching_state: CSRF Warning! State not equal in request and response.
+127.0.0.1 - - [07/Mar/2026 11:06:25] "GET /authorize/google HTTP/1.1" 302 -
+127.0.0.1 - - [07/Mar/2026 11:06:25] "GET /homepage.html HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:06:25] "GET /api/user_profile HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:06:25] "GET /api/profile_options HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:06:25] "GET /api/course_catalogue HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:06:35] "GET /commerce_step1.html HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:06:41] "POST /api/save_commerce_step1 HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:06:41] "GET /commerce_assesment.html HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:06:41] "GET /api/commerce_aptitude_questions HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:06:52] "POST /api/submit_commerce_aptitude HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:06:52] "GET /personality.html HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:06:54] "GET /api/personality_questions HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:07:51] "POST /api/submit_personality HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:07:51] "GET /homepage.html HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:07:51] "GET /api/user_profile HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:07:51] "GET /api/profile_options HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:07:51] "GET /api/course_catalogue HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:08:01] "GET /api/download_report HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:08:26] "GET /api/user_profile HTTP/1.1" 200 -
+DEBUG: Accessing index route
+127.0.0.1 - - [07/Mar/2026 11:08:51] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:08:53] "GET /login/google HTTP/1.1" 302 -
+OAuth Flow Failed (Likely Missing Credentials): mismatching_state: CSRF Warning! State not equal in request and response.
+127.0.0.1 - - [07/Mar/2026 11:08:53] "GET /authorize/google HTTP/1.1" 302 -
+127.0.0.1 - - [07/Mar/2026 11:08:53] "GET /homepage.html HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:08:53] "GET /api/user_profile HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:08:53] "GET /api/profile_options HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:08:53] "GET /api/course_catalogue HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:09:28] "GET /login/google HTTP/1.1" 302 -
+OAuth Flow Failed (Likely Missing Credentials): mismatching_state: CSRF Warning! State not equal in request and response.
+127.0.0.1 - - [07/Mar/2026 11:09:28] "GET /authorize/google HTTP/1.1" 302 -
+127.0.0.1 - - [07/Mar/2026 11:09:28] "GET /homepage.html HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:09:28] "GET /api/user_profile HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:09:28] "GET /api/profile_options HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:09:28] "GET /api/course_catalogue HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:13:38] "GET /homepage.html HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:13:39] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [07/Mar/2026 11:13:39] "GET /api/user_profile HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:13:39] "GET /api/profile_options HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:13:39] "GET /api/course_catalogue HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:14:08] "GET /homepage.html HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:14:10] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [07/Mar/2026 11:14:10] "GET /api/user_profile HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:14:10] "GET /api/profile_options HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:14:10] "GET /api/course_catalogue HTTP/1.1" 200 -
+DEBUG: Accessing index route
+127.0.0.1 - - [07/Mar/2026 11:38:52] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:38:52] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [07/Mar/2026 11:39:10] "GET /dashboard HTTP/1.1" 404 -
+DEBUG: Accessing index route
+127.0.0.1 - - [07/Mar/2026 11:39:21] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:39:31] "GET /homepage HTTP/1.1" 404 -
+127.0.0.1 - - [07/Mar/2026 11:39:36] "GET /courses HTTP/1.1" 404 -
+DEBUG: Accessing index route
+127.0.0.1 - - [07/Mar/2026 11:39:48] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:40:06] "GET /signin.html HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:40:48] "GET /homepage.html HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:41:04] "GET /api/user_profile HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:41:04] "GET /api/profile_options HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:41:04] "GET /api/course_catalogue HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:42:28] "POST /api/login HTTP/1.1" 401 -
+127.0.0.1 - - [07/Mar/2026 11:42:45] "GET /mainpage1.html HTTP/1.1" 404 -
+DEBUG: Accessing index route
+127.0.0.1 - - [07/Mar/2026 11:42:55] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:43:57] "POST /api/signup HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:43:57] "GET /homepage.html HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:44:04] "GET /api/user_profile HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:44:04] "GET /api/profile_options HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 11:44:04] "GET /api/course_catalogue HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 12:17:52] "GET /api/course_catalogue HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 12:19:33] "GET /api/user_profile HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 12:20:40] "GET /api/course_catalogue HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 12:22:18] "GET /homepage.html HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 12:22:20] "GET /favicon.ico HTTP/1.1" 404 -
+127.0.0.1 - - [07/Mar/2026 12:22:20] "GET /api/user_profile HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 12:22:20] "GET /api/profile_options HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 12:22:20] "GET /api/course_catalogue HTTP/1.1" 200 -
+DEBUG: Accessing index route
+127.0.0.1 - - [07/Mar/2026 12:28:12] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 12:28:36] "GET /homepage HTTP/1.1" 404 -
+DEBUG: Accessing index route
+127.0.0.1 - - [07/Mar/2026 12:28:51] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 12:29:33] "POST /api/signup HTTP/1.1" 400 -
+127.0.0.1 - - [07/Mar/2026 12:29:48] "POST /api/signup HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 12:29:48] "GET /homepage.html HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 12:29:49] "GET /api/user_profile HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 12:29:49] "GET /api/profile_options HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 12:29:49] "GET /api/course_catalogue HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 12:35:09] "GET /api/course_catalogue HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 12:39:47] "GET /api/course_catalogue HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 12:42:00] "GET /api/course_catalogue HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 12:56:43] "GET /homepage.html HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 12:56:44] "GET /api/user_profile HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 12:56:44] "GET /api/profile_options HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 12:56:44] "GET /api/course_catalogue HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 13:02:06] "GET /api/course_catalogue HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 13:02:21] "GET /homepage.html HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 13:02:24] "GET /api/user_profile HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 13:02:24] "GET /api/profile_options HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 13:02:24] "GET /api/course_catalogue HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 13:05:10] "GET /api/test_diag HTTP/1.1" 404 -
+127.0.0.1 - - [07/Mar/2026 13:08:46] "GET /api/v2/course_catalogue HTTP/1.1" 404 -
+127.0.0.1 - - [07/Mar/2026 13:10:59] "GET /api/v2/course_catalogue HTTP/1.1" 404 -
+^C

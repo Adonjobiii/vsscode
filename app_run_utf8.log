@@ -1,0 +1,87 @@
+﻿python : Traceback 
+(most recent call 
+last):
+At line:1 char:1
++ python app.py > "D:\v
+sscode\app_run.log" 
+2>&1
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~
+    + CategoryInfo     
+         : 
+NotSpecified: (Tra    
+ceback (most recent ca 
+   ll last)::String) 
+[],     RemoteException
+    + 
+FullyQualifiedErrorI   
+ d : NativeCommandError
+ 
+  File "D:\vsscode\conf
+ig_data.py", line 26, 
+in <module>
+    print("\u2705 
+MongoDB connected 
+successfully")
+    ~~~~~^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program File
+s\WindowsApps\PythonSof
+twareFoundation.Python.
+3.13_3.13.3312.0_x64__q
+bz5n2kfra8p0\Lib\encodi
+ngs\cp1252.py", line 
+19, in encode
+    return codecs.charm
+ap_encode(input,self.er
+rors,encoding_table)[0]
+           ~~~~~~~~~~~~
+~~~~~~~~~^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 
+'charmap' codec can't 
+encode character 
+'\u2705' in position 
+0: character maps to 
+<undefined>
+
+During handling of the 
+above exception, 
+another exception 
+occurred:
+
+Traceback (most recent 
+call last):
+  File 
+"D:\vsscode\app.py", 
+line 6, in <module>
+    from config_data 
+import *
+  File "D:\vsscode\conf
+ig_data.py", line 28, 
+in <module>
+    print("\u274c 
+MongoDB connection 
+failed:", e)
+    ~~~~~^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program File
+s\WindowsApps\PythonSof
+twareFoundation.Python.
+3.13_3.13.3312.0_x64__q
+bz5n2kfra8p0\Lib\encodi
+ngs\cp1252.py", line 
+19, in encode
+    return codecs.charm
+ap_encode(input,self.er
+rors,encoding_table)[0]
+           ~~~~~~~~~~~~
+~~~~~~~~~^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 
+'charmap' codec can't 
+encode character 
+'\u274c' in position 
+0: character maps to 
+<undefined>

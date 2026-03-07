@@ -1,4 +1,208 @@
 {
+  "Algorithmic": [
+    {
+      "id": "AO1",
+      "q": "What is the time complexity of binary search?",
+      "options": {
+        "A": "O(n)",
+        "B": "O(n^2)",
+        "C": "O(log n)",
+        "D": "O(n log n)"
+      }
+    },
+    {
+      "id": "AO2",
+      "q": "Which sorting algorithm has best average-case complexity?",
+      "options": {
+        "A": "Bubble Sort",
+        "B": "Quick Sort",
+        "C": "Selection Sort",
+        "D": "Insertion Sort"
+      }
+    },
+    {
+      "id": "AO3",
+      "q": "What does a stack data structure follow?",
+      "options": {
+        "A": "FIFO",
+        "B": "LIFO",
+        "C": "LILO",
+        "D": "FILO"
+      }
+    },
+    {
+      "id": "AO4",
+      "q": "What is the worst-case complexity of bubble sort?",
+      "options": {
+        "A": "O(n)",
+        "B": "O(n log n)",
+        "C": "O(n^2)",
+        "D": "O(log n)"
+      }
+    },
+    {
+      "id": "AO5",
+      "q": "Which data structure is used in Breadth First Search?",
+      "options": {
+        "A": "Stack",
+        "B": "Tree",
+        "C": "Queue",
+        "D": "Heap"
+      }
+    },
+    {
+      "id": "AO6",
+      "q": "Recursion uses which underlying data structure internally?",
+      "options": {
+        "A": "Queue",
+        "B": "Stack",
+        "C": "Linked List",
+        "D": "Array"
+      }
+    },
+    {
+      "id": "AO7",
+      "q": "Which algorithm is used to find the shortest path in a graph?",
+      "options": {
+        "A": "Kruskal's",
+        "B": "Prim's",
+        "C": "Dijkstra's",
+        "D": "Floyd-Warshall"
+      }
+    },
+    {
+      "id": "AO8",
+      "q": "Dynamic Programming solves problems by?",
+      "options": {
+        "A": "Greedy choice",
+        "B": "Divide and conquer",
+        "C": "Memoization",
+        "D": "Brute force"
+      }
+    },
+    {
+      "id": "AO9",
+      "q": "What is the space complexity of merge sort?",
+      "options": {
+        "A": "O(1)",
+        "B": "O(log n)",
+        "C": "O(n)",
+        "D": "O(n^2)"
+      }
+    },
+    {
+      "id": "AO10",
+      "q": "A hash table provides average time lookup of?",
+      "options": {
+        "A": "O(n)",
+        "B": "O(1)",
+        "C": "O(log n)",
+        "D": "O(n log n)"
+      }
+    }
+  ],
+  "Computational": [
+    {
+      "id": "CO1",
+      "q": "How many bytes are in 1 Kilobyte (KB)?",
+      "options": {
+        "A": "100",
+        "B": "512",
+        "C": "1024",
+        "D": "2048"
+      }
+    },
+    {
+      "id": "CO2",
+      "q": "What is the result of 1011 XOR 0110 in binary?",
+      "options": {
+        "A": "1100",
+        "B": "1101",
+        "C": "1111",
+        "D": "1001"
+      }
+    },
+    {
+      "id": "CO3",
+      "q": "Convert decimal 255 to hexadecimal.",
+      "options": {
+        "A": "FE",
+        "B": "EF",
+        "C": "FF",
+        "D": "0F"
+      }
+    },
+    {
+      "id": "CO4",
+      "q": "What is 2^10 equal to?",
+      "options": {
+        "A": "512",
+        "B": "1000",
+        "C": "1024",
+        "D": "2000"
+      }
+    },
+    {
+      "id": "CO5",
+      "q": "What does CPU stand for?",
+      "options": {
+        "A": "Central Processing Unit",
+        "B": "Computer Primary Unit",
+        "C": "Central Protocol Unit",
+        "D": "Control Processing Unit"
+      }
+    },
+    {
+      "id": "CO6",
+      "q": "Which gate outputs 1 only when all inputs are 1?",
+      "options": {
+        "A": "OR",
+        "B": "XOR",
+        "C": "NAND",
+        "D": "AND"
+      }
+    },
+    {
+      "id": "CO7",
+      "q": "What is the binary of decimal 13?",
+      "options": {
+        "A": "1011",
+        "B": "1100",
+        "C": "1101",
+        "D": "1010"
+      }
+    },
+    {
+      "id": "CO8",
+      "q": "One's complement of 1010 is?",
+      "options": {
+        "A": "0101",
+        "B": "1001",
+        "C": "0110",
+        "D": "1010"
+      }
+    },
+    {
+      "id": "CO9",
+      "q": "Which number system uses base 16?",
+      "options": {
+        "A": "Binary",
+        "B": "Octal",
+        "C": "Hexadecimal",
+        "D": "Decimal"
+      }
+    },
+    {
+      "id": "CO10",
+      "q": "How many bits in a nibble?",
+      "options": {
+        "A": "2",
+        "B": "4",
+        "C": "8",
+        "D": "16"
+      }
+    }
+  ],
   "Logical": [
     {
       "id": "L1",
@@ -12,24 +216,92 @@
     },
     {
       "id": "L2",
-      "q": "Which number comes next in sequence 2,4,6...?",
+      "q": "Which number comes next in sequence 2, 4, 6...?",
       "options": {
         "A": "8",
         "B": "7",
         "C": "9",
         "D": "5"
       }
-    }
-  ],
-  "Algorithmic": [
+    },
     {
-      "id": "A1",
-      "q": "Sort complexity of bubble sort (worst)?",
+      "id": "L3",
+      "q": "If A > B and B > C, then which is true?",
       "options": {
-        "A": "O(n)",
-        "B": "O(n log n)",
-        "C": "O(n^2)",
-        "D": "O(log n)"
+        "A": "C > A",
+        "B": "A > C",
+        "C": "B > A",
+        "D": "C = A"
+      }
+    },
+    {
+      "id": "L4",
+      "q": "All roses are flowers. Some flowers fade quickly. Therefore:",
+      "options": {
+        "A": "All roses fade quickly",
+        "B": "Some roses fade quickly",
+        "C": "No roses fade",
+        "D": "Cannot be determined"
+      }
+    },
+    {
+      "id": "L5",
+      "q": "What is the next number: 1, 4, 9, 16, ___?",
+      "options": {
+        "A": "20",
+        "B": "25",
+        "C": "36",
+        "D": "24"
+      }
+    },
+    {
+      "id": "L6",
+      "q": "If today is Wednesday, what day will it be after 10 days?",
+      "options": {
+        "A": "Friday",
+        "B": "Saturday",
+        "C": "Sunday",
+        "D": "Monday"
+      }
+    },
+    {
+      "id": "L7",
+      "q": "In a mirror image, a clock shows 7:30, what is the real time?",
+      "options": {
+        "A": "4:30",
+        "B": "5:30",
+        "C": "6:30",
+        "D": "7:30"
+      }
+    },
+    {
+      "id": "L8",
+      "q": "Which word is odd one out: Dog, Cat, Spider, Horse?",
+      "options": {
+        "A": "Dog",
+        "B": "Cat",
+        "C": "Spider",
+        "D": "Horse"
+      }
+    },
+    {
+      "id": "L9",
+      "q": "How many triangles does a Star of David contain?",
+      "options": {
+        "A": "4",
+        "B": "6",
+        "C": "8",
+        "D": "12"
+      }
+    },
+    {
+      "id": "L10",
+      "q": "A train running at 60 km/h, covers 1 km in how many minutes?",
+      "options": {
+        "A": "30 seconds",
+        "B": "1 minute",
+        "C": "2 minutes",
+        "D": "5 minutes"
       }
     }
   ],
@@ -42,6 +314,402 @@
         "B": "Computer Primary Unit",
         "C": "Central Protocol Unit",
         "D": "Control Processing Unit"
+      }
+    },
+    {
+      "id": "S2",
+      "q": "What is the function of an operating system?",
+      "options": {
+        "A": "Compile code",
+        "B": "Manage hardware resources",
+        "C": "Browse the web",
+        "D": "Encrypt files"
+      }
+    },
+    {
+      "id": "S3",
+      "q": "RAM stands for?",
+      "options": {
+        "A": "Read Access Memory",
+        "B": "Random Access Memory",
+        "C": "Rapid Access Module",
+        "D": "Ready Access Memory"
+      }
+    },
+    {
+      "id": "S4",
+      "q": "A process waiting for I/O is in which state?",
+      "options": {
+        "A": "Running",
+        "B": "Ready",
+        "C": "Blocked",
+        "D": "Terminated"
+      }
+    },
+    {
+      "id": "S5",
+      "q": "What causes a deadlock?",
+      "options": {
+        "A": "Too much memory",
+        "B": "Circular wait among processes",
+        "C": "High CPU usage",
+        "D": "Network timeout"
+      }
+    },
+    {
+      "id": "S6",
+      "q": "Virtual memory allows a computer to?",
+      "options": {
+        "A": "Run without RAM",
+        "B": "Use disk space as RAM",
+        "C": "Speed up CPU",
+        "D": "Reduce file sizes"
+      }
+    },
+    {
+      "id": "S7",
+      "q": "Which scheduling algorithm is non-preemptive?",
+      "options": {
+        "A": "Round Robin",
+        "B": "Shortest Remaining Time",
+        "C": "First Come First Served",
+        "D": "Priority Preemptive"
+      }
+    },
+    {
+      "id": "S8",
+      "q": "What is thrashing in operating systems?",
+      "options": {
+        "A": "Fast ROM access",
+        "B": "Excessive paging causing slowdown",
+        "C": "High disk speed",
+        "D": "Quick task switching"
+      }
+    },
+    {
+      "id": "S9",
+      "q": "Which protocol is used to assign IP addresses automatically?",
+      "options": {
+        "A": "FTP",
+        "B": "HTTP",
+        "C": "DHCP",
+        "D": "DNS"
+      }
+    },
+    {
+      "id": "S10",
+      "q": "TCP vs UDP – which is connection-oriented?",
+      "options": {
+        "A": "UDP",
+        "B": "ICMP",
+        "C": "TCP",
+        "D": "ARP"
+      }
+    }
+  ],
+  "Critical": [
+    {
+      "id": "CR1",
+      "q": "Which argument structure is logically valid?",
+      "options": {
+        "A": "P therefore Q, Q is true, therefore P is true",
+        "B": "If P then Q, P is true, therefore Q is true",
+        "C": "P or Q, not P, therefore not Q",
+        "D": "Q implies P, P is true, therefore Q is false"
+      }
+    },
+    {
+      "id": "CR2",
+      "q": "A sample of 10 students passed the test. Therefore all students will pass. This is an example of?",
+      "options": {
+        "A": "Deductive reasoning",
+        "B": "Inductive reasoning",
+        "C": "Abductive reasoning",
+        "D": "Circular reasoning"
+      }
+    },
+    {
+      "id": "CR3",
+      "q": "What does ad hominem mean in critical thinking?",
+      "options": {
+        "A": "Attacking the argument",
+        "B": "Attacking a person instead of their argument",
+        "C": "Logical deduction",
+        "D": "False dilemma"
+      }
+    },
+    {
+      "id": "CR4",
+      "q": "Correlation implies causation is?",
+      "options": {
+        "A": "Usually true",
+        "B": "Always true",
+        "C": "A logical fallacy",
+        "D": "A proven theorem"
+      }
+    },
+    {
+      "id": "CR5",
+      "q": "What is a 'straw man' fallacy?",
+      "options": {
+        "A": "Making a weak argument",
+        "B": "Misrepresenting someone's argument to make it easier to attack",
+        "C": "Using emotional language",
+        "D": "Circular reasoning"
+      }
+    },
+    {
+      "id": "CR6",
+      "q": "In a valid argument, if premises are true, then the conclusion is?",
+      "options": {
+        "A": "Probably true",
+        "B": "Always true",
+        "C": "Possibly false",
+        "D": "Undetermined"
+      }
+    },
+    {
+      "id": "CR7",
+      "q": "A hypothesis should be?",
+      "options": {
+        "A": "Proven true",
+        "B": "Testable and falsifiable",
+        "C": "Based only on intuition",
+        "D": "Permanent"
+      }
+    },
+    {
+      "id": "CR8",
+      "q": "Identifying unstated assumptions is part of?",
+      "options": {
+        "A": "Creative writing",
+        "B": "Emotional intelligence",
+        "C": "Critical thinking",
+        "D": "Memory recall"
+      }
+    },
+    {
+      "id": "CR9",
+      "q": "Which of these best describes 'objective' thinking?",
+      "options": {
+        "A": "Based on personal feelings",
+        "B": "Based on evidence and facts",
+        "C": "Based on instinct",
+        "D": "Based on group opinion"
+      }
+    },
+    {
+      "id": "CR10",
+      "q": "The 'Socratic method' involves?",
+      "options": {
+        "A": "Giving direct answers",
+        "B": "Asking probing questions to stimulate thinking",
+        "C": "Memorizing facts",
+        "D": "Following authority"
+      }
+    }
+  ],
+  "Abstract": [
+    {
+      "id": "AB1",
+      "q": "In a sequence: circle, triangle, circle, triangle, circle, ___. What comes next?",
+      "options": {
+        "A": "Circle",
+        "B": "Triangle",
+        "C": "Square",
+        "D": "Pentagon"
+      }
+    },
+    {
+      "id": "AB2",
+      "q": "Which is the odd shape out: equilateral triangle, isosceles triangle, square, scalene triangle?",
+      "options": {
+        "A": "Equilateral triangle",
+        "B": "Isosceles triangle",
+        "C": "Square",
+        "D": "Scalene triangle"
+      }
+    },
+    {
+      "id": "AB3",
+      "q": "Analogy: Brush is to Paint as Pen is to?",
+      "options": {
+        "A": "Paper",
+        "B": "Ink",
+        "C": "Write",
+        "D": "Book"
+      }
+    },
+    {
+      "id": "AB4",
+      "q": "If a pattern rotates 90 degrees clockwise each step, a shape pointing up will point _____ after 2 steps.",
+      "options": {
+        "A": "Up",
+        "B": "Right",
+        "C": "Down",
+        "D": "Left"
+      }
+    },
+    {
+      "id": "AB5",
+      "q": "Which figure continues the pattern: 2, 5, 10, 17, ___?",
+      "options": {
+        "A": "24",
+        "B": "25",
+        "C": "26",
+        "D": "27"
+      }
+    },
+    {
+      "id": "AB6",
+      "q": "A 3x3 grid with shapes – if circles appear in each column once, and the last column has triangle, square, what is missing?",
+      "options": {
+        "A": "Triangle",
+        "B": "Square",
+        "C": "Circle",
+        "D": "Hexagon"
+      }
+    },
+    {
+      "id": "AB7",
+      "q": "Mirror image of a 'b' looks like a?",
+      "options": {
+        "A": "d",
+        "B": "p",
+        "C": "q",
+        "D": "b"
+      }
+    },
+    {
+      "id": "AB8",
+      "q": "What is the missing number: 3, 6, 12, 24, ___?",
+      "options": {
+        "A": "36",
+        "B": "40",
+        "C": "48",
+        "D": "52"
+      }
+    },
+    {
+      "id": "AB9",
+      "q": "In series: Z, X, V, T, ___, P. What fills the gap?",
+      "options": {
+        "A": "S",
+        "B": "R",
+        "C": "Q",
+        "D": "W"
+      }
+    },
+    {
+      "id": "AB10",
+      "q": "Analogy: Year is to Month as Week is to?",
+      "options": {
+        "A": "Hour",
+        "B": "Minute",
+        "C": "Day",
+        "D": "Second"
+      }
+    }
+  ],
+  "Creative": [
+    {
+      "id": "CV1",
+      "q": "Which of these techniques is used in brainstorming?",
+      "options": {
+        "A": "Judging ideas immediately",
+        "B": "Deferring judgment on ideas",
+        "C": "Working in isolation",
+        "D": "Sticking to one solution"
+      }
+    },
+    {
+      "id": "CV2",
+      "q": "Lateral thinking is most associated with?",
+      "options": {
+        "A": "Logic puzzles",
+        "B": "Memory tasks",
+        "C": "Thinking outside the box",
+        "D": "Linear analysis"
+      }
+    },
+    {
+      "id": "CV3",
+      "q": "In design thinking, the first step is?",
+      "options": {
+        "A": "Prototype",
+        "B": "Test",
+        "C": "Empathize",
+        "D": "Define"
+      }
+    },
+    {
+      "id": "CV4",
+      "q": "Divergent thinking means?",
+      "options": {
+        "A": "Finding one correct answer",
+        "B": "Generating many possible solutions",
+        "C": "Logical deduction",
+        "D": "Sequential analysis"
+      }
+    },
+    {
+      "id": "CV5",
+      "q": "SCAMPER is a creativity technique. What does 'S' stand for?",
+      "options": {
+        "A": "Simplify",
+        "B": "Substitute",
+        "C": "Summarize",
+        "D": "Sketch"
+      }
+    },
+    {
+      "id": "CV6",
+      "q": "'Thinking hats' method involves?",
+      "options": {
+        "A": "Wearing protective gear",
+        "B": "Analyzing problems from multiple perspectives",
+        "C": "Using data only",
+        "D": "Making quick decisions"
+      }
+    },
+    {
+      "id": "CV7",
+      "q": "Biomimicry in design means?",
+      "options": {
+        "A": "Copying competitors",
+        "B": "Using biological structures as inspiration",
+        "C": "Recycling materials",
+        "D": "Minimalist design"
+      }
+    },
+    {
+      "id": "CV8",
+      "q": "The most creative thinkers are often described as?",
+      "options": {
+        "A": "Rigid and structured",
+        "B": "Open-minded and curious",
+        "C": "Introverted and shy",
+        "D": "Cautious and conservative"
+      }
+    },
+    {
+      "id": "CV9",
+      "q": "Which activity best stimulates creative thinking?",
+      "options": {
+        "A": "Repetition drills",
+        "B": "Free association and mind mapping",
+        "C": "Memorizing facts",
+        "D": "Following strict checklists"
+      }
+    },
+    {
+      "id": "CV10",
+      "q": "Convergent thinking is used when?",
+      "options": {
+        "A": "Creating many ideas",
+        "B": "Finding the single best solution",
+        "C": "Exploring possibilities",
+        "D": "Starting to brainstorm"
       }
     }
   ]

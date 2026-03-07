@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PathWise - Personality Test</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+            background-size: cover;
+            color: #f8fafc;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            z-index: -1;
+        }
+
+        .glass {
+            background: rgba(20, 30, 48, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .answered {
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9) !important;
+            color: white !important;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3) !important;
+            border-color: rgba(139, 92, 246, 0.6) !important;
+            font-weight: 700 !important;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Modern Likert Scale Buttons */
+        .likert-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.875rem;
+            flex-grow: 1;
+            font-weight: 500;
+        }
+
+        .likert-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        input[type="radio"] {
+            display: none;
+        }
+
+        input[type="radio"]:checked+.likert-btn {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: #8b5cf6;
+            color: #a78bfa;
+            font-weight: bold;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen font-sans flex flex-col md:flex-row">
+
+    <!-- Left Sidebar for Question Menu -->
+    <aside
+        class="w-full md:w-72 glass-panel md:h-screen overflow-y-auto p-4 md:p-6 sticky top-0 flex flex-col gap-4 md:gap-6 z-40">
+        <div class="flex items-center justify-between md:justify-start gap-3 border-b border-white/5 pb-3 md:pb-4">
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-400 to-purple-500 flex items-center justify-center font-bold text-slate-900 shadow-lg shadow-violet-500/30">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5">
+                        </path>
+                    </svg>
+                </div>
+                <h2 class="text-xl font-bold text-white tracking-tight">Navigator</h2>
+            </div>
+            <div id="nav-container" class="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-2 gap-2">
+                <!-- Buttons injected here -->
+            </div>
+    </aside>
+
+    <!-- Right Main Content for Questions -->
+    <main
+        class="flex-1 p-4 sm:p-8 md:p-12 overflow-y-auto relative min-h-screen md:h-screen flex flex-col max-w-5xl mx-auto w-full">
+        <!-- Header -->
+        <div
+            class="flex justify-between items-center mb-6 md:mb-8 glass px-5 md:px-8 py-4 md:py-5 rounded-2xl sticky top-0 z-30">
+            <div class="flex flex-col gap-1">
+                <span
+                    class="text-[10px] md:text-xs font-bold text-slate-400 bg-slate-800 px-3 py-1 rounded-full border border-white/5 uppercase tracking-widest w-max mb-1">Step
+                    4 of 4</span>
+                <h1
+                    class="text-xl md:text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-violet-400 to-purple-500 tracking-tight">
+                    Personality Test</h1>
+            </div>
+        </div>
+
+        <div class="mb-8 p-6 glass rounded-2xl border-l-4 border-violet-500">
+            <p class="text-slate-300 text-lg leading-relaxed font-light">Rate the extent to which you agree or disagree
+                with the following statements about yourself. Think of how you <strong
+                    class="text-white font-semibold">usually</strong> behave.</p>
+        </div>
+
+        <!-- Question Containers -->
+        <div id="questions" class="flex-grow">
+            <div class="flex flex-col items-center justify-center h-64 glass rounded-2xl" id="loading-text">
+                <div class="w-10 h-10 border-4 border-violet-500/30 border-t-violet-500 rounded-full animate-spin mb-4">
+                </div>
+                <p class="text-slate-400 font-medium">Generating your personality assessment...</p>
+            </div>
+        </div>
+
+        <!-- Navigation Footer -->
+        <div class="flex justify-center items-center mt-8 pt-6 border-t border-white/5" id="nav-buttons"
+            style="display: none;">
+            <div class="text-sm font-medium text-slate-400" id="progress-text">Question 1 of N</div>
+        </div>
+        <div id="error-message"
+            class="text-rose-400 font-medium text-sm mt-6 text-center hidden bg-rose-500/10 py-3 rounded-lg border border-rose-500/20">
+        </div>
+    </main>
+
+    <script>
+        let currentQuestion = 0;
+        let questionsData = [];
+        const answers = {};
+        const questionsPerPage = 1; // Show 1 question at a time for auto-advance
+        let autoAdvanceTimeout;
+
+        async function fetchQuestions() {
+            try {
+                const response = await fetch('/api/personality_questions');
+                questionsData = await response.json();
+
+                document.getElementById("loading-text").style.display = "none";
+                document.getElementById("nav-buttons").style.display = "flex";
+
+                renderNav();
+                renderQuestions();
+                showPage(0);
+
+            } catch (err) {
+                document.getElementById("loading-text").textContent = "Error loading test.";
+                console.error(err);
+            }
+        }
+
+        function renderNav() {
+            const navContainer = document.getElementById("nav-container");
+            navContainer.innerHTML = "";
+
+            questionsData.forEach((q, idx) => {
+                const btn = document.createElement("button");
+                btn.id = `qbtn_${q.id}`;
+                btn.className = "w-full text-center px-2 py-2.5 rounded-xl border border-white/5 bg-slate-800/50 hover:bg-slate-700 transition-colors text-slate-300 font-medium text-xs";
+                btn.textContent = `Q${idx + 1}`;
+                btn.onclick = () => {
+                    const pageIndex = Math.floor(idx / questionsPerPage);
+                    showPage(pageIndex);
+                };
+                navContainer.appendChild(btn);
+            });
+        }
+
+        function renderQuestions() {
+            const qContainer = document.getElementById("questions");
+            qContainer.innerHTML = "";
+
+            const numPages = Math.ceil(questionsData.length / questionsPerPage);
+
+            for (let p = 0; p < numPages; p++) {
+                const pageDiv = document.createElement("div");
+                pageDiv.id = `page_${p}`;
+                pageDiv.className = "hidden fade-in flex flex-col gap-6";
+
+                const startIdx = p * questionsPerPage;
+                const endIdx = Math.min(startIdx + questionsPerPage, questionsData.length);
+
+                for (let i = startIdx; i < endIdx; i++) {
+                    const q = questionsData[i];
+                    const div = document.createElement("div");
+                    div.className = "glass p-5 md:p-8 rounded-2xl";
+
+                    const h2 = document.createElement("h2");
+                    h2.className = "text-xl font-semibold mb-6 text-white";
+                    h2.innerHTML = `<span class="text-violet-400 mr-2">${i + 1}.</span> I see myself as someone who... ${q.text.toLowerCase()}`;
+                    div.appendChild(h2);
+
+                    const optionsDiv = document.createElement("div");
+                    optionsDiv.className = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 w-full";
+
+                    const sortedOptions = Object.keys(q.options).sort((a, b) => parseInt(a) - parseInt(b));
+                    sortedOptions.forEach(optKey => {
+                        const optVal = q.options[optKey];
+                        const lbl = document.createElement("label");
+                        lbl.className = "w-full sm:flex-1";
+                        lbl.innerHTML = `
+                            <input type="radio" name="q_${q.id}" value="${optKey}" onchange="markAnswered(${q.id}, '${optKey}')" />
+                            <div class="likert-btn whitespace-nowrap">${optVal}</div>
+                        `;
+                        optionsDiv.appendChild(lbl);
+                    });
+
+                    div.appendChild(optionsDiv);
+                    pageDiv.appendChild(div);
+                }
+                qContainer.appendChild(pageDiv);
+            }
+        }
+
+        function markAnswered(qId, val) {
+            answers[qId] = val;
+            const btn = document.getElementById(`qbtn_${qId}`);
+            if (btn) btn.classList.add('answered');
+
+            if (autoAdvanceTimeout) {
+                clearTimeout(autoAdvanceTimeout);
+            }
+
+            const numPages = Math.ceil(questionsData.length / questionsPerPage);
+
+            // If all questions are answered, auto-submit after a brief delay
+            if (Object.keys(answers).length === questionsData.length) {
+                autoAdvanceTimeout = setTimeout(() => {
+                    submitTest();
+                }, 400);
+                return;
+            }
+
+            // Find the next unanswered question
+            let nextIndex = currentQuestion + 1;
+            while (nextIndex < numPages && answers[questionsData[nextIndex].id]) {
+                nextIndex++;
+            }
+
+            // If we hit the end, loop back to the beginning to find any skipped ones
+            if (nextIndex >= numPages) {
+                nextIndex = 0;
+                while (nextIndex < currentQuestion && answers[questionsData[nextIndex].id]) {
+                    nextIndex++;
+                }
+            }
+
+            // Determine determined next question
+            autoAdvanceTimeout = setTimeout(() => {
+                showPage(nextIndex);
+            }, 400);
+        }
+
+        function showPage(pIdx) {
+            const numPages = Math.ceil(questionsData.length / questionsPerPage);
+            for (let i = 0; i < numPages; i++) {
+                const pDiv = document.getElementById(`page_${i}`);
+                if (pDiv) pDiv.classList.add('hidden');
+            }
+
+            const targetDiv = document.getElementById(`page_${pIdx}`);
+            if (targetDiv) targetDiv.classList.remove('hidden');
+
+            currentQuestion = pIdx; // currentQuestion now acts as currentPage
+
+            document.querySelectorAll('#nav-container button').forEach((b, i) => {
+                if (i === pIdx) b.classList.add('ring-2', 'ring-purple-500');
+                else b.classList.remove('ring-2', 'ring-purple-500');
+            });
+
+            const progressText = document.getElementById('progress-text');
+
+            if (progressText) {
+                progressText.textContent = `Question ${currentQuestion + 1} of ${numPages}`;
+            }
+        }
+
+        async function submitTest() {
+            const errDiv = document.getElementById("error-message");
+            errDiv.classList.add("hidden");
+
+            if (Object.keys(answers).length < questionsData.length) {
+                errDiv.textContent = "Please answer all questions before submitting.";
+                errDiv.classList.remove("hidden");
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/submit_personality', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ answers: answers })
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    // Redirect to dashboard Next (homepage.html)
+                    window.location.href = "homepage.html";
+                } else {
+                    errDiv.textContent = result.error || "An error occurred.";
+                    errDiv.classList.remove("hidden");
+                }
+            } catch (err) {
+                errDiv.textContent = "Failed to submit test.";
+                errDiv.classList.remove("hidden");
+            }
+        }
+
+
+
+        window.onload = fetchQuestions;
+    </script>
+</body>
+
+</html>

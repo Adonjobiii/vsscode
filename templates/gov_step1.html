@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PathWise - Government & Defence Priorities</title>
+
+    <!-- Add Professional Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: url('https://images.unsplash.com/photo-1526778545894-df886b0ff565?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+            background-size: cover;
+            color: #f8fafc;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            z-index: -1;
+        }
+
+        .glass {
+            background: rgba(20, 30, 48, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        .selected {
+            background: rgba(168, 85, 247, 0.2) !important;
+            color: #c084fc !important;
+            border-color: #a855f7 !important;
+            box-shadow: 0 4px 12px rgba(168, 85, 247, 0.1);
+        }
+
+        .stream-btn-anim {
+            transition: all 0.2s ease;
+        }
+
+        .stream-btn-anim:hover:not(.selected) {
+            transform: translateX(4px);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .priority-item-anim {
+            animation: slideIn 0.3s ease forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen font-sans p-4 md:p-8 flex flex-col items-center">
+
+    <div class="max-w-4xl w-full glass p-8 md:p-12 rounded-2xl mt-10">
+        <div class="flex items-center gap-3 mb-6 border-b border-white/5 pb-4">
+            <div
+                class="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-400 to-indigo-400 flex items-center justify-center font-bold text-slate-900 text-xl shadow-lg shadow-purple-500/30">
+                1</div>
+            <h1 class="text-3xl font-bold text-white tracking-tight">Gov, Defence & PSU Priorities</h1>
+        </div>
+
+        <p class="text-lg text-slate-300 mb-8 leading-relaxed">Select the government services and defence roles that
+            match your aspirations. <span class="text-white font-semibold border-b border-purple-500/50 pb-0.5">Select
+                at least one</span> to proceed.</p>
+
+        <div class="flex flex-col md:flex-row gap-10">
+
+            <!-- Stream Options -->
+            <div
+                class="flex-1 bg-slate-800/50 p-6 md:p-8 rounded-xl border border-white/5 overflow-y-auto max-h-[500px]">
+                <h3 class="text-xl font-bold mb-6 text-white flex items-center gap-2">
+                    <div class="w-2 h-6 bg-purple-500 rounded-full"></div> Career Paths
+                </h3>
+                <div id="streams-container" class="flex flex-col gap-3">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+
+            <!-- User Priority List -->
+            <div class="flex-1 glass p-6 md:p-8 rounded-xl relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent pointer-events-none">
+                </div>
+                <h3 class="text-xl font-bold mb-6 text-white flex items-center gap-2 relative z-10">
+                    <div class="w-2 h-6 bg-indigo-500 rounded-full"></div> Your Priorities
+                </h3>
+                <ul id="priority-list" class="flex flex-col gap-3 min-h-[50px] text-lg font-medium relative z-10">
+                    <li class="text-slate-400 italic text-sm mt-4 text-center p-6 border-2 border-dashed border-white/10 rounded-xl"
+                        id="empty-state">No priorities set...<br /><br />Click paths on the left to add them here.
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="mt-12 flex justify-end">
+            <button id="next-btn" onclick="saveAndContinue()" disabled
+                class="bg-slate-700 cursor-not-allowed text-slate-400 px-10 py-4 rounded-xl font-bold transition-all shadow-lg text-lg flex items-center gap-2">
+                Continue to Assessment
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3">
+                    </path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const streams = [
+            "Indian Administrative Service (IAS)",
+            "Indian Police Service (IPS)",
+            "Indian Army / Defence Wings",
+            "Indian Navy / Maritime Forces",
+            "Indian Air Force / Aviation",
+            "SSC (Central Government Jobs)",
+            "Railway Recruitment Boards (RRB)",
+            "Banking Sector (IBPS/SBI)",
+            "State Public Service Commission",
+            "Scientific Research (ISRO/DRDO)",
+            "Public Sector Units (PSU)",
+            "Intelligence & National Security"
+        ];
+
+        let priorityList = [];
+        const streamsContainer = document.getElementById("streams-container");
+        const priorityListUI = document.getElementById("priority-list");
+        const emptyState = document.getElementById("empty-state");
+        const nextBtn = document.getElementById("next-btn");
+
+        function renderStreams() {
+            streamsContainer.innerHTML = "";
+            streams.forEach(stream => {
+                const btn = document.createElement("button");
+                btn.textContent = stream;
+                btn.className = "text-left text-slate-300 font-medium px-5 py-3.5 rounded-xl border border-white/5 bg-slate-800/80 stream-btn-anim shadow-sm flex items-center justify-between group";
+
+                if (priorityList.includes(stream)) {
+                    btn.classList.add("selected");
+                    btn.innerHTML += `<svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`;
+                    btn.onclick = () => removePriority(stream);
+                } else {
+                    btn.onclick = () => addPriority(stream);
+                }
+                streamsContainer.appendChild(btn);
+            });
+        }
+
+        function renderPriorities() {
+            if (priorityList.length === 0) {
+                emptyState.style.display = "block";
+            } else {
+                emptyState.style.display = "none";
+            }
+
+            Array.from(priorityListUI.children).forEach(child => {
+                if (child.id !== "empty-state") {
+                    priorityListUI.removeChild(child);
+                }
+            });
+
+            priorityList.forEach((stream, index) => {
+                const li = document.createElement("li");
+                li.className = "flex justify-between items-center bg-slate-800/80 px-5 py-3 rounded-xl shadow border border-purple-500/30 priority-item-anim";
+
+                const textSpan = document.createElement("span");
+                textSpan.innerHTML = `<span class="text-purple-400 font-bold mr-2">${index + 1}.</span> <span class="text-white">${stream}</span>`;
+
+                const removeBtn = document.createElement("button");
+                removeBtn.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>`;
+                removeBtn.className = "text-slate-400 hover:text-rose-400 transition bg-slate-700/50 hover:bg-slate-700 p-1.5 rounded-lg";
+                removeBtn.onclick = () => removePriority(stream);
+
+                li.appendChild(textSpan);
+                li.appendChild(removeBtn);
+                priorityListUI.appendChild(li);
+            });
+
+            if (priorityList.length > 0) {
+                nextBtn.disabled = false;
+                nextBtn.classList.remove("bg-slate-700", "cursor-not-allowed", "text-slate-400");
+                nextBtn.classList.add("bg-gradient-to-r", "from-purple-500", "to-indigo-400", "text-white", "hover:scale-[1.02]", "shadow-purple-500/20");
+            } else {
+                nextBtn.disabled = true;
+                nextBtn.classList.remove("bg-gradient-to-r", "from-purple-500", "to-indigo-400", "text-white", "hover:scale-[1.02]", "shadow-purple-500/20");
+                nextBtn.classList.add("bg-slate-700", "cursor-not-allowed", "text-slate-400");
+            }
+        }
+
+        function addPriority(stream) {
+            if (!priorityList.includes(stream)) {
+                priorityList.push(stream);
+                renderStreams();
+                renderPriorities();
+            }
+        }
+
+        function removePriority(stream) {
+            priorityList = priorityList.filter(s => s !== stream);
+            renderStreams();
+            renderPriorities();
+        }
+
+        async function saveAndContinue() {
+            if (priorityList.length === 0) return;
+
+            try {
+                const res = await fetch('/api/save_gov_step1', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ career_priority_list: priorityList })
+                });
+                if (res.ok) {
+                    window.location.href = "gov_assesment.html";
+                } else {
+                    alert("Failed to save priorities.");
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Error connecting to server.");
+            }
+        }
+
+        renderStreams();
+    </script>
+</body>
+
+</html>

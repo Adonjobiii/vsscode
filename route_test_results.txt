@@ -1,0 +1,32 @@
+            OK | GET /
+            OK | GET /signin.html
+            OK | GET /homepage.html
+     ERROR 401 | GET /api/user_profile
+    Response: {
+  "error": "Unauthorized"
+}
+
+            OK | GET /api/profile_options
+            OK | GET /api/v2/course_catalogue
+            OK | GET /api/engineering_tasks
+            OK | GET /api/aptitude_questions
+            OK | GET /api/personality_questions
+     ERROR 401 | GET /api/download_report
+    Response: {
+  "error": "No user session"
+}
+
+     ERROR 404 | GET /homepage
+    Response: <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+     ERROR 404 | GET /favicon.ico
+    Response: <!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+

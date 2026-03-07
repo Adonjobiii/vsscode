@@ -1,0 +1,269 @@
+ * Serving Flask app 'test_server'
+ * Debug mode: on
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5001
+Press CTRL+C to quit
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+127.0.0.1 - - [07/Mar/2026 10:59:27] "HEAD / HTTP/1.1" 200 -
+ * Detected change in 'D:\\vsscode\\app.py', reloading
+ * Detected change in 'D:\\vsscode\\app.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'D:\\vsscode\\app.py', reloading
+ * Detected change in 'D:\\vsscode\\app.py', reloading
+ * Detected change in 'D:\\vsscode\\app.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'D:\\vsscode\\commerce_config.py', reloading
+ * Detected change in 'D:\\vsscode\\commerce_config.py', reloading
+ * Detected change in 'D:\\vsscode\\commerce_config.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'D:\\vsscode\\course_data.py', reloading
+ * Detected change in 'D:\\vsscode\\course_data.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'D:\\vsscode\\course_data.py', reloading
+ * Detected change in 'D:\\vsscode\\course_data.py', reloading
+ * Detected change in 'D:\\vsscode\\course_data.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\argparse.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\pydoc.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\_pyrepl\\__init__.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\_pyrepl\\pager.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\calendar.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\http\\cookiejar.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\http\\cookies.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\importlib\\resources\\_adapters.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\importlib\\readers.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\importlib\\resources\\readers.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\importlib\\resources\\_itertools.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'C:\\Users\\OMEN\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python313\\site-packages\\pymongo\\synchronous\\mongo_client.py', reloading
+ * Detected change in 'D:\\vsscode\\config_data.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\zoneinfo\\__init__.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\zoneinfo\\_tzpath.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\zoneinfo\\_common.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\_strptime.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\csv.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\gzip.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\tarfile.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\fileinput.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\concurrent\\futures\\process.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\multiprocessing\\queues.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\multiprocessing\\resource_tracker.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\multiprocessing\\spawn.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\ctypes\\util.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\timeit.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\shlex.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'C:\\Users\\OMEN\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python313\\site-packages\\pyparsing\\core.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\html\\parser.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\_markupbase.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'D:\\vsscode\\app.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'D:\\vsscode\\add_graphs.py', reloading
+ * Detected change in 'D:\\vsscode\\appmainpage.py', reloading
+ * Detected change in 'D:\\vsscode\\audiovideo.py', reloading
+ * Detected change in 'D:\\vsscode\\career.py', reloading
+ * Detected change in 'D:\\vsscode\\career1.py', reloading
+ * Detected change in 'D:\\vsscode\\career1supp.py', reloading
+ * Detected change in 'D:\\vsscode\\career1_graphs.py', reloading
+ * Detected change in 'D:\\vsscode\\career_guidance.py', reloading
+ * Detected change in 'D:\\vsscode\\commerce_config.py', reloading
+ * Detected change in 'D:\\vsscode\\commerce_aptitude_questions.py', reloading
+ * Detected change in 'D:\\vsscode\\main.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'D:\\vsscode\\test_signup.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'D:\\vsscode\\course_data.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'D:\\vsscode\\course_data.py', reloading
+ * Detected change in 'D:\\vsscode\\course_data.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\argparse.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\pydoc.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\_pyrepl\\__init__.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\_pyrepl\\pager.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\pydoc_data\\topics.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\filecmp.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'D:\\vsscode\\course_data.py', reloading
+ * Detected change in 'D:\\vsscode\\course_data.py', reloading
+ * Detected change in 'D:\\vsscode\\course_data.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'D:\\vsscode\\app.py', reloading
+ * Detected change in 'D:\\vsscode\\app.py', reloading
+ * Detected change in 'D:\\vsscode\\app.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\calendar.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\http\\cookiejar.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\http\\cookies.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\importlib\\resources\\_adapters.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\importlib\\readers.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\importlib\\resources\\readers.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\importlib\\resources\\_itertools.py', reloading
+ * Detected change in 'C:\\Users\\OMEN\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python313\\site-packages\\pymongo\\synchronous\\settings.py', reloading
+ * Detected change in 'C:\\Users\\OMEN\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python313\\site-packages\\pymongo\\synchronous\\mongo_client.py', reloading
+ * Detected change in 'D:\\vsscode\\config_data.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\zoneinfo\\__init__.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\zoneinfo\\_tzpath.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\zoneinfo\\_common.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\_strptime.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\concurrent\\futures\\process.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\multiprocessing\\queues.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\multiprocessing\\resource_tracker.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\multiprocessing\\spawn.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\ctypes\\util.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\timeit.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\shlex.py', reloading
+ * Detected change in 'C:\\Users\\OMEN\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python313\\site-packages\\pyparsing\\core.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\plistlib.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\xml\\__init__.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\xml\\parsers\\__init__.py', reloading
+ * Detected change in 'C:\\Program Files\\WindowsApps\\PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0\\Lib\\xml\\parsers\\expat.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+127.0.0.1 - - [07/Mar/2026 12:43:21] "GET /api/course_catalogue HTTP/1.1" 404 -
+127.0.0.1 - - [07/Mar/2026 12:43:49] "GET /api/course_catalogue HTTP/1.1" 404 -
+127.0.0.1 - - [07/Mar/2026 12:44:13] "GET /api/course_catalogue HTTP/1.1" 404 -
+ * Detected change in 'D:\\vsscode\\app.py', reloading
+ * Detected change in 'D:\\vsscode\\app.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+127.0.0.1 - - [07/Mar/2026 12:45:35] "GET /api/test_diag HTTP/1.1" 404 -
+127.0.0.1 - - [07/Mar/2026 12:50:03] "GET /api/course_catalogue HTTP/1.1" 404 -
+127.0.0.1 - - [07/Mar/2026 12:50:25] "HEAD / HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 12:50:41] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [07/Mar/2026 12:51:27] "GET /api/test_diag HTTP/1.1" 404 -
+ * Detected change in 'D:\\vsscode\\debug_app.py', reloading
+ * Detected change in 'D:\\vsscode\\debug_app.py', reloading
+ * Detected change in 'D:\\vsscode\\debug_app.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'D:\\vsscode\\app.py', reloading
+ * Detected change in 'D:\\vsscode\\app.py', reloading
+ * Detected change in 'D:\\vsscode\\app.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+127.0.0.1 - - [07/Mar/2026 13:03:10] "GET /api/course_catalogue HTTP/1.1" 404 -
+127.0.0.1 - - [07/Mar/2026 13:03:10] "GET /favicon.ico HTTP/1.1" 404 -
+ * Detected change in 'D:\\vsscode\\app.py', reloading
+ * Detected change in 'D:\\vsscode\\app.py', reloading
+ * Detected change in 'D:\\vsscode\\app.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'D:\\vsscode\\server_v2.py', reloading
+ * Detected change in 'D:\\vsscode\\server_v2.py', reloading
+ * Detected change in 'D:\\vsscode\\server_v2.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'D:\\vsscode\\server_v2.py', reloading
+ * Detected change in 'D:\\vsscode\\server_v2.py', reloading
+ * Detected change in 'D:\\vsscode\\server_v2.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'D:\\vsscode\\career1.py', reloading
+ * Detected change in 'D:\\vsscode\\config_data.py', reloading
+ * Detected change in 'D:\\vsscode\\ml_logic.py', reloading
+ * Detected change in 'D:\\vsscode\\commerce_aptitude_questions.py', reloading
+ * Detected change in 'D:\\vsscode\\commerce_config.py', reloading
+ * Detected change in 'D:\\vsscode\\course_data.py', reloading
+ * Detected change in 'D:\\vsscode\\medical_aptitude_questions.py', reloading
+ * Detected change in 'D:\\vsscode\\medical_config.py', reloading
+ * Detected change in 'D:\\vsscode\\medical_thinking_skills.py', reloading
+ * Detected change in 'D:\\vsscode\\pdf_generator.py', reloading
+ * Detected change in 'D:\\vsscode\\test_server.py', reloading
+ * Detected change in 'D:\\vsscode\\test_signup.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'D:\\vsscode\\merge_script.py', reloading
+ * Detected change in 'D:\\vsscode\\main.py', reloading
+ * Detected change in 'D:\\vsscode\\career1supp.py', reloading
+ * Detected change in 'D:\\vsscode\\career1_graphs.py', reloading
+ * Detected change in 'D:\\vsscode\\career_guidance.py', reloading
+ * Detected change in 'D:\\vsscode\\career.py', reloading
+ * Detected change in 'D:\\vsscode\\audiovideo.py', reloading
+ * Detected change in 'D:\\vsscode\\appmainpage.py', reloading
+ * Detected change in 'D:\\vsscode\\add_graphs.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233

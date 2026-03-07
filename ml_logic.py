@@ -3,13 +3,17 @@
 import os
 import sys
 import re
+import warnings
 import numpy as np
 import pandas as pd
 from collections import defaultdict
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import GridSearchCV, train_test_split 
-from sklearn.metrics import accuracy_score 
-import joblib 
+from sklearn.model_selection import GridSearchCV, train_test_split
+from sklearn.metrics import accuracy_score
+import joblib
+
+# Suppress sklearn model version mismatch warnings from cached .joblib files
+warnings.filterwarnings('ignore', category=UserWarning, module='sklearn')
 
 # Import necessary constants and data from the config file
 from config_data import (
@@ -44,45 +48,29 @@ class DataProcessor:
         self._load_aptitude_data()
 
     def _load_aptitude_data(self):
-        # Check for PyMongo availability locally for robustness
-        try:
-            from pymongo import MongoClient
-            from pymongo.errors import ConnectionFailure, OperationFailure
-            MONGODB_IS_AVAILABLE_LOCAL = True
-        except ImportError:
-            MONGODB_IS_AVAILABLE_LOCAL = False
+        # Load from local JSON file instead of empty MongoDB collection
+        import json
+        import os
+        from collections import defaultdict
         
-        if not MONGODB_IS_AVAILABLE_LOCAL:
-            # If PyMongo is missing, we stick with the DUMMY data initialized in __init__
-            print("Using dummy aptitude data (PyMongo missing or connection failed).")
-            return
-
-        try:
-            # Attempt to establish connection with timeout
-            client = MongoClient(CONNECTION_STRING, serverSelectionTimeoutMS=MONGODB_TIMEOUT_MS)
-            client.admin.command('ismaster') # Validate the connection
-            db = client['project']
-            questions_collection = db.questions
-            
-            QUESTIONS_LIVE = defaultdict(list)
-            CORRECT_ANSWERS_LIVE = defaultdict(dict)
-            
-            for doc in questions_collection.find({}):
-                category = doc.get('category')
-                q_id = doc.get('question_id')
-                question_data = {"id": q_id, "q": doc.get('q'), "options": doc.get('options')}
-                QUESTIONS_LIVE[category].append(question_data)
-                CORRECT_ANSWERS_LIVE[category][q_id] = doc.get('correct_answer')
-            
-            # If successful, overwrite the dummy data
-            self.QUESTIONS = dict(QUESTIONS_LIVE)
-            self.CORRECT_ANSWERS = dict(CORRECT_ANSWERS_LIVE)
-            print("Successfully loaded aptitude data from MongoDB.")
+        data_file = os.path.join(os.path.dirname(__file__), 'data', 'questions.json')
+        ans_file = os.path.join(os.path.dirname(__file__), 'data', 'correct_answers.json')
         
-        except (ConnectionFailure, OperationFailure) as e:
-            print(f"MongoDB Connection Failure: {e}. Using dummy data.")
+        try:
+            with open(data_file, 'r', encoding='utf-8') as f:
+                raw_qs = json.load(f)
+            
+            with open(ans_file, 'r', encoding='utf-8') as f:
+                raw_ans = json.load(f)
+                
+            self.QUESTIONS = raw_qs
+            self.CORRECT_ANSWERS = raw_ans
+            print("\n[DATA] Aptitude bank: Loaded from local JSON database")
+            
         except Exception as e:
-            print(f"An unexpected error occurred with MongoDB: {e}. Using dummy data.")
+            print(f"Error loading local aptitude JSON: {e}. Falling back to DUMMY data.")
+            self.QUESTIONS = DUMMY_QUESTIONS
+            self.CORRECT_ANSWERS = DUMMY_CORRECT_ANSWERS
 
     def _calculate_boom_percentage(self):
         # SIMULATED DATA
@@ -122,6 +110,83 @@ class MLModelTrainer:
             
         self.career_model = self._load_or_train_career_model()
         self.aptitude_model = self._load_or_train_aptitude_model()
+        self.retrain_threshold = 10 
+
+    def log_and_retrain_career(self, features, label):
+        """Logs new data for career model and retrains if threshold met."""
+        log_path = os.path.join(self.MODEL_DIR, 'career_new_data.csv')
+        
+        # Save new data
+        data_line = ",".join(map(str, features)) + f",{label}\n"
+        mode = 'a' if os.path.exists(log_path) else 'w'
+        with open(log_path, mode) as f:
+            if mode == 'w':
+                f.write(",".join([f"f{i}" for i in range(len(features))]) + ",label\n")
+            f.write(data_line)
+            
+        # Check if we should retrain
+        df = pd.read_csv(log_path)
+        if len(df) >= self.retrain_threshold:
+            print(f"Triggering automated retraining for Career Model ({len(df)} samples)...")
+            self._retrain_career_model(df)
+            # Clear log after retraining
+            os.remove(log_path)
+
+    def log_and_retrain_aptitude(self, features, label):
+        """Logs new data for aptitude model and retrains if threshold met."""
+        log_path = os.path.join(self.MODEL_DIR, 'aptitude_new_data.csv')
+        
+        data_line = ",".join(map(str, features)) + f",{label}\n"
+        mode = 'a' if os.path.exists(log_path) else 'w'
+        with open(log_path, mode) as f:
+            if mode == 'w':
+                f.write(",".join([f"f{i}" for i in range(len(features))]) + ",label\n")
+            f.write(data_line)
+            
+        df = pd.read_csv(log_path)
+        if len(df) >= self.retrain_threshold:
+            print(f"Triggering automated retraining for Aptitude Model ({len(df)} samples)...")
+            self._retrain_aptitude_model(df)
+            os.remove(log_path)
+
+    def _retrain_career_model(self, new_data=None):
+        path = os.path.join(self.MODEL_DIR, 'career_model.joblib')
+        
+        # Merge old and new data
+        X_combined = X_train_career
+        y_combined = y_train_career
+        
+        if new_data is not None:
+            X_new = new_data.iloc[:, :-1].values
+            y_new = new_data.iloc[:, -1].values
+            X_combined = np.vstack([X_combined, X_new])
+            y_combined = np.concatenate([y_combined, y_new])
+            
+        print("Retraining Career Model...")
+        model = RandomForestClassifier(n_estimators=100, max_depth=5, random_state=42)
+        model.fit(X_combined, y_combined)
+        joblib.dump(model, path)
+        self.career_model = model
+        print("Career Model updated.")
+
+    def _retrain_aptitude_model(self, new_data=None):
+        path = os.path.join(self.MODEL_DIR, 'aptitude_model.joblib')
+        
+        X_combined = X_train_aptitude
+        y_combined = y_train_aptitude
+        
+        if new_data is not None:
+            X_new = new_data.iloc[:, :-1].values
+            y_new = new_data.iloc[:, -1].values
+            X_combined = np.vstack([X_combined, X_new])
+            y_combined = np.concatenate([y_combined, y_new])
+            
+        print("Retraining Aptitude Model...")
+        model = RandomForestClassifier(n_estimators=100, max_depth=None, random_state=42)
+        model.fit(X_combined, y_combined)
+        joblib.dump(model, path)
+        self.aptitude_model = model
+        print("Aptitude Model updated.")
 
     def _load_or_train_career_model(self):
         path = os.path.join(self.MODEL_DIR, 'career_model.joblib')

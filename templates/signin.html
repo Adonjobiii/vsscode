@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PathWise - Sign In</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .active-slide {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column !important;
+            }
+
+            .side-panel {
+                display: none !important;
+            }
+
+            .form-panel {
+                width: 100% !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="h-screen w-screen bg-gray-800">
+    <div class="flex h-screen main-container">
+
+        <!-- Left Form Section -->
+        <div class="w-1/2 flex items-center justify-center bg-gray-700 form-panel">
+            <div class="w-3/4 max-w-md">
+                <h1 class="text-4xl font-bold text-center text-black">WELCOME BACK</h1>
+                <p class="text-black text-center mt-2">Sign in to continue your journey</p>
+
+                <!-- Form -->
+                <div class="mt-8">
+                    <a href="/login/google"
+                        class="w-full flex items-center justify-center border border-gray-500 rounded-lg py-2 mt-6 hover:bg-gray-600 text-black transition-colors">
+                        Continue with Google
+                    </a>
+                    <a href="/login/apple"
+                        class="w-full flex items-center justify-center border border-gray-500 rounded-lg py-2 mt-3 hover:bg-gray-600 text-black transition-colors">
+                        Continue with Apple
+                    </a>
+
+                    <div class="flex items-center my-6">
+                        <hr class="flex-grow border-gray-500">
+                        <span class="px-2 text-gray-700 text-sm">or sign in with email</span>
+                        <hr class="flex-grow border-gray-500">
+                    </div>
+
+                    <input type="email" id="email" placeholder="Email Address"
+                        class="w-full bg-gray-600 text-black border border-gray-500 rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500">
+
+                    <input type="password" id="password" placeholder="Password"
+                        class="w-full bg-gray-600 text-black border border-gray-500 rounded-lg px-4 py-2 mt-4 focus:ring-2 focus:ring-green-500">
+
+                    <button onclick="submitSignin()"
+                        class="w-full bg-green-600 text-white rounded-lg py-2 mt-6 hover:bg-green-700 flex items-center justify-center font-semibold tracking-wide">
+                        Sign In →
+                    </button>
+
+                    <div id="error-message" class="text-red-500 text-sm mt-4 text-center hidden"></div>
+
+                    <p class="text-sm text-center mt-6 text-black">
+                        Don't have an account? <a href="/" class="text-green-700 font-medium">Sign up</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Slideshow Section -->
+        <div class="hidden md:block w-1/2 relative overflow-hidden h-screen side-panel">
+            <div class="slide active-slide">
+                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80"
+                    class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-end p-10">
+                    <h2 class="text-green-400 text-3xl font-bold">Choose Your Future</h2>
+                    <p class="text-gray-200 mt-2">Bring your dream to life and know your passion.</p>
+                </div>
+            </div>
+
+            <div class="slide">
+                <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80"
+                    class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-end p-10">
+                    <h2 class="text-green-400 text-3xl font-bold">Boost Productivity</h2>
+                    <p class="text-gray-200 mt-2">Achieve more with tools designed to optimize workflow and efficiency.
+                    </p>
+                </div>
+            </div>
+
+            <div class="slide">
+                <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80"
+                    class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-end p-10">
+                    <h2 class="text-green-400 text-3xl font-bold">Innovate Together</h2>
+                    <p class="text-gray-200 mt-2">Empower your team to create, collaborate, and inspire innovation.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Slideshow Script -->
+    <script>
+        async function submitSignin() {
+            const dbErr = document.getElementById("error-message");
+            dbErr.classList.add("hidden");
+
+            const payload = {
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value
+            };
+
+            if (!payload.email || !payload.password) {
+                dbErr.textContent = "Please fill in both Email and Password.";
+                dbErr.classList.remove("hidden");
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    window.location.href = "homepage.html";
+                } else {
+                    dbErr.textContent = data.error || "An error occurred during sign in.";
+                    dbErr.classList.remove("hidden");
+                }
+            } catch (err) {
+                dbErr.textContent = "Failed to connect to the server.";
+                dbErr.classList.remove("hidden");
+            }
+        }
+
+        let slides = document.querySelectorAll(".slide");
+        let index = 0;
+
+        function showSlide() {
+            slides.forEach((slide, i) => {
+                slide.classList.remove("active-slide");
+                if (i === index) slide.classList.add("active-slide");
+            });
+            index = (index + 1) % slides.length;
+        }
+
+        setInterval(showSlide, 4000);
+    </script>
+</body>
+
+</html>

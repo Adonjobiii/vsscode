@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PathWise - Government & Defence Assessment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #0f172a;
+            color: #f8fafc;
+        }
+
+        .answered {
+            background: linear-gradient(135deg, #a855f7, #6366f1) !important;
+            color: white !important;
+            border-color: rgba(168, 85, 247, 0.4) !important;
+        }
+
+        .glass {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .question-card {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .question-card.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .option-btn {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .option-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: scale(1.01);
+        }
+
+        .option-btn.selected {
+            background: rgba(168, 85, 247, 0.15) !important;
+            border-color: #a855f7 !important;
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.1);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col md:flex-row">
+    <!-- Left Sidebar for Question Menu -->
+    <aside id="navigator-sidebar"
+        class="w-full md:w-72 glass-panel md:h-screen overflow-y-auto p-4 md:p-6 sticky top-0 flex flex-col gap-4 md:gap-6 z-40">
+        <div class="flex items-center justify-between md:justify-start gap-3 border-b border-white/5 pb-3 md:pb-4">
+            <div class="flex items-center gap-3">
+                <div
+                    class="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-400 to-indigo-500 flex items-center justify-center font-bold text-slate-900 shadow-lg shadow-purple-500/30">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+                        </path>
+                    </svg>
+                </div>
+                <h2 class="text-xl font-bold text-white tracking-tight">Navigator</h2>
+            </div>
+        </div>
+        <div id="nav-container" class="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-2 gap-2">
+            <!-- Buttons injected here -->
+        </div>
+    </aside>
+
+    <main
+        class="flex-1 p-4 sm:p-8 md:p-12 overflow-y-auto relative min-h-screen md:h-screen flex flex-col max-w-5xl mx-auto w-full">
+        <!-- Header -->
+        <div
+            class="flex justify-between items-center mb-6 md:mb-8 glass px-5 md:px-8 py-4 md:py-5 rounded-2xl sticky top-0 z-30">
+            <div class="flex items-center gap-2 md:gap-4">
+                <div
+                    class="bg-purple-500/10 text-purple-400 px-3 md:px-4 py-1.5 md:py-2 rounded-lg font-bold text-xs md:text-sm">
+                    Gov, Defence & PSU</div>
+                <div id="progress-text" class="text-slate-400 font-medium text-xs md:text-sm">Question 1 of 54</div>
+            </div>
+            <button onclick="finishEarly()"
+                class="text-rose-400 hover:text-rose-300 font-semibold transition text-xs md:text-sm">Finish
+                Early</button>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+            <div id="progress-bar" class="h-full bg-gradient-to-r from-purple-500 to-indigo-500 transition-all"
+                style="width: 0%"></div>
+        </div>
+
+        <!-- Questions Container -->
+        <div id="questions-container" class="space-y-6">
+            <div class="flex flex-col items-center justify-center p-20 glass rounded-3xl animate-pulse">
+                <div class="w-12 h-12 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin">
+                </div>
+                <p class="mt-4 text-slate-400 font-medium">Loading Government Exams Assessment...</p>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="flex justify-between items-center pt-8 border-t border-white/5 mt-auto">
+            <button id="prev-btn" onclick="prevQuestion()" disabled
+                class="px-6 py-3 text-slate-400 hover:text-white transition disabled:opacity-0">← Previous</button>
+            <button id="next-btn" onclick="nextQuestion()"
+                class="bg-purple-600 hover:bg-purple-500 text-white px-8 py-3 rounded-xl font-bold transition shadow-lg shadow-purple-900/20">Next
+                Question →</button>
+            <button id="submit-btn" onclick="submitAptitude()" style="display: none;"
+                class="bg-emerald-600 hover:bg-emerald-500 text-white px-10 py-3 rounded-xl font-bold transition shadow-lg shadow-emerald-900/20">Finish
+                Assessment</button>
+        </div>
+    </main>
+
+    <script>
+        let questions = [];
+        let currentIndex = 0;
+        let answers = {};
+
+        async function fetchQuestions() {
+            try {
+                const res = await fetch('/api/gov_aptitude_questions');
+                questions = await res.json();
+                renderQuestions();
+                renderNav();
+                updateUI();
+            } catch (err) {
+                console.error("Error fetching questions:", err);
+            }
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+
+            questions.forEach((q, index) => {
+                const card = document.createElement('div');
+                card.className = `question-card glass p-8 md:p-12 rounded-3xl ${index === 0 ? 'active' : ''}`;
+                card.id = `q-${index}`;
+
+                card.innerHTML = `
+                <div class="space-y-6 md:space-y-8">
+                    <div class="space-y-2">
+                        <span class="text-purple-400 font-bold uppercase tracking-wider text-xs md:text-sm">${q.category}</span>
+                        <h2 class="text-xl md:text-3xl font-bold leading-tight">${q.q}</h2>
+                    </div>
+                    <div class="grid gap-3">
+                        ${Object.entries(q.options).map(([key, value]) => `
+                            <button onclick="selectOption('${q.category}', '${q.id}', '${key}', ${index})" 
+                                    id="opt-${index}-${key}"
+                                    class="option-btn w-full text-left p-4 md:p-6 rounded-2xl border border-white/5 bg-slate-800/50 flex items-center justify-between group">
+                                <span class="flex items-center gap-3 md:gap-4">
+                                    <span class="w-7 h-7 md:w-8 md:h-8 rounded-lg bg-slate-700 flex items-center justify-center font-bold text-slate-300 group-hover:bg-purple-500/20 transition text-sm">${key}</span>
+                                    <span class="text-base md:text-lg font-medium text-slate-200">${value}</span>
+                                </span>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderNav() {
+            const nav = document.getElementById("nav-container");
+            nav.innerHTML = "";
+            questions.forEach((_, idx) => {
+                const btn = document.createElement("button");
+                btn.id = `qbtn-${idx}`;
+                btn.className = "w-full text-center px-1 py-2 rounded-xl border border-white/5 bg-slate-800/50 hover:bg-slate-700 transition-colors text-slate-300 font-medium text-[10px]";
+                btn.textContent = `Q${idx + 1}`;
+                btn.onclick = () => showQuestion(idx);
+                nav.appendChild(btn);
+            });
+        }
+
+        function showQuestion(idx) {
+            document.getElementById(`q-${currentIndex}`).classList.remove('active');
+            currentIndex = idx;
+            document.getElementById(`q-${currentIndex}`).classList.add('active');
+            updateUI();
+        }
+
+        function selectOption(category, id, option, questionIdx) {
+            const ansKey = `${category}_${id}`;
+            answers[ansKey] = option;
+
+            const options = ['A', 'B', 'C', 'D'];
+            options.forEach(opt => {
+                const btn = document.getElementById(`opt-${questionIdx}-${opt}`);
+                if (opt === option) btn.classList.add('selected');
+                else btn.classList.remove('selected');
+            });
+
+            const navBtn = document.getElementById(`qbtn-${questionIdx}`);
+            if (navBtn) navBtn.classList.add('answered');
+
+            setTimeout(() => {
+                if (currentIndex < questions.length - 1) {
+                    nextQuestion();
+                }
+            }, 500);
+        }
+
+        function updateUI() {
+            document.getElementById('progress-text').textContent = `Question ${currentIndex + 1} of ${questions.length}`;
+            document.getElementById('progress-bar').style.width = `${((currentIndex + 1) / questions.length) * 100}%`;
+
+            document.getElementById('prev-btn').disabled = currentIndex === 0;
+
+            const nextBtn = document.getElementById('next-btn');
+            const submitBtn = document.getElementById('submit-btn');
+
+            if (currentIndex === questions.length - 1) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+            } else {
+                nextBtn.style.display = 'block';
+                submitBtn.style.display = 'none';
+            }
+
+            questions.forEach((_, idx) => {
+                const btn = document.getElementById(`qbtn-${idx}`);
+                if (btn) {
+                    if (idx === currentIndex) btn.classList.add('ring-2', 'ring-purple-500');
+                    else btn.classList.remove('ring-2', 'ring-purple-500');
+                }
+            });
+        }
+
+        function nextQuestion() {
+            if (currentIndex < questions.length - 1) {
+                showQuestion(currentIndex + 1);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                showQuestion(currentIndex - 1);
+            }
+        }
+
+        async function submitAptitude() {
+            const btn = document.getElementById('submit-btn');
+            btn.innerHTML = '<span class="flex items-center gap-2"><div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> Scoring...</span>';
+            btn.disabled = true;
+
+            try {
+                const res = await fetch('/api/submit_gov_aptitude', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ answers })
+                });
+
+                if (res.ok) {
+                    window.location.href = "/personality.html";
+                } else {
+                    alert("Submission failed.");
+                    btn.disabled = false;
+                    btn.innerText = "Finish Assessment";
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Network error.");
+                btn.disabled = false;
+                btn.innerText = "Finish Assessment";
+            }
+        }
+
+        function finishEarly() {
+            if (confirm("Finish early? Unanswered questions get 0 points.")) {
+                submitAptitude();
+            }
+        }
+
+        fetchQuestions();
+    </script>
+</body>
+
+</html>

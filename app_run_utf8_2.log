@@ -1,0 +1,35 @@
+﻿MongoDB connected successfully
+python : Traceback (most 
+recent call last):
+At line:1 char:1
++ python app.py > 
+"D:\vsscode\app_run2.log" 
+2>&1; Get-Content 
+D:\vsscod ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo         
+     : NotSpecified: (Tra  
+  ceback (most recent ca   
+ ll last)::String) [],     
+RemoteException
+    + FullyQualifiedErrorI 
+   d : NativeCommandError
+ 
+  File 
+"D:\vsscode\app.py", line 
+7, in <module>
+    from ml_logic import 
+DataProcessor, 
+MLModelTrainer
+  File 
+"D:\vsscode\ml_logic.py", 
+line 15, in <module>
+    from config_data 
+import (
+    ...<4 lines>...
+    )
+ImportError: cannot import 
+name 'APTITUDE_MODEL_CATEGO
+RIES' from 'config_data' 
+(D:\vsscode\config_data.py)

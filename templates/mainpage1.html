@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PathWise - Sign Up</title>
+  <link rel="manifest" href="/static/manifest.json">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/static/sw.js')
+          .then(reg => console.log('Service Worker registered', reg))
+          .catch(err => console.error('Service Worker registration failed', err));
+      });
+    }
+  </script>
+  <style>
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .active-slide {
+      opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+      .main-container {
+        flex-direction: column !important;
+      }
+
+      .side-panel {
+        display: none !important;
+      }
+
+      .form-panel {
+        width: 100% !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="h-screen w-screen bg-gray-800">
+  <div class="flex h-screen main-container">
+
+    <!-- Left Form Section -->
+    <div class="w-1/2 flex items-center justify-center bg-gray-700 form-panel">
+      <div class="w-3/4 max-w-md">
+        <h1 class="text-4xl font-bold text-center text-black">WELCOME</h1>
+        <p class="text-black text-center mt-2">Start your journey with us </p>
+
+        <!-- Progress Bar -->
+        <div class="mt-6">
+          <p class="text-sm font-medium text-black">Step 1 of 2 <span class="float-right text-gray-900">50%
+              complete</span></p>
+          <div class="w-full bg-gray-600 rounded-full h-2 mt-2">
+            <div class="bg-green-500 h-2 rounded-full" style="width: 50%"></div>
+          </div>
+        </div>
+
+        <!-- Form -->
+        <div class="mt-8">
+          <h2 class="text-lg font-semibold text-center text-black">Basic Information</h2>
+          <p class="text-black text-center">Tell us about yourself</p>
+
+          <a href="/login/google"
+            class="w-full flex items-center justify-center border border-gray-500 rounded-lg py-2 mt-6 hover:bg-gray-600 text-black transition-colors">
+            Continue with Google
+          </a>
+          <a href="/login/apple"
+            class="w-full flex items-center justify-center border border-gray-500 rounded-lg py-2 mt-3 hover:bg-gray-600 text-black transition-colors">
+            Continue with Apple
+          </a>
+
+          <div class="flex items-center my-6">
+            <hr class="flex-grow border-gray-500">
+            <span class="px-2 text-gray-700 text-sm">or continue with email</span>
+            <hr class="flex-grow border-gray-500">
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <input type="text" id="first_name" placeholder="First Name"
+              class="bg-gray-600 text-black border border-gray-500 rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500">
+            <input type="text" id="last_name" placeholder="Last Name"
+              class="bg-gray-600 text-black border border-gray-500 rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500">
+          </div>
+
+          <input type="email" id="email" placeholder="Email Address"
+            class="w-full bg-gray-600 text-black border border-gray-500 rounded-lg px-4 py-2 mt-4 focus:ring-2 focus:ring-green-500">
+
+          <input type="password" id="password" placeholder="Password"
+            class="w-full bg-gray-600 text-black border border-gray-500 rounded-lg px-4 py-2 mt-4 focus:ring-2 focus:ring-green-500"
+            oninput="checkPasswordStrength()">
+
+          <!-- Password Strength Indicator -->
+          <div class="mt-2 hidden" id="pwd-strength-container">
+            <div class="flex justify-between items-center mb-1">
+              <span class="text-xs text-black font-medium" id="pwd-strength-text">Password strength</span>
+            </div>
+            <div class="w-full bg-gray-600 rounded-full h-1.5 flex gap-1">
+              <div class="h-1.5 rounded-full w-1/4 bg-gray-500 transition-colors duration-300" id="pwd-str-1"></div>
+              <div class="h-1.5 rounded-full w-1/4 bg-gray-500 transition-colors duration-300" id="pwd-str-2"></div>
+              <div class="h-1.5 rounded-full w-1/4 bg-gray-500 transition-colors duration-300" id="pwd-str-3"></div>
+              <div class="h-1.5 rounded-full w-1/4 bg-gray-500 transition-colors duration-300" id="pwd-str-4"></div>
+            </div>
+            <p class="text-[10px] text-gray-800 mt-1 font-medium">Must contain 8+ characters, one uppercase, one number,
+              and one special character.</p>
+          </div>
+
+          <button onclick="submitSignup()"
+            class="w-full bg-green-600 text-white rounded-lg py-2 mt-6 hover:bg-green-700 flex items-center justify-center">
+            Continue →
+          </button>
+
+          <div id="error-message" class="text-red-500 text-sm mt-2 text-center hidden"></div>
+
+          <p class="text-xs text-gray-700 mt-4 text-center">
+            By continuing, you agree to our <a href="#" class="text-green-700">Terms of Service</a> and <a href="#"
+              class="text-green-700">Privacy Policy</a>.
+          </p>
+          <p class="text-sm text-center mt-4 text-black">
+            Already have an account? <a href="signin.html" class="text-green-700 font-medium">Sign in</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Slideshow Section -->
+    <div class="hidden md:block w-1/2 relative overflow-hidden h-screen side-panel">
+      <div class="slide active-slide">
+        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80"
+          class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-end p-10">
+          <h2 class="text-green-400 text-3xl font-bold">Choose Your Future</h2>
+          <p class="text-gray-200 mt-2">Bring your dream to life and know your passion.</p>
+        </div>
+      </div>
+
+      <div class="slide">
+        <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80"
+          class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-end p-10">
+          <h2 class="text-green-400 text-3xl font-bold">Boost Productivity</h2>
+          <p class="text-gray-200 mt-2">Achieve more with tools designed to optimize workflow and efficiency.</p>
+        </div>
+      </div>
+
+      <div class="slide">
+        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80"
+          class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-end p-10">
+          <h2 class="text-green-400 text-3xl font-bold">Innovate Together</h2>
+          <p class="text-gray-200 mt-2">Empower your team to create, collaborate, and inspire innovation.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Slideshow Script -->
+  <script>
+    let currentPasswordStrength = 0;
+
+    function checkPasswordStrength() {
+      const pwd = document.getElementById('password').value;
+      const container = document.getElementById('pwd-strength-container');
+      const text = document.getElementById('pwd-strength-text');
+
+      const bar1 = document.getElementById('pwd-str-1');
+      const bar2 = document.getElementById('pwd-str-2');
+      const bar3 = document.getElementById('pwd-str-3');
+      const bar4 = document.getElementById('pwd-str-4');
+
+      if (!pwd) {
+        container.classList.add('hidden');
+        currentPasswordStrength = 0;
+        return;
+      }
+
+      container.classList.remove('hidden');
+
+      let strength = 0;
+      if (pwd.length >= 8) strength += 1;
+      if (pwd.match(/[A-Z]/)) strength += 1;
+      if (pwd.match(/[0-9]/)) strength += 1;
+      if (pwd.match(/[^a-zA-Z0-9]/)) strength += 1;
+
+      currentPasswordStrength = strength;
+
+      // Reset bars
+      const bgNeutral = 'bg-gray-500';
+      [bar1, bar2, bar3, bar4].forEach(bar => {
+        bar.className = `h-1.5 rounded-full w-1/4 transition-colors duration-300 ${bgNeutral}`;
+      });
+
+      if (strength === 1) {
+        bar1.classList.remove(bgNeutral); bar1.classList.add('bg-red-500');
+        text.textContent = "Weak"; text.className = "text-xs font-medium text-red-600";
+      } else if (strength === 2) {
+        bar1.classList.remove(bgNeutral); bar1.classList.add('bg-orange-500');
+        bar2.classList.remove(bgNeutral); bar2.classList.add('bg-orange-500');
+        text.textContent = "Fair"; text.className = "text-xs font-medium text-orange-600";
+      } else if (strength === 3) {
+        bar1.classList.remove(bgNeutral); bar1.classList.add('bg-yellow-500');
+        bar2.classList.remove(bgNeutral); bar2.classList.add('bg-yellow-500');
+        bar3.classList.remove(bgNeutral); bar3.classList.add('bg-yellow-500');
+        text.textContent = "Good"; text.className = "text-xs font-medium text-yellow-600";
+      } else if (strength >= 4) {
+        bar1.classList.remove(bgNeutral); bar1.classList.add('bg-green-500');
+        bar2.classList.remove(bgNeutral); bar2.classList.add('bg-green-500');
+        bar3.classList.remove(bgNeutral); bar3.classList.add('bg-green-500');
+        bar4.classList.remove(bgNeutral); bar4.classList.add('bg-green-500');
+        text.textContent = "Strong"; text.className = "text-xs font-medium text-green-700";
+      }
+    }
+
+    async function submitSignup() {
+      const dbErr = document.getElementById("error-message");
+      dbErr.classList.add("hidden");
+
+      const payload = {
+        first_name: document.getElementById('first_name').value,
+        last_name: document.getElementById('last_name').value,
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value
+      };
+
+      if (!payload.first_name || !payload.email || !payload.password) {
+        dbErr.textContent = "Please fill in all required fields (Name, Email, Password).";
+        dbErr.classList.remove("hidden");
+        return;
+      }
+
+      if (currentPasswordStrength < 3) {
+        dbErr.textContent = "Please ensure your password meets the strength requirements (Good or Strong).";
+        dbErr.classList.remove("hidden");
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          window.location.href = "homepage.html";
+        } else {
+          dbErr.textContent = data.error || "An error occurred.";
+          dbErr.classList.remove("hidden");
+        }
+      } catch (err) {
+        dbErr.textContent = "Failed to connect to the server.";
+        dbErr.classList.remove("hidden");
+      }
+    }
+
+    let slides = document.querySelectorAll(".slide");
+    let index = 0;
+
+    function showSlide() {
+      slides.forEach((slide, i) => {
+        slide.classList.remove("active-slide");
+        if (i === index) slide.classList.add("active-slide");
+      });
+      index = (index + 1) % slides.length;
+    }
+
+    setInterval(showSlide, 4000);
+  </script>
+</body>
+
+</html>

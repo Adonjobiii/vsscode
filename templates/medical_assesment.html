@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PathWise - Medical Aptitude Assessment</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+      background-size: cover;
+      color: #f8fafc;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      z-index: -1;
+    }
+
+    .glass {
+      background: rgba(20, 30, 48, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+    }
+
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-right: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .answered {
+      background: linear-gradient(135deg, #8b5cf6, #6d28d9) !important;
+      color: white !important;
+      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3) !important;
+      border-color: rgba(139, 92, 246, 0.6) !important;
+      font-weight: 700 !important;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Custom Radio Beans */
+    .option-lbl {
+      display: flex;
+      align-items: center;
+      padding: 1rem 1.25rem;
+      border-radius: 0.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.02);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 500;
+    }
+
+    .option-lbl:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(56, 189, 248, 0.3);
+      transform: translateX(4px);
+    }
+
+    input[type="radio"] {
+      display: none;
+    }
+
+    input[type="radio"]:checked+span {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: #38bdf8;
+      color: #38bdf8;
+    }
+
+    input[type="radio"]:checked~span {
+      color: #38bdf8;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .fade-in {
+      animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body class="min-h-screen font-sans flex flex-col md:flex-row">
+
+  <!-- Left Sidebar for Question Menu -->
+  <aside
+    class="w-full md:w-72 glass-panel md:h-screen overflow-y-auto p-4 md:p-6 sticky top-0 flex flex-col gap-4 md:gap-6 z-40">
+    <div class="flex items-center justify-between md:justify-start gap-3 border-b border-white/5 pb-3 md:pb-4">
+      <div class="flex items-center gap-3">
+        <div
+          class="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-400 to-purple-500 flex items-center justify-center font-bold text-slate-900 shadow-lg shadow-violet-500/30">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5">
+            </path>
+          </svg>
+        </div>
+        <h2 class="text-xl font-bold text-white tracking-tight">Navigator</h2>
+      </div>
+      <div id="nav-container" class="grid grid-cols-5 sm:grid-cols-8 md:grid-cols-2 gap-2">
+        <!-- Buttons will be injected here -->
+      </div>
+  </aside>
+
+  <!-- Right Main Content for Questions -->
+  <main
+    class="flex-1 p-4 sm:p-8 md:p-12 overflow-y-auto relative min-h-screen md:h-screen flex flex-col max-w-5xl mx-auto w-full">
+
+    <!-- Header -->
+    <div
+      class="flex justify-between items-center mb-6 md:mb-8 glass px-5 md:px-8 py-4 md:py-5 rounded-2xl sticky top-0 z-30">
+      <div class="flex items-center gap-2 md:gap-4">
+        <span
+          class="text-[10px] md:text-xs font-bold text-slate-400 bg-slate-800 px-3 py-1 rounded-full border border-white/5 uppercase tracking-widest hidden sm:inline-block">Step
+          3 of 4</span>
+        <h1
+          class="text-lg md:text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 tracking-tight">
+          Aptitude Challenge</h1>
+      </div>
+      <div
+        class="flex items-center gap-2 md:gap-3 bg-slate-800/80 px-3 md:px-4 py-1.5 md:py-2 rounded-xl border border-white/5 shadow-inner">
+        <svg class="w-4 h-4 md:w-5 md:h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <span id="timer" class="text-lg md:text-xl font-mono font-bold text-white tracking-wider">00:00</span>
+      </div>
+    </div>
+
+    <!-- Question Containers -->
+    <div id="questions" class="flex-grow">
+      <div class="flex flex-col items-center justify-center h-64 glass rounded-2xl" id="loading-text">
+        <div class="w-10 h-10 border-4 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin mb-4"></div>
+        <p class="text-slate-400 font-medium">Generating your aptitude module...</p>
+      </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div id="error-message"
+      class="text-rose-400 font-medium text-sm mt-6 text-center hidden bg-rose-500/10 py-3 rounded-lg border border-rose-500/20">
+    </div>
+
+    <!-- Custom Finish Modal -->
+    <div id="finish-modal"
+      class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center">
+      <div
+        class="glass max-w-sm w-full rounded-2xl p-8 transform scale-95 transition-transform duration-300 relative border border-white/10 shadow-2xl text-center flex flex-col items-center">
+        <div class="w-16 h-16 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center mb-4">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        <h2 class="text-2xl font-bold text-white mb-2 tracking-tight">Finish Test?</h2>
+        <p class="text-slate-400 text-sm mb-8 leading-relaxed">Are you sure you want to finish this
+          test?<br />Unanswered questions will receive 0 points.</p>
+
+        <div class="flex gap-4 w-full">
+          <button onclick="document.getElementById('finish-modal').classList.add('hidden')"
+            class="flex-1 py-3 rounded-xl font-bold text-slate-300 bg-slate-800 hover:bg-slate-700 transition-colors border border-white/5">No,
+            Return</button>
+          <button onclick="submitTest()"
+            class="flex-1 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 text-white py-3 rounded-xl font-bold shadow-lg shadow-cyan-500/25 transition-all">Yes,
+            Submit</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    let currentQuestion = 0;
+    let questionsData = [];
+    const answers = {};
+    let startTime;
+    let timerInterval;
+    let autoAdvanceTimeout;
+
+    async function fetchQuestions() {
+      try {
+        const response = await fetch('/api/medical_aptitude_questions');
+        if (!response.ok) {
+          throw new Error(`Server error: ${response.status}`);
+        }
+        questionsData = await response.json();
+
+        if (!Array.isArray(questionsData) || questionsData.length === 0) {
+          document.getElementById('loading-text').innerHTML = '<p class="text-rose-400 font-medium">No questions could be loaded. Please try again.</p>';
+          return;
+        }
+
+        const loadingEl = document.getElementById('loading-text');
+        if (loadingEl) loadingEl.style.display = 'none';
+
+        renderNav();
+        renderQuestions();
+        showQuestion(currentQuestion);
+
+        startTime = Date.now();
+        timerInterval = setInterval(updateTimer, 1000);
+      } catch (err) {
+        const loadingEl = document.getElementById('loading-text');
+        if (loadingEl) loadingEl.innerHTML = '<p class="text-rose-400 font-medium">Error loading test: ' + err.message + '</p>';
+        console.error('fetchQuestions error:', err);
+      }
+    }
+
+    function updateTimer() {
+      const diff = Math.floor((Date.now() - startTime) / 1000);
+      const m = Math.floor(diff / 60).toString().padStart(2, '0');
+      const s = (diff % 60).toString().padStart(2, '0');
+      document.getElementById('timer').textContent = `${m}:${s}`;
+    }
+
+    function renderNav() {
+      const navContainer = document.getElementById("nav-container");
+      navContainer.innerHTML = "";
+
+      questionsData.forEach((q, idx) => {
+        const btn = document.createElement("button");
+        btn.id = `qbtn_${idx}`;
+        btn.className = "w-full text-center px-2 py-2.5 rounded-xl border border-white/5 bg-slate-800/50 hover:bg-slate-700 transition-colors text-slate-300 font-medium text-xs";
+        btn.textContent = `Q${idx + 1}`;
+        btn.onclick = () => showQuestion(idx);
+        navContainer.appendChild(btn);
+      });
+    }
+
+    function renderQuestions() {
+      const qContainer = document.getElementById("questions");
+      qContainer.innerHTML = "";
+
+      questionsData.forEach((q, idx) => {
+        const div = document.createElement("div");
+        div.id = `question_${idx}`;
+        div.className = "glass p-8 md:p-10 rounded-2xl hidden fade-in relative";
+
+        // ── TOP BAR: category badge + Finish Test Early button ──
+        const topBar = document.createElement("div");
+        topBar.className = "flex items-center justify-between mb-6";
+        topBar.innerHTML = `
+          <span class="inline-block px-3 py-1 bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 rounded-lg text-sm font-medium">${q.category}</span>
+          <button onclick="document.getElementById('finish-modal').classList.remove('hidden')"
+            class="flex items-center gap-2 px-4 py-2 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-400 border border-rose-500/30 font-semibold transition-all text-sm">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Finish Test Early
+          </button>
+        `;
+        div.appendChild(topBar);
+
+        // ── QUESTION TEXT ──
+        const h2 = document.createElement("h2");
+        h2.className = "text-xl md:text-2xl font-semibold mb-8 text-white leading-relaxed";
+        h2.textContent = `${idx + 1}. ${q.q}`;
+        div.appendChild(h2);
+
+        // ── OPTIONS ──
+        const optionsDiv = document.createElement("div");
+        optionsDiv.className = "flex flex-col gap-3";
+
+        for (const [optKey, optVal] of Object.entries(q.options)) {
+          const lbl = document.createElement("label");
+          lbl.id = `lbl_${idx}_${optKey}`;
+          lbl.className = "flex items-center gap-4 p-4 rounded-xl border border-slate-600/50 bg-slate-800/30 cursor-pointer hover:border-cyan-500/40 hover:bg-slate-700/40 transition-all select-none";
+          lbl.style.userSelect = "none";
+          lbl.innerHTML = `
+            <span id="circle_${idx}_${optKey}"
+              class="w-9 h-9 rounded-full border-2 border-slate-500 flex-shrink-0 flex items-center justify-center font-bold text-sm text-slate-300 transition-all">
+              ${optKey}
+            </span>
+            <span class="text-slate-200 text-base flex-1">${optVal}</span>
+          `;
+          (function (capturedIdx, capturedCat, capturedId, capturedKey) {
+            lbl.addEventListener('click', function (e) {
+              e.preventDefault();
+              selectAnswer(capturedIdx, capturedCat, capturedId, capturedKey);
+            });
+          })(idx, q.category, q.id, optKey);
+          optionsDiv.appendChild(lbl);
+        }
+
+        div.appendChild(optionsDiv);
+        qContainer.appendChild(div);
+      });
+    }
+
+    function selectAnswer(idx, category, qId, val) {
+      // Store answer
+      answers[`${category}_${qId}`] = val;
+
+      // Update sidebar nav button
+      const navBtn = document.getElementById(`qbtn_${idx}`);
+      if (navBtn) {
+        navBtn.classList.add('answered');
+      }
+
+      // Update option visuals
+      const q = questionsData[idx];
+      if (!q) return;
+      Object.keys(q.options).forEach(optKey => {
+        const circle = document.getElementById(`circle_${idx}_${optKey}`);
+        const lbl = document.getElementById(`lbl_${idx}_${optKey}`);
+        if (!circle || !lbl) return;
+
+        if (optKey === val) {
+          lbl.className = "flex items-center gap-4 p-4 rounded-xl border-2 border-cyan-400 bg-cyan-500/10 cursor-pointer transition-all select-none";
+          circle.className = "w-9 h-9 rounded-full border-2 border-cyan-400 bg-cyan-400 flex-shrink-0 flex items-center justify-center font-bold text-sm text-slate-900 transition-all";
+        } else {
+          lbl.className = "flex items-center gap-4 p-4 rounded-xl border border-slate-600/50 bg-slate-800/30 cursor-pointer hover:border-cyan-500/40 hover:bg-slate-700/40 transition-all select-none";
+          circle.className = "w-9 h-9 rounded-full border-2 border-slate-500 flex-shrink-0 flex items-center justify-center font-bold text-sm text-slate-300 transition-all";
+        }
+      });
+
+      // Auto-advance after short delay
+      clearTimeout(autoAdvanceTimeout);
+      autoAdvanceTimeout = setTimeout(() => {
+        let nextIdx = -1;
+        // Search forward first
+        for (let i = idx + 1; i < questionsData.length; i++) {
+          const b = document.getElementById(`qbtn_${i}`);
+          if (b && !b.classList.contains('answered')) { nextIdx = i; break; }
+        }
+        // Wrap around from beginning
+        if (nextIdx === -1) {
+          for (let i = 0; i < idx; i++) {
+            const b = document.getElementById(`qbtn_${i}`);
+            if (b && !b.classList.contains('answered')) { nextIdx = i; break; }
+          }
+        }
+        if (nextIdx !== -1) {
+          showQuestion(nextIdx);
+        } else {
+          // All answered
+          document.getElementById('finish-modal').classList.remove('hidden');
+        }
+      }, 600);
+    }
+
+    function showQuestion(idx) {
+      for (let i = 0; i < questionsData.length; i++) {
+        const qDiv = document.getElementById(`question_${i}`);
+        if (qDiv) qDiv.classList.add('hidden');
+
+        const btn = document.getElementById(`qbtn_${i}`);
+        if (btn) {
+          if (i === idx) {
+            btn.classList.add('ring-2', 'ring-purple-500');
+            btn.classList.remove('opacity-60');
+          } else {
+            btn.classList.remove('ring-2', 'ring-purple-500');
+            if (!btn.classList.contains('answered')) btn.classList.add('opacity-60');
+          }
+        }
+      }
+
+      const targetDiv = document.getElementById(`question_${idx}`);
+      if (targetDiv) targetDiv.classList.remove('hidden');
+
+      currentQuestion = idx;
+    }
+
+    async function submitTest() {
+      clearInterval(timerInterval);
+      const errDiv = document.getElementById("error-message");
+      errDiv.classList.add("hidden");
+
+      try {
+        const response = await fetch('/api/submit_medical_aptitude', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ answers: answers })
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+          // Redirect to personality test Next
+          window.location.href = "personality.html";
+        } else {
+          errDiv.textContent = result.error || "An error occurred.";
+          errDiv.classList.remove("hidden");
+        }
+      } catch (err) {
+        errDiv.textContent = "Failed to submit test.";
+        errDiv.classList.remove("hidden");
+      }
+    }
+
+    window.onload = fetchQuestions;
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,60 @@
+ * Serving Flask app 'debug_app'
+ * Debug mode: on
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5002
+Press CTRL+C to quit
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+127.0.0.1 - - [07/Mar/2026 12:52:14] "GET /api/test HTTP/1.1" 200 -
+ * Detected change in 'D:\\vsscode\\app.py', reloading
+ * Detected change in 'D:\\vsscode\\app.py', reloading
+ * Detected change in 'D:\\vsscode\\app.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'D:\\vsscode\\app.py', reloading
+ * Detected change in 'D:\\vsscode\\app.py', reloading
+ * Detected change in 'D:\\vsscode\\app.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'D:\\vsscode\\server_v2.py', reloading
+ * Detected change in 'D:\\vsscode\\server_v2.py', reloading
+ * Detected change in 'D:\\vsscode\\server_v2.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'D:\\vsscode\\server_v2.py', reloading
+ * Detected change in 'D:\\vsscode\\server_v2.py', reloading
+ * Detected change in 'D:\\vsscode\\server_v2.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'D:\\vsscode\\career1.py', reloading
+ * Detected change in 'D:\\vsscode\\config_data.py', reloading
+ * Detected change in 'D:\\vsscode\\ml_logic.py', reloading
+ * Detected change in 'D:\\vsscode\\commerce_aptitude_questions.py', reloading
+ * Detected change in 'D:\\vsscode\\commerce_config.py', reloading
+ * Detected change in 'D:\\vsscode\\course_data.py', reloading
+ * Detected change in 'D:\\vsscode\\medical_aptitude_questions.py', reloading
+ * Detected change in 'D:\\vsscode\\medical_config.py', reloading
+ * Detected change in 'D:\\vsscode\\medical_thinking_skills.py', reloading
+ * Detected change in 'D:\\vsscode\\pdf_generator.py', reloading
+ * Detected change in 'D:\\vsscode\\test_server.py', reloading
+ * Detected change in 'D:\\vsscode\\test_signup.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233
+ * Detected change in 'D:\\vsscode\\merge_script.py', reloading
+ * Detected change in 'D:\\vsscode\\main.py', reloading
+ * Detected change in 'D:\\vsscode\\career1supp.py', reloading
+ * Detected change in 'D:\\vsscode\\career1_graphs.py', reloading
+ * Detected change in 'D:\\vsscode\\career_guidance.py', reloading
+ * Detected change in 'D:\\vsscode\\career.py', reloading
+ * Detected change in 'D:\\vsscode\\audiovideo.py', reloading
+ * Detected change in 'D:\\vsscode\\appmainpage.py', reloading
+ * Detected change in 'D:\\vsscode\\add_graphs.py', reloading
+ * Restarting with watchdog (windowsapi)
+ * Debugger is active!
+ * Debugger PIN: 784-389-233

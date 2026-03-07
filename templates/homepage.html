@@ -1,0 +1,1728 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PathWise - Premium Dashboard</title>
+  <link rel="manifest" href="/static/manifest.json">
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/static/sw.js')
+          .then(reg => console.log('Service Worker registered', reg))
+          .catch(err => console.error('Service Worker registration failed', err));
+      });
+    }
+  </script>
+
+  <!-- Add Professional Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Premium Glassmorphic Theme */
+    body {
+      background: radial-gradient(circle at top left, #1e293b, #0f172a 70%);
+      color: #f8fafc;
+    }
+
+    .glass {
+      background: rgba(30, 41, 59, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    .glass-input {
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .glass-input:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+    }
+
+    .btn-gradient {
+      background: linear-gradient(135deg, #10b981, #059669);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-gradient:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px -10px rgba(16, 185, 129, 0.5);
+    }
+
+    .profile-dropdown {
+      display: none;
+      position: absolute;
+      right: 0;
+      margin-top: 0.5rem;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 0.75rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      width: 220px;
+      padding: 1rem;
+      z-index: 50;
+    }
+
+    .profile-dropdown.show {
+      display: block;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .menu-item.active {
+      background: rgba(255, 255, 255, 0.05);
+      border-left: 4px solid #10b981;
+      color: #fff;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Mobile Responsive Overrides */
+    @media (max-width: 1024px) {
+      .sidebar-collapsed {
+        transform: translateX(-100%);
+      }
+
+      #sidebar {
+        position: fixed;
+        z-index: 100;
+        transition: transform 0.3s ease;
+      }
+
+      .main-content {
+        margin-left: 0 !important;
+      }
+
+      /* Categories Sidebar for Mobile */
+      #category-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        z-index: 150;
+        width: 280px;
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex !important;
+      }
+
+      #category-sidebar.show {
+        transform: translateX(0);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .grid-cols-2 {
+        grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+      }
+
+      .p-12 {
+        padding: 1.5rem !important;
+      }
+
+      .px-8 {
+        padding-left: 1.25rem !important;
+        padding-right: 1.25rem !important;
+      }
+    }
+
+    /* PathWay AI Chatbot Styles */
+    #chatbot-bubble {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 4rem;
+      height: 4rem;
+      background: linear-gradient(135deg, #8b5cf6, #6366f1);
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.5);
+      z-index: 100;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    #chatbot-bubble.hidden {
+      display: none !important;
+    }
+
+    #chatbot-bubble:hover {
+      transform: scale(1.1) rotate(5deg);
+      box-shadow: 0 15px 30px -5px rgba(139, 92, 246, 0.6);
+    }
+
+    #chatbot-window {
+      position: fixed;
+      bottom: 7rem;
+      right: 2rem;
+      width: 380px;
+      height: 500px;
+      max-width: calc(100vw - 4rem);
+      max-height: calc(100vh - 10rem);
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 1.5rem;
+      display: none;
+      flex-direction: column;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      z-index: 100;
+      overflow: hidden;
+      animation: chatOpen 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @media (max-width: 640px) {
+      #chatbot-bubble {
+        bottom: 1rem;
+        right: 1rem;
+        width: 3.5rem;
+        height: 3.5rem;
+      }
+
+      #chatbot-window {
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 0;
+        z-index: 1000;
+      }
+
+      #chatbot-bubble {
+        display: none;
+        /* Hide bubble when chat is open on mobile */
+      }
+    }
+
+    @keyframes chatOpen {
+      from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    #chat-messages::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    #chat-messages::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen flex font-sans">
+
+  <!-- Sidebar Menu -->
+  <aside id="sidebar"
+    class="w-64 glass shadow-2xl h-screen sticky top-0 p-6 flex flex-col gap-8 border-r border-white/5 sidebar-collapsed lg:transform-none">
+    <div class="flex items-center gap-3">
+      <div
+        class="w-8 h-8 rounded bg-gradient-to-br from-emerald-400 to-cyan-400 flex items-center justify-center font-bold text-slate-900">
+        L</div>
+      <h2
+        class="text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-400 tracking-tight">
+        Luminous</h2>
+    </div>
+    <nav class="flex flex-col gap-2">
+      <a href="#" onclick="showView('view-assessment')" id="nav-assessment"
+        class="menu-item active flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all duration-200">
+        <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+        <span class="font-medium">Assessment Dashboard</span>
+      </a>
+      <a href="#" onclick="showView('view-records')" id="nav-records"
+        class="menu-item flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all duration-200">
+        <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+          </path>
+        </svg>
+        <span class="font-medium">Assessment Records</span>
+      </a>
+      <a href="#" onclick="showView('view-recommendations')" id="nav-recommendations"
+        class="menu-item flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all duration-200">
+        <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M14 9l-1 9-2-5H7l7-7z" />
+        </svg>
+        <span class="font-medium">Recommendations</span>
+      </a>
+      <a href="#" onclick="showView('view-courses')" id="nav-courses"
+        class="menu-item flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all duration-200">
+        <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M4 19.5V6.5L12 3l8 3.5v13" />
+          <path d="M12 22V8" />
+        </svg>
+        <span class="font-medium">Courses</span>
+      </a>
+      <a href="#" onclick="showView('view-profile')" id="nav-profile"
+        class="menu-item flex items-center gap-3 px-4 py-3 rounded-lg text-slate-300 hover:bg-white/5 hover:text-white transition-all duration-200">
+        <svg class="w-5 h-5 opacity-70" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+        <span class="font-medium">Profile</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Section -->
+  <div class="flex-1 flex flex-col h-screen overflow-y-auto">
+    <!-- Navbar -->
+    <nav class="glass sticky top-0 z-40 flex justify-between items-center px-6 md:px-8 py-4 border-b border-white/5">
+      <!-- Hamburger Menu for Mobile -->
+      <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-lg hover:bg-white/5 text-slate-300 mr-4">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+
+      <!-- Spacer for desktop to push profile right since justify-between is used -->
+      <div class="hidden lg:block flex-1"></div>
+
+      <div class="relative profile-wrapper ml-auto">
+        <img src="https://www.svgrepo.com/show/452030/avatar-default.svg" alt="Profile"
+          onclick="toggleProfileDropdown(event)"
+          class="w-10 h-10 rounded-full cursor-pointer ring-2 ring-emerald-500/50 hover:ring-emerald-400 transition-all duration-300">
+        <div id="profile-dropdown-menu" class="profile-dropdown">
+          <p class="font-bold text-white" id="header-user-name">Guest User</p>
+          <p class="text-xs text-slate-400 mt-1">Ready to explore</p>
+          <hr class="my-3 border-white/10">
+          <a href="#" onclick="showView('view-profile'); toggleProfileDropdown(event)"
+            class="flex items-center gap-2 py-2 text-sm text-slate-300 hover:text-white transition-colors"><svg
+              class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            </svg> View Profile</a>
+          <a href="#"
+            class="flex items-center gap-2 py-2 text-sm text-slate-300 hover:text-white transition-colors"><svg
+              class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+              </path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg> Settings</a>
+          <a href="/api/logout"
+            class="flex items-center gap-2 py-2 text-sm text-rose-400 hover:text-rose-300 transition-colors mt-1"><svg
+              class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+            </svg> Logout</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex flex-col items-center justify-start p-8 md:p-12 gap-10">
+
+      <!-- ===================================== -->
+      <!-- VIEW: ASSESSMENT DASHBOARD            -->
+      <!-- ===================================== -->
+      <div id="view-assessment" class="spa-view w-full max-w-6xl flex flex-col gap-10">
+
+        <!-- Action Button First -->
+        <div class="w-full flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
+          <div>
+            <h1 class="text-3xl font-bold tracking-tight text-white mb-2" id="welcome-text">Welcome Back</h1>
+            <p class="text-slate-400">Track your career journey and assessment results.</p>
+          </div>
+          <div class="flex flex-wrap gap-4 items-center">
+            <a href="/api/download_report" id="download-report-btn"
+              class="hidden bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white px-6 py-3.5 rounded-xl font-bold flex items-center gap-2 transition-all shadow-lg hover:shadow-xl">
+              <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                </path>
+              </svg>
+              Download Detailed Report
+            </a>
+            <button id="assessment-btn" onclick="document.getElementById('domain-modal').classList.remove('hidden')"
+              class="btn-gradient text-white px-8 py-3.5 rounded-xl font-bold shadow-lg shadow-emerald-500/30 flex items-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z">
+                </path>
+              </svg>
+              Take Full Assessment
+            </button>
+          </div>
+        </div>
+
+        <!-- Top Overview Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 w-full gap-6 md:gap-8">
+          <!-- Interest Result -->
+          <div class="glass rounded-2xl p-8 hover:bg-slate-800/60 transition-colors duration-300 group">
+            <div class="flex items-center gap-4 mb-6">
+              <div class="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                  </path>
+                </svg>
+              </div>
+              <h3 class="text-slate-300 font-semibold text-lg uppercase tracking-wider">Interests Match</h3>
+            </div>
+            <p class="text-emerald-400 font-black text-4xl tracking-tight group-hover:scale-105 transition-transform origin-left"
+              id="interest-res">Loading...</p>
+          </div>
+          <!-- Aptitude Result -->
+          <div class="glass rounded-2xl p-8 hover:bg-slate-800/60 transition-colors duration-300 group">
+            <div class="flex items-center gap-4 mb-6">
+              <div class="w-12 h-12 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z">
+                  </path>
+                </svg>
+              </div>
+              <h3 class="text-slate-300 font-semibold text-lg uppercase tracking-wider">Aptitude Match</h3>
+            </div>
+            <p class="text-cyan-400 font-black text-4xl tracking-tight group-hover:scale-105 transition-transform origin-left"
+              id="aptitude-res">Loading...</p>
+          </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 w-full gap-8">
+          <!-- Aptitude Probabilities Bar Chart -->
+          <div class="glass rounded-2xl p-8" id="aptitudeChartContainer">
+            <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+              <div class="w-2 h-6 bg-cyan-500 rounded-full"></div> Score Breakdown
+            </h3>
+            <div class="relative h-64 w-full">
+              <canvas id="aptitudeChart"></canvas>
+            </div>
+          </div>
+
+          <!-- Personality Traits Radar Chart -->
+          <div class="glass rounded-2xl p-8" id="personalityChartContainer">
+            <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+              <div class="w-2 h-6 bg-purple-500 rounded-full"></div> Big Five Traits
+            </h3>
+            <div class="relative h-64 w-full flex justify-center">
+              <canvas id="personalityChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================================== -->
+      <!-- VIEW: PROFILE                         -->
+      <!-- ===================================== -->
+      <div id="view-profile" class="spa-view w-full max-w-6xl hidden flex flex-col gap-6">
+        <div class="w-full flex justify-between items-center mb-4">
+          <div>
+            <h1 class="text-3xl font-bold tracking-tight text-white mb-2">My Profile</h1>
+            <p class="text-slate-400">View and edit your personal details and academic interests.</p>
+          </div>
+        </div>
+
+        <div class="glass rounded-2xl w-full p-4 md:p-8 flex flex-col gap-6">
+          <h3 class="text-xl font-bold text-white border-b border-white/10 pb-4">Personal Details</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="text-slate-400 text-xs font-bold uppercase tracking-wider block mb-2">First Name</label>
+              <input type="text" id="prof-fname"
+                class="glass-input w-full text-white rounded-lg p-3 focus:outline-none">
+            </div>
+            <div>
+              <label class="text-slate-400 text-xs font-bold uppercase tracking-wider block mb-2">Last Name</label>
+              <input type="text" id="prof-lname"
+                class="glass-input w-full text-white rounded-lg p-3 focus:outline-none">
+            </div>
+            <div class="md:col-span-2">
+              <label class="text-slate-400 text-xs font-bold uppercase tracking-wider block mb-2">Email Address</label>
+              <input type="email" id="prof-email"
+                class="glass-input w-full text-slate-500 rounded-lg p-3 focus:outline-none bg-black/20" disabled>
+            </div>
+            <div>
+              <label class="text-slate-400 text-xs font-bold uppercase tracking-wider block mb-2">Country Code</label>
+              <select id="prof-ccode"
+                class="glass-input w-full text-white rounded-lg p-3 focus:outline-none [&>option]:text-black">
+                <option value="+91">+91 (IN)</option>
+                <option value="+1">+1 (US)</option>
+                <option value="+44">+44 (UK)</option>
+                <option value="+61">+61 (AU)</option>
+                <option value="+81">+81 (JP)</option>
+                <option value="+971">+971 (AE)</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-slate-400 text-xs font-bold uppercase tracking-wider block mb-2">Phone Number</label>
+              <input type="tel" id="prof-phone" class="glass-input w-full text-white rounded-lg p-3 focus:outline-none">
+            </div>
+            <div class="md:col-span-2">
+              <label class="text-slate-400 text-xs font-bold uppercase tracking-wider block mb-2">Current Academic
+                Level</label>
+              <select id="prof-class"
+                class="glass-input w-full text-white rounded-lg p-3 focus:outline-none [&>option]:text-black">
+                <option value="10th Standard">10th Standard</option>
+                <option value="11th Standard">11th Standard</option>
+                <option value="12th Standard">12th Standard</option>
+                <option value="Undergraduate">Undergraduate (College)</option>
+                <option value="Graduate">Graduate / Professional</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass rounded-2xl w-full p-4 md:p-8 flex flex-col gap-6">
+          <h3 class="text-xl font-bold text-white border-b border-white/10 pb-4">Academic Interests & Skills</h3>
+
+          <div>
+            <label class="text-slate-400 text-xs font-bold uppercase tracking-wider block mb-2">Select Your Broad
+              Interests</label>
+            <div class="relative custom-multi-select" id="prof-interests-wrapper">
+              <div
+                class="selected-tags flex flex-wrap gap-2 p-3 glass-input w-full text-white rounded-lg min-h-[48px] cursor-pointer items-center"
+                onclick="toggleDropdown('interests-dropdown')">
+                <span class="placeholder text-slate-400">Select Interests...</span>
+              </div>
+              <div id="interests-dropdown"
+                class="dropdown-menu hidden absolute z-10 w-full mt-1 bg-slate-800/95 backdrop-blur-md border border-white/10 rounded-lg shadow-xl max-h-60 overflow-y-auto p-2 flex flex-col gap-1">
+              </div>
+            </div>
+            <p class="text-xs text-slate-500 mt-2">Click to select multiple interests.</p>
+          </div>
+
+          <div>
+            <label class="text-slate-400 text-xs font-bold uppercase tracking-wider block mb-2">Select Your Known
+              Skills</label>
+            <div class="relative custom-multi-select" id="prof-skills-wrapper">
+              <div
+                class="selected-tags flex flex-wrap gap-2 p-3 glass-input w-full text-white rounded-lg min-h-[48px] cursor-pointer items-center"
+                onclick="toggleDropdown('skills-dropdown')">
+                <span class="placeholder text-slate-400">Select Skills...</span>
+              </div>
+              <div id="skills-dropdown"
+                class="dropdown-menu hidden absolute z-10 w-full mt-1 bg-slate-800/95 backdrop-blur-md border border-white/10 rounded-lg shadow-xl max-h-60 overflow-y-auto p-2 flex flex-col gap-1">
+              </div>
+            </div>
+            <p class="text-xs text-slate-500 mt-2">Click to select multiple skills.</p>
+          </div>
+
+          <div>
+            <label class="text-slate-400 text-xs font-bold uppercase tracking-wider block mb-2">Add Optional Courses to
+              Wishlist</label>
+            <div class="relative custom-multi-select" id="prof-courses-wrapper">
+              <div
+                class="selected-tags flex flex-wrap gap-2 p-3 glass-input w-full text-white rounded-lg min-h-[48px] cursor-pointer items-center"
+                onclick="toggleDropdown('courses-dropdown')">
+                <span class="placeholder text-slate-400">Select Courses...</span>
+              </div>
+              <div id="courses-dropdown"
+                class="dropdown-menu hidden absolute z-10 w-full mt-1 bg-slate-800/95 backdrop-blur-md border border-white/10 rounded-lg shadow-xl max-h-60 overflow-y-auto p-2 flex flex-col gap-1">
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 flex flex-col md:flex-row justify-end items-center border-t border-white/5 pt-6 gap-4">
+            <span id="save-msg" class="text-emerald-400 font-medium md:mr-6 self-center hidden flex items-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>Profile Saved
+            </span>
+            <button onclick="saveProfile()"
+              class="w-full md:w-auto bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-3 rounded-xl font-bold transition-all shadow-lg hover:shadow-indigo-500/30">
+              Save Changes
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================================== -->
+      <!-- VIEW: ASSESSMENT RECORDS              -->
+      <!-- ===================================== -->
+      <div id="view-records" class="spa-view w-full max-w-6xl hidden flex flex-col gap-6">
+        <div class="w-full mb-4">
+          <h1 class="text-3xl font-bold tracking-tight text-white mb-2">Assessment History</h1>
+          <p class="text-slate-400">View logs of all previous assessment tests you've taken.</p>
+        </div>
+
+        <div class="glass rounded-2xl w-full overflow-hidden">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-white/5 text-slate-300 text-xs uppercase tracking-wider border-b border-white/10">
+                <th class="p-4 font-semibold">Test Date</th>
+                <th class="p-4 font-semibold">Aptitude Match</th>
+                <th class="p-4 font-semibold">Interest Match</th>
+                <th class="p-4 font-semibold">Status</th>
+              </tr>
+            </thead>
+            <tbody id="records-table-body">
+              <!-- Populated via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ===================================== -->
+      <!-- VIEW: RECOMMENDATIONS & COURSES       -->
+      <!-- ===================================== -->
+      <div id="view-recommendations" class="spa-view w-full max-w-6xl hidden flex flex-col gap-6">
+        <div class="w-full mb-4">
+          <h1 class="text-3xl font-bold tracking-tight text-white mb-2">Aggregated Recommendations</h1>
+          <p class="text-slate-400">Personalized course suggestions based on your tests and selected skills.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="recommendations-container">
+          <!-- Populated via JS -->
+          <div class="p-6 text-center text-slate-500 col-span-2">Loading recommendations...</div>
+        </div>
+      </div>
+
+      <!-- ===================================== -->
+      <!-- VIEW: COURSE CATALOGUE                -->
+      <!-- ===================================== -->
+      <div id="view-courses" class="spa-view w-full max-w-6xl hidden flex flex-col gap-6">
+        <div class="w-full flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4 text-left">
+          <div>
+            <h1 class="text-3xl font-bold tracking-tight text-white mb-1">Course Catalogue</h1>
+            <p class="text-slate-400">Browse all available engineering, medical, and commerce courses.</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <!-- Mobile Categories Toggle -->
+            <button onclick="toggleCategories()"
+              class="md:hidden flex items-center gap-2 bg-white/5 hover:bg-white/10 text-slate-300 px-4 py-2.5 rounded-xl border border-white/10 transition-all">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+              </svg>
+              <span class="text-sm font-bold">Categories</span>
+            </button>
+            <label class="text-xs font-bold text-slate-500 uppercase tracking-widest hidden sm:block">Track:</label>
+            <select id="track-filter" onchange="filterCourses()"
+              class="glass-input text-slate-300 px-4 py-2.5 rounded-xl focus:outline-none text-sm [&>option]:text-black">
+              <option value="all">All Tracks</option>
+              <option value="Engineering">Engineering</option>
+              <option value="Medical">Medical</option>
+              <option value="Commerce">Banking & Finance</option>
+              <option value="Law">Law & Legal Studies</option>
+              <option value="Government & Defence">Gov, Defence & PSU</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex flex-col md:flex-row gap-8 relative">
+          <!-- Sidebar Categories -->
+          <aside id="category-sidebar" class="w-full md:w-64 flex flex-col gap-4">
+            <div class="glass p-5 rounded-xl border border-white/5 h-full md:h-auto">
+              <div class="flex justify-between items-center mb-4">
+                <h3 class="text-sm font-bold text-slate-300 uppercase tracking-wider">Categories</h3>
+                <!-- Close Button for Mobile -->
+                <button onclick="toggleCategories()"
+                  class="md:hidden flex items-center gap-1 p-1.5 rounded-lg hover:bg-white/10 text-slate-400">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                  </svg>
+                  <span class="text-xs font-bold">Back</span>
+                </button>
+              </div>
+              <select id="category-filter" onchange="filterCourses()"
+                class="w-full bg-slate-900/50 text-white border border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none mb-4">
+                <option value="all">All Categories</option>
+                <!-- Dynamically populated -->
+              </select>
+              <div id="category-list" class="hidden md:flex flex-col gap-1">
+                <button onclick="setCategoryFilter('all')"
+                  class="cat-btn active text-left px-3 py-2 rounded-lg text-sm transition-all hover:bg-white/5 text-slate-400">All
+                  Modules</button>
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+          </aside>
+
+          <!-- Grid -->
+          <div class="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6" id="courses-container">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================================== -->
+      <!-- MODAL: COURSE DETAILS                 -->
+      <!-- ===================================== -->
+      <div id="course-details-modal"
+        class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div
+          class="glass max-w-2xl w-full rounded-3xl overflow-hidden shadow-2xl border border-white/10 flex flex-col max-h-[90vh]">
+          <!-- Modal Header -->
+          <div class="p-8 border-b border-white/10 relative">
+            <button onclick="closeCourseDetails()"
+              class="absolute top-6 right-6 p-2 rounded-full hover:bg-white/5 text-slate-400 hover:text-white transition-all">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </button>
+            <div class="flex items-center gap-3 mb-4">
+              <span id="modal-track"
+                class="px-3 py-1 bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 rounded-lg text-[10px] font-black uppercase tracking-widest">TRACK</span>
+              <span id="modal-category"
+                class="px-3 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-lg text-[10px] font-black uppercase tracking-widest">CATEGORY</span>
+            </div>
+            <h2 id="modal-title" class="text-3xl font-black text-white leading-tight">Course Title</h2>
+          </div>
+
+          <!-- Modal Body -->
+          <div class="p-8 overflow-y-auto space-y-8 flex-1 scrollbar-hide">
+            <!-- Description -->
+            <div>
+              <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Brief Description</h4>
+              <p id="modal-desc" class="text-slate-300 leading-relaxed text-lg italic">Course description goes here.
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <!-- Jobs -->
+              <div class="space-y-4">
+                <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
+                  <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                    </path>
+                  </svg>
+                  Job Opportunities
+                </h4>
+                <ul id="modal-jobs" class="space-y-2 text-slate-400 text-sm"></ul>
+              </div>
+
+              <!-- Market Demand -->
+              <div class="space-y-4">
+                <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
+                  <svg class="w-4 h-4 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                  </svg>
+                  Market Demand
+                </h4>
+                <div id="modal-demand" class="text-slate-300 font-bold bg-white/5 p-4 rounded-xl border border-white/5">
+                  High</div>
+              </div>
+            </div>
+
+            <!-- Top Colleges in Kerala -->
+            <div class="space-y-4">
+              <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
+                <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                  </path>
+                </svg>
+                Top 10 Colleges in Kerala
+              </h4>
+              <div id="modal-top-colleges" class="grid grid-cols-1 gap-2">
+                <!-- Populated via JS -->
+              </div>
+            </div>
+
+            <!-- Recommendations -->
+            <div class="bg-indigo-500/5 p-6 rounded-2xl border border-indigo-500/20">
+              <h4 class="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-4">Recommendations</h4>
+              <div class="flex flex-col md:flex-row gap-6">
+                <div class="flex-1">
+                  <p class="text-[10px] text-slate-500 uppercase font-black mb-2">Related Jobs</p>
+                  <div id="modal-rec-jobs" class="flex flex-wrap gap-2"></div>
+                </div>
+                <div class="flex-1">
+                  <p class="text-[10px] text-slate-500 uppercase font-black mb-2">Advance Courses</p>
+                  <div id="modal-rec-courses" class="flex flex-wrap gap-2"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="p-6 bg-slate-900/50 border-t border-white/10 flex justify-end">
+            <button onclick="closeCourseDetails()"
+              class="px-8 py-3 bg-white/5 hover:bg-white/10 text-white rounded-xl font-bold transition-all border border-white/10">Back
+              to Catalogue</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================================== -->
+      <!-- MODAL: DOMAIN SELECTION               -->
+      <!-- ===================================== -->
+      <div id="domain-modal"
+        class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center">
+        <div
+          class="glass max-w-lg w-full rounded-2xl p-8 transform scale-95 transition-transform duration-300 relative border border-white/10 shadow-2xl">
+          <button onclick="document.getElementById('domain-modal').classList.add('hidden')"
+            class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+
+          <h2 class="text-2xl font-bold text-white mb-2 tracking-tight">Select Assessment Domain</h2>
+          <p class="text-slate-400 text-sm mb-6">Which educational pathway are you testing for today?</p>
+
+          <div class="grid grid-cols-2 gap-4">
+            <!-- Engineering Option -->
+            <div onclick="startAssessment('engineering')"
+              class="cursor-pointer border border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 rounded-xl p-6 text-center transition-all hover:border-emerald-500/50 group">
+              <div
+                class="w-12 h-12 mx-auto rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+                  </path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+              </div>
+              <h3 class="text-white font-bold mb-1">Engineering</h3>
+              <p class="text-xs text-slate-400">Computer Science, Civil, Mech & More</p>
+            </div>
+
+            <!-- Medical Option -->
+            <div onclick="startAssessment('medical')"
+              class="cursor-pointer border border-rose-500/20 bg-rose-500/5 hover:bg-rose-500/10 rounded-xl p-6 text-center transition-all hover:border-rose-500/50 group">
+              <div
+                class="w-12 h-12 mx-auto rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                  </path>
+                </svg>
+              </div>
+              <h3 class="text-white font-bold mb-1">Medical</h3>
+              <p class="text-xs text-slate-400">MBBS, Dental, Pre-Med & More</p>
+            </div>
+
+            <!-- Commerce Option -->
+            <div onclick="startAssessment('commerce')"
+              class="cursor-pointer border border-blue-500/20 bg-blue-500/5 hover:bg-blue-500/10 rounded-xl p-6 text-center transition-all hover:border-blue-500/50 group">
+              <div
+                class="w-12 h-12 mx-auto rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.407 2.67 1a2.4 2.4 0 01.33.34M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.407-2.67-1a2.4 2.4 0 01-.33-.34M12 16v1m-2-15L3 5v14l9 3 9-3V5l-9-3z">
+                  </path>
+                </svg>
+              </div>
+              <h3 class="text-white font-bold mb-1">Banking & Finance</h3>
+              <p class="text-xs text-slate-400">B.Com, CA, CS & More</p>
+            </div>
+
+            <!-- Law Option -->
+            <div onclick="startAssessment('law')"
+              class="cursor-pointer border border-purple-500/20 bg-purple-500/5 hover:bg-purple-500/10 rounded-xl p-6 text-center transition-all hover:border-purple-500/50 group">
+              <div
+                class="w-12 h-12 mx-auto rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 14l9-5-9-5-9 5 9 5zm0 0l9 5-9 5-9-5 9-5zm0 0v10"></path>
+                </svg>
+              </div>
+              <h3 class="text-white font-bold mb-1">Law & Legal</h3>
+              <p class="text-xs text-slate-400">BA LLB, Corporate, Judiciary</p>
+            </div>
+
+            <!-- Gov, Defence & PSU Option -->
+            <div onclick="startAssessment('gov')"
+              class="cursor-pointer border border-indigo-500/20 bg-indigo-500/5 hover:bg-indigo-500/10 rounded-xl p-6 text-center transition-all hover:border-indigo-500/50 group col-span-2">
+              <div
+                class="w-12 h-12 mx-auto rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                  </path>
+                </svg>
+              </div>
+              <h3 class="text-white font-bold mb-1">Gov, Defence & PSU</h3>
+              <p class="text-xs text-slate-400">Civil Services, Defence, Banking, Railways & PSUs</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- PathWay AI Chatbot UI -->
+  <div id="chatbot-bubble" onclick="toggleChatbot()">
+    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z">
+      </path>
+    </svg>
+    <div class="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-slate-900"></div>
+  </div>
+
+  <div id="chatbot-window" class="flex flex-col">
+    <div class="p-4 bg-gradient-to-r from-violet-600 to-indigo-600 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center">
+          <svg class="w-5 h-5 text-indigo-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"
+              style="display:none;"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9l-.707.707M12 18a6 6 0 100-12 6 6 0 000 12z">
+            </path>
+          </svg>
+        </div>
+        <div>
+          <h4 class="text-white font-bold text-sm">PathWise Assistance</h4>
+          <span class="text-[10px] text-indigo-100 flex items-center gap-1">
+            <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span> Personal Navigator
+          </span>
+        </div>
+      </div>
+      <button onclick="toggleChatbot()" class="text-white/70 hover:text-white p-2"><svg class="w-5 h-5" fill="none"
+          stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg></button>
+    </div>
+
+    <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-900/30">
+      <div
+        class="bg-indigo-600/20 text-indigo-100 p-3 rounded-2xl rounded-tl-none text-xs max-w-[85%] border border-indigo-500/20">
+        Hello! I am PathWise Assistance. I can help you find top colleges in India or suggest career paths based on your
+        assessment results. How can I help?
+      </div>
+    </div>
+
+    <div class="p-4 border-t border-white/5 bg-slate-900/50">
+      <div class="flex flex-wrap gap-2 mb-3" id="chat-quick-actions">
+        <!-- Will be populated by JS -->
+      </div>
+      <div class="flex gap-2">
+        <input type="text" id="chat-input" placeholder="Ask me anything..."
+          onkeypress="if(event.key==='Enter') sendMessage()"
+          class="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-indigo-500 transition-colors">
+        <button id="chat-send-btn" onclick="sendMessage()"
+          class="p-2 bg-indigo-600 hover:bg-indigo-500 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl text-white transition-all flex items-center justify-center shadow-lg shadow-indigo-500/20">
+          <svg id="send-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+          </svg>
+          <svg id="send-loader" class="w-5 h-5 hidden animate-spin" fill="none" stroke="currentColor"
+            viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+            </path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function gotoassesment() {
+      // Start from Step 1 Priorities
+      window.location.href = "step1.html";
+    }
+
+    function startAssessment(domain) {
+      document.getElementById('domain-modal').classList.add('hidden');
+      if (domain === 'medical') {
+        window.location.href = "medical_step1.html";
+      } else if (domain === 'commerce') {
+        window.location.href = "commerce_step1.html";
+      } else if (domain === 'law') {
+        window.location.href = "law_step1.html";
+      } else if (domain === 'gov') {
+        window.location.href = "gov_step1.html";
+      } else {
+        gotoassesment();
+      }
+    }
+
+    // --- SPA Navigation Logic ---
+    function showView(viewId) {
+      // Toggle view visibility
+      document.querySelectorAll('.spa-view').forEach(el => {
+        el.classList.add('hidden');
+      });
+      document.getElementById(viewId).classList.remove('hidden');
+
+      // Toggle active menu states
+      const triggerId = 'nav-' + viewId.split('-')[1];
+      document.querySelectorAll('.menu-item').forEach(el => {
+        el.classList.remove('active');
+      });
+      document.getElementById(triggerId).classList.add('active');
+
+      // Load data if profile view is opened
+      if (viewId === 'view-profile') {
+        loadProfileOptions();
+        loadResults(); // Reload to refresh profile form fields
+      }
+      if (viewId === 'view-records') {
+        fetchAssessmentHistory();
+      }
+
+      // Auto-close sidebar on mobile after selection
+      if (window.innerWidth < 1024) {
+        toggleSidebar();
+      }
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('sidebar-collapsed');
+    }
+
+    function toggleCategories() {
+      const catSidebar = document.getElementById('category-sidebar');
+      catSidebar.classList.toggle('show');
+    }
+
+    function toggleProfileDropdown(event) {
+      if (event) event.stopPropagation();
+      const dropdown = document.getElementById('profile-dropdown-menu');
+      dropdown.classList.toggle('show');
+    }
+
+    // Close dropdowns on outside click
+    document.addEventListener('click', (e) => {
+      const profileDropdown = document.getElementById('profile-dropdown-menu');
+      if (profileDropdown && !e.target.closest('.profile-wrapper')) {
+        profileDropdown.classList.remove('show');
+      }
+    });
+
+    async function fetchAssessmentHistory() {
+      const tbody = document.getElementById('records-table-body');
+      tbody.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-slate-500">Loading history...</td></tr>';
+
+      try {
+        const res = await fetch('/api/assessment_history');
+        if (!res.ok) throw new Error('Failed to fetch history');
+        const history = await res.json();
+
+        tbody.innerHTML = '';
+        if (history.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="4" class="p-8 text-center text-slate-500 italic">No assessments taken yet.</td></tr>';
+          return;
+        }
+
+        history.forEach(item => {
+          const tr = document.createElement('tr');
+          tr.className = "border-b border-white/5 hover:bg-white/5 transition-colors";
+
+          let typeLabel = item.type.replace('_', ' ').toUpperCase();
+          let statusColor = "text-emerald-400";
+          if (item.status === "Saved") statusColor = "text-amber-400";
+
+          tr.innerHTML = `
+            <td class="p-4 text-sm text-slate-300 font-medium">${item.timestamp}</td>
+            <td class="p-4">
+              <span class="text-xs font-bold text-white bg-white/5 px-2 py-1 rounded-md border border-white/10 italic">${typeLabel}</span>
+              <p class="text-[11px] text-slate-400 mt-1">${item.recommended_stream || 'N/A'}</p>
+            </td>
+            <td class="p-4 text-sm text-slate-300">${item.confidence ? item.confidence + '%' : 'N/A'}</td>
+            <td class="p-4 text-xs font-bold ${statusColor}">${item.status || 'Completed'}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-rose-400">Error loading history: ${err.message}</td></tr>`;
+      }
+    }
+
+    // --- Profile Logic ---
+    let profileOptionsData = null;
+    const selectedProfileData = {
+      interests: [],
+      skills: [],
+      courses: []
+    };
+
+    function toggleDropdown(id) {
+      const dropdown = document.getElementById(id);
+      document.querySelectorAll('.dropdown-menu').forEach(el => {
+        if (el.id !== id) el.classList.add('hidden');
+      });
+      dropdown.classList.toggle('hidden');
+    }
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.custom-multi-select')) {
+        document.querySelectorAll('.dropdown-menu').forEach(el => el.classList.add('hidden'));
+      }
+    });
+
+    function renderTags(type) {
+      const wrapper = document.getElementById(`prof-${type}-wrapper`);
+      if (!wrapper) return;
+      const tagsContainer = wrapper.querySelector('.selected-tags');
+      const selected = selectedProfileData[type] || [];
+
+      let colorClass = "bg-emerald-500/20 text-emerald-300 border-emerald-500/30";
+      if (type === 'courses') colorClass = "bg-cyan-500/20 text-cyan-300 border-cyan-500/30";
+
+      if (selected.length === 0) {
+        const placeholderStr = type.charAt(0).toUpperCase() + type.slice(1);
+        tagsContainer.innerHTML = `<span class="placeholder text-slate-400">Select ${placeholderStr}...</span>`;
+        return;
+      }
+
+      tagsContainer.innerHTML = '';
+      selected.forEach(val => {
+        const tag = document.createElement('span');
+        tag.className = `px-2 py-1 text-[11px] font-bold tracking-wide rounded-full border flex items-center gap-1.5 ${colorClass}`;
+        tag.innerHTML = `${val} <button onclick="removeTag(event, '${type}', '${val.replace(/'/g, "\\'")}')" class="hover:text-white transition-colors focus:outline-none hover:bg-white/10 rounded-full p-0.5"><svg class="w-3 h-3 block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg></button>`;
+        tagsContainer.appendChild(tag);
+      });
+    }
+
+    function removeTag(event, type, val) {
+      if (event) event.stopPropagation();
+      selectedProfileData[type] = selectedProfileData[type].filter(item => item !== val);
+      renderTags(type);
+      updateDropdownOptions(type);
+    }
+
+    function toggleOption(type, val) {
+      const idx = selectedProfileData[type].indexOf(val);
+      if (idx > -1) {
+        selectedProfileData[type].splice(idx, 1);
+      } else {
+        selectedProfileData[type].push(val);
+      }
+      renderTags(type);
+      updateDropdownOptions(type);
+    }
+
+    function updateDropdownOptions(type) {
+      if (!profileOptionsData) return;
+      const dropdown = document.getElementById(`${type}-dropdown`);
+      if (!dropdown) return;
+      dropdown.innerHTML = '';
+      const options = profileOptionsData[type] || [];
+
+      let highlightClass = "bg-emerald-600/40 text-white font-bold";
+      if (type === 'courses') highlightClass = "bg-cyan-600/40 text-white font-bold";
+
+      options.forEach(opt => {
+        const isSelected = selectedProfileData[type].includes(opt);
+        const div = document.createElement('div');
+        div.className = `p-2.5 rounded-md cursor-pointer transition-colors text-sm flex justify-between items-center ${isSelected ? highlightClass : 'text-slate-300 hover:bg-white/10 font-medium'}`;
+        // Use an anonymous function to avoid HTML string quoting issues with 'opt'
+        div.onclick = (e) => {
+          e.stopPropagation();
+          toggleOption(type, opt);
+        };
+        div.innerHTML = `<span>${opt}</span> ${isSelected ? '<svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>' : ''}`;
+        dropdown.appendChild(div);
+      });
+    }
+
+    async function loadProfileOptions() {
+      if (profileOptionsData) return;
+      try {
+        const res = await fetch('/api/profile_options');
+        if (res.ok) {
+          profileOptionsData = await res.json();
+          updateDropdownOptions('interests');
+          updateDropdownOptions('skills');
+          updateDropdownOptions('courses');
+        }
+      } catch (err) { console.error(err); }
+    }
+
+    async function saveProfile() {
+      const payload = {
+        first_name: document.getElementById('prof-fname').value,
+        last_name: document.getElementById('prof-lname').value,
+        phone: document.getElementById('prof-phone').value,
+        country_code: document.getElementById('prof-ccode').value,
+        student_class: document.getElementById('prof-class').value,
+
+        // Multi-select extraction
+        interests: selectedProfileData.interests,
+        skills: selectedProfileData.skills,
+        saved_courses: selectedProfileData.courses
+      };
+
+      try {
+        const res = await fetch('/api/user_profile', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+          const msg = document.getElementById('save-msg');
+          msg.classList.remove('hidden');
+          setTimeout(() => msg.classList.add('hidden'), 3000);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function loadResults() {
+      try {
+        const res = await fetch('/api/user_profile');
+        if (!res.ok) {
+          console.error("Failed to load user profile");
+          document.getElementById("interest-res").textContent = "Not found";
+          document.getElementById("aptitude-res").textContent = "Not found";
+          return;
+        }
+        const data = await res.json();
+
+        // --- Populate Profile Form ---
+        if (data.first_name) {
+          document.getElementById('welcome-text').textContent = 'Welcome Back, ' + data.first_name.toUpperCase();
+          document.getElementById('prof-fname').value = data.first_name;
+
+          let fullName = data.first_name;
+          if (data.last_name) { fullName += ' ' + data.last_name; }
+          document.getElementById('header-user-name').textContent = fullName;
+        }
+        if (data.last_name) document.getElementById('prof-lname').value = data.last_name;
+        if (data.email) document.getElementById('prof-email').value = data.email;
+        if (data.phone) document.getElementById('prof-phone').value = data.phone;
+        if (data.country_code) document.getElementById('prof-ccode').value = data.country_code;
+        if (data.student_class) document.getElementById('prof-class').value = data.student_class;
+
+        // Ensure dropdown options are loaded before setting selected values
+        await loadProfileOptions();
+
+        if (data.interests) selectedProfileData.interests = data.interests;
+        if (data.skills) selectedProfileData.skills = data.skills;
+        if (data.saved_courses) selectedProfileData.courses = data.saved_courses;
+
+        renderTags('interests'); renderTags('skills'); renderTags('courses');
+        updateDropdownOptions('interests'); updateDropdownOptions('skills'); updateDropdownOptions('courses');
+
+        // --- Assessment Dashboard UI ---
+        const btn = document.getElementById("assessment-btn");
+        const downloadBtn = document.getElementById("download-report-btn");
+        if (data.career_recommendation || data.aptitude_recommendation || data.personality_result) {
+          btn.textContent = "Retake Full Assessment";
+          downloadBtn.classList.remove('hidden');
+        } else {
+          btn.textContent = "Take Full Assessment";
+          downloadBtn.classList.add('hidden');
+          document.getElementById("aptitudeChartContainer").style.display = 'none';
+          document.getElementById("personalityChartContainer").style.display = 'none';
+        }
+
+        const track = data.assessment_track || 'engineering';
+
+        if (track === 'medical') {
+          // Medical track: Interests = top priority from step1, Aptitude = medical recommendation
+          const medInterest = (data.career_priority_list && data.career_priority_list.length > 0)
+            ? data.career_priority_list[0]
+            : 'Not Completed';
+          document.getElementById("interest-res").textContent = medInterest;
+        } else if (track === 'commerce') {
+          // Commerce track
+          if (data.career_recommendation) {
+            document.getElementById("interest-res").textContent = data.career_recommendation.course;
+          } else {
+            document.getElementById("interest-res").textContent = "Not Completed";
+          }
+        } else if (track === 'law') {
+          // Law track
+          const lawInterest = (data.career_priority_list && data.career_priority_list.length > 0)
+            ? data.career_priority_list[0]
+            : 'Not Completed';
+          document.getElementById("interest-res").textContent = lawInterest;
+        } else {
+          // Engineering track
+          if (data.career_recommendation) {
+            document.getElementById("interest-res").textContent = data.career_recommendation.course.replace(" Engineering", "");
+          } else {
+            document.getElementById("interest-res").textContent = "Not Completed";
+          }
+        }
+
+        if (data.aptitude_recommendation) {
+          const aptStream = data.aptitude_recommendation.recommended_stream;
+          document.getElementById("aptitude-res").textContent = track === 'engineering'
+            ? aptStream.replace(" Engineering", "")
+            : aptStream;
+
+          const probs = data.aptitude_recommendation.probabilities;
+          const labels = Object.keys(probs).map(l => l.replace(" Engineering", ""));
+          const dataValues = Object.values(probs);
+          const colors = ['#22c55e', '#3b82f6', '#f59e0b', '#a855f7', '#ec4899', '#ef4444', '#06b6d4', '#38bdf8'];
+
+          new Chart(document.getElementById('aptitudeChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+              labels: labels,
+              datasets: [{ label: 'Match Confidence (%)', data: dataValues, backgroundColor: colors }]
+            },
+            options: {
+              responsive: true,
+              plugins: { legend: { display: false } },
+              scales: {
+                y: { beginAtZero: true, max: 100, ticks: { color: '#f9fafb' }, grid: { color: '#374151' } },
+                x: { ticks: { color: '#f9fafb' }, grid: { color: '#374151' } }
+              }
+            }
+          });
+
+        } else {
+          document.getElementById("aptitude-res").textContent = "Not Completed";
+        }
+
+        if (data.personality_result) {
+          const pData = data.personality_result.percentages;
+          const labels = ["Openness", "Conscientiousness", "Extraversion", "Agreeableness", "Neuroticism"];
+          const dataValues = [pData['O'], pData['C'], pData['E'], pData['A'], pData['N']];
+
+          new Chart(document.getElementById('personalityChart').getContext('2d'), {
+            type: 'radar',
+            data: {
+              labels: labels,
+              datasets: [{
+                label: 'Personality Trait (%)',
+                data: dataValues,
+                backgroundColor: 'rgba(168, 85, 247, 0.2)',
+                borderColor: '#a855f7',
+                pointBackgroundColor: '#a855f7',
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: '#a855f7'
+              }]
+            },
+            options: {
+              responsive: true,
+              scales: {
+                r: {
+                  beginAtZero: true,
+                  max: 100,
+                  min: 0,
+                  pointLabels: { color: '#f9fafb', font: { size: 14 } },
+                  grid: { color: '#374151' },
+                  angleLines: { color: '#374151' },
+                  ticks: { display: false, max: 100 }
+                }
+              },
+              plugins: { legend: { display: false } }
+            }
+          });
+        }
+
+        // --- Populate Recommendations View ---
+        const recContainer = document.getElementById('recommendations-container');
+        recContainer.innerHTML = ''; // clear loading state
+
+        let hasRecs = false;
+
+        if (data.career_recommendation) {
+          hasRecs = true;
+          recContainer.innerHTML += `
+              <div class="glass rounded-2xl p-6 hover:bg-emerald-900/20 transition-colors border border-emerald-500/20">
+                <div class="flex items-center gap-3 mb-4">
+                   <div class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                   </div>
+                   <h3 class="text-white font-bold text-lg">Interest-Based Match</h3>
+                </div>
+                <p class="text-emerald-400 font-bold text-xl mb-2">${data.career_recommendation.course}</p>
+                <p class="text-slate-400 text-sm">Recommended based on your 14-point engineering interest analysis.</p>
+              </div>
+            `;
+        }
+
+        if (data.aptitude_recommendation) {
+          hasRecs = true;
+          recContainer.innerHTML += `
+              <div class="glass rounded-2xl p-6 hover:bg-cyan-900/20 transition-colors border border-cyan-500/20">
+                <div class="flex items-center gap-3 mb-4">
+                   <div class="w-10 h-10 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-400">
+                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                   </div>
+                   <h3 class="text-white font-bold text-lg">Aptitude-Based Match</h3>
+                </div>
+                <p class="text-cyan-400 font-bold text-xl mb-2">${data.aptitude_recommendation.recommended_stream}</p>
+                <p class="text-slate-400 text-sm">Highest confidence interval from your logic and abstract reasoning test.</p>
+              </div>
+            `;
+        }
+
+        if (data.recommended_optional_courses && data.recommended_optional_courses.length > 0) {
+          hasRecs = true;
+          data.recommended_optional_courses.forEach(c => {
+            recContainer.innerHTML += `
+                  <div class="glass rounded-2xl p-6 hover:bg-indigo-900/20 transition-colors border border-indigo-500/20">
+                    <div class="flex items-center gap-3 mb-4">
+                       <div class="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400">
+                          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                          </svg>
+                       </div>
+                       <h3 class="text-white font-bold text-lg">Skill-Based Course Match</h3>
+                    </div>
+                    <p class="text-indigo-400 font-bold text-xl mb-2">${c}</p>
+                    <p class="text-slate-400 text-sm">Recommended based on your specific saved skills and broad interests.</p>
+                  </div>
+                 `;
+          });
+        }
+
+        if (!hasRecs) {
+          recContainer.innerHTML = `<div class="p-6 text-center text-slate-500 col-span-2">No recommendations available yet. Take the assessment!</div>`;
+        }
+
+        // --- Populate Records View ---
+        const recordsTbody = document.getElementById('records-table-body');
+        recordsTbody.innerHTML = '';
+        if (hasRecs) {
+          const today = new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+          const statusHtml = `<span class="px-3 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full text-xs font-bold uppercase tracking-wider">Completed</span>`;
+
+          recordsTbody.innerHTML = `
+             <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+                 <td class="p-4 text-slate-300">${today}</td>
+                 <td class="p-4 text-cyan-400 font-medium">${data.aptitude_recommendation ? data.aptitude_recommendation.recommended_stream.replace(" Engineering", "") : "-"}</td>
+                 <td class="p-4 text-emerald-400 font-medium">${data.career_recommendation ? data.career_recommendation.course.replace(" Engineering", "") : "-"}</td>
+                 <td class="p-4">${statusHtml}</td>
+             </tr>
+           `;
+        } else {
+          recordsTbody.innerHTML = `
+             <tr class="border-b border-white/5">
+                 <td class="p-4 text-slate-500 text-center" colspan="4">No historical assessments found.</td>
+             </tr>
+           `;
+        }
+
+        // --- Populate Courses Database ---
+        renderCourses();
+
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    // --- Enhanced Course Catalogue Logic ---
+    let fullCatalogueData = null;
+    let keralaCollegesData = null;
+    let selectedCategory = 'all';
+
+    async function renderCourses() {
+      const container = document.getElementById('courses-container');
+      const trackFilter = document.getElementById('track-filter').value;
+
+      if (!fullCatalogueData) {
+        const res = await fetch('/api/v2/course_catalogue');
+        const rootData = await res.json();
+        fullCatalogueData = rootData.courses;
+        keralaCollegesData = rootData.colleges;
+      }
+
+      populateCategoryFilters(trackFilter);
+
+      container.innerHTML = '';
+
+      Object.entries(fullCatalogueData).forEach(([title, info]) => {
+        // Apply Filters
+        if (trackFilter !== 'all' && info.track !== trackFilter) return;
+        if (selectedCategory !== 'all' && info.category !== selectedCategory) return;
+
+        const isMedical = info.track === 'Medical';
+        const trackColor = isMedical ? 'rose' : 'cyan';
+
+        container.innerHTML += `
+          <div class="glass p-6 rounded-2xl border border-white/5 hover:border-${trackColor}-500/50 hover:bg-white/5 transition-all group flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between items-start mb-4">
+                <span class="px-2 py-0.5 bg-${trackColor}-500/10 text-${trackColor}-400 rounded text-[9px] font-black uppercase tracking-widest border border-${trackColor}-500/20">${info.category}</span>
+                <span class="text-slate-600 text-[10px] font-bold uppercase">${info.track}</span>
+              </div>
+              <h4 class="text-white font-bold text-xl mb-3 group-hover:text-${trackColor}-400 transition-colors">${title}</h4>
+              <p class="text-sm text-slate-400 mb-6 line-clamp-2 leading-relaxed">${info.description}</p>
+            </div>
+            <div class="flex items-center justify-between mt-4">
+              <div class="flex -space-x-2">
+                <div class="w-6 h-6 rounded-full bg-slate-700 border border-slate-800"></div>
+                <div class="w-6 h-6 rounded-full bg-slate-600 border border-slate-800"></div>
+              </div>
+              <button onclick="viewCourseDetails('${title.replace(/'/g, "\\'")}')" class="text-xs font-bold text-slate-300 hover:text-white flex items-center gap-2 group-hover:gap-3 transition-all py-2 px-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5">
+                View Details 
+                <svg class="w-4 h-4 text-${trackColor}-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+              </button>
+            </div>
+          </div>
+        `;
+      });
+
+      if (container.innerHTML === '') {
+        container.innerHTML = `<div class="col-span-full p-12 text-center text-slate-500 italic">No courses found matching these filters. Try adjusting your selection.</div>`;
+      }
+    }
+
+    function populateCategoryFilters(trackLimit = 'all') {
+      const categoryFilter = document.getElementById('category-filter');
+      const categoryList = document.getElementById('category-list');
+      const categories = new Set();
+
+      Object.values(fullCatalogueData).forEach(info => {
+        if (trackLimit === 'all' || info.track === trackLimit) {
+          categories.add(info.category);
+        }
+      });
+
+      // Clear existing except the "All" options
+      categoryFilter.innerHTML = '<option value="all">All Categories</option>';
+      categoryList.innerHTML = '<button onclick="setCategoryFilter(\'all\')" class="cat-btn text-left px-3 py-2 rounded-lg text-sm transition-all hover:bg-white/5 text-slate-400">All Modules</button>';
+
+      categories.forEach(cat => {
+        // Dropdown option
+        const opt = document.createElement('option');
+        opt.value = cat;
+        opt.textContent = cat;
+        categoryFilter.appendChild(opt);
+
+        // Sidebar button
+        const btn = document.createElement('button');
+        btn.onclick = () => setCategoryFilter(cat);
+        btn.className = "cat-btn text-left px-3 py-2 rounded-lg text-sm transition-all hover:bg-white/5 text-slate-400";
+        btn.textContent = cat;
+        categoryList.appendChild(btn);
+      });
+
+      // Check if selectedCategory is still valid in new track
+      if (selectedCategory !== 'all' && !categories.has(selectedCategory)) {
+        selectedCategory = 'all';
+      }
+      categoryFilter.value = selectedCategory;
+      updateCategoryUI();
+    }
+
+    function filterCourses() {
+      selectedCategory = document.getElementById('category-filter').value;
+      renderCourses();
+      updateCategoryUI();
+    }
+
+    function setCategoryFilter(cat) {
+      selectedCategory = cat;
+      document.getElementById('category-filter').value = cat;
+      renderCourses();
+      updateCategoryUI();
+    }
+
+    function updateCategoryUI() {
+      document.querySelectorAll('.cat-btn').forEach(btn => {
+        if (btn.textContent === selectedCategory || (selectedCategory === 'all' && btn.textContent === 'All Modules')) {
+          btn.classList.add('active', 'bg-white/10', 'text-white', 'font-bold');
+          btn.classList.remove('text-slate-400');
+        } else {
+          btn.classList.remove('active', 'bg-white/10', 'text-white', 'font-bold');
+          btn.classList.add('text-slate-400');
+        }
+      });
+    }
+
+    function viewCourseDetails(title) {
+      const info = fullCatalogueData[title];
+      if (!info) return;
+
+      document.getElementById('modal-title').textContent = title;
+      document.getElementById('modal-track').textContent = info.track;
+      document.getElementById('modal-category').textContent = info.category;
+      document.getElementById('modal-desc').textContent = info.description;
+      document.getElementById('modal-demand').textContent = info.demand;
+
+      // Jobs list
+      const jobsList = document.getElementById('modal-jobs');
+      jobsList.innerHTML = '';
+      info.jobs.forEach(job => {
+        jobsList.innerHTML += `<li class="flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div> ${job}</li>`;
+      });
+
+      // Rec Jobs
+      const recJobs = document.getElementById('modal-rec-jobs');
+      recJobs.innerHTML = '';
+      info.recommendations.jobs.forEach(job => {
+        recJobs.innerHTML += `<span class="px-2 py-1 bg-white/5 rounded-md text-[11px] text-slate-400 border border-white/5">${job}</span>`;
+      });
+
+      // Rec Courses
+      const recCourses = document.getElementById('modal-rec-courses');
+      recCourses.innerHTML = '';
+      info.recommendations.courses.forEach(c => {
+        recCourses.innerHTML += `<span class="px-2 py-1 bg-indigo-500/10 rounded-md text-[11px] text-indigo-300 border border-indigo-500/20">${c}</span>`;
+      });
+
+      // --- Kerala Colleges Section ---
+      const collegeList = document.getElementById('modal-top-colleges');
+      collegeList.innerHTML = '';
+
+      const trackColleges = keralaCollegesData[info.track] || [];
+      if (trackColleges.length > 0) {
+        trackColleges.forEach(col => {
+          collegeList.innerHTML += `
+            <div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-all">
+              <div class="flex items-center gap-3">
+                <span class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-[10px] font-bold">#${col.rank}</span>
+                <span class="text-sm font-medium text-slate-200">${col.name}</span>
+              </div>
+              <a href="${col.url}" target="_blank" class="text-[10px] font-bold text-indigo-400 hover:text-indigo-300 uppercase tracking-widest flex items-center gap-1 group">
+                Website
+                <svg class="w-3 h-3 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+              </a>
+            </div>
+          `;
+        });
+      } else {
+        collegeList.innerHTML = `<p class="text-slate-500 italic text-sm">No college data available for this track.</p>`;
+      }
+
+      document.getElementById('course-details-modal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeCourseDetails() {
+      document.getElementById('course-details-modal').classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+
+    // --- PathWay AI Chatbot Logic ---
+    function toggleChatbot() {
+      const win = document.getElementById('chatbot-window');
+      const bubble = document.getElementById('chatbot-bubble');
+      const isOpen = win.style.display === 'flex';
+
+      win.style.display = isOpen ? 'none' : 'flex';
+
+      // Toggle bubble visibility
+      if (win.style.display === 'flex') {
+        bubble.classList.add('hidden');
+      } else {
+        bubble.classList.remove('hidden');
+      }
+
+      if (!isOpen) {
+        const history = document.getElementById('chat-messages');
+        history.scrollTop = history.scrollHeight;
+        loadQuickActions();
+      }
+    }
+
+    async function loadQuickActions() {
+      const qaContainer = document.getElementById('chat-quick-actions');
+      qaContainer.innerHTML = '';
+      const common = ["Top Engineering Colleges", "Top Medical Colleges", "Career Tips", "My Prediction"];
+      common.forEach(text => {
+        const btn = document.createElement('button');
+        btn.className = "text-[10px] px-2 py-1 bg-white/5 hover:bg-white/10 text-slate-400 rounded-md border border-white/10 transition-colors";
+        btn.innerText = text;
+        btn.onclick = () => {
+          document.getElementById('chat-input').value = text;
+          sendMessage();
+        };
+        qaContainer.appendChild(btn);
+      });
+    }
+
+    async function sendMessage() {
+      const input = document.getElementById('chat-input');
+      const btn = document.getElementById('chat-send-btn');
+      const icon = document.getElementById('send-icon');
+      const loader = document.getElementById('send-loader');
+
+      const msg = input.value.trim();
+      if (!msg) return;
+
+      const container = document.getElementById('chat-messages');
+
+      // Add User Message
+      container.innerHTML += `
+        <div class="flex justify-end">
+          <div class="bg-indigo-600 text-white p-3 rounded-2xl rounded-tr-none text-xs max-w-[85%] shadow-lg shadow-indigo-500/10">
+            ${msg}
+          </div>
+        </div>
+      `;
+
+      input.value = '';
+      container.scrollTop = container.scrollHeight;
+
+      // Loading UI
+      btn.disabled = true;
+      icon.classList.add('hidden');
+      loader.classList.remove('hidden');
+
+      const loadingId = 'loading-' + Date.now();
+      container.innerHTML += `
+        <div id="${loadingId}" class="flex gap-2 items-center text-slate-500 text-[10px] italic">
+          <div class="flex gap-1"><span class="w-1 h-1 bg-indigo-500 rounded-full animate-bounce"></span><span class="w-1 h-1 bg-indigo-500 rounded-full animate-bounce delay-100"></span><span class="w-1 h-1 bg-indigo-500 rounded-full animate-bounce delay-200"></span></div>
+          Thinking...
+        </div>
+      `;
+      container.scrollTop = container.scrollHeight;
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: msg })
+        });
+        const data = await res.json();
+
+        // Remove Loading
+        if (document.getElementById(loadingId)) document.getElementById(loadingId).remove();
+
+        // Restore Button
+        btn.disabled = false;
+        icon.classList.remove('hidden');
+        loader.classList.add('hidden');
+
+        // Add AI Message
+        container.innerHTML += `
+          <div class="bg-indigo-600/20 text-indigo-100 p-3 rounded-2xl rounded-tl-none text-xs max-w-[85%] border border-indigo-500/20 leading-relaxed font-medium">
+            ${data.response}
+          </div>
+        `;
+        container.scrollTop = container.scrollHeight;
+      } catch (err) {
+        if (document.getElementById(loadingId)) document.getElementById(loadingId).remove();
+        btn.disabled = false;
+        icon.classList.remove('hidden');
+        loader.classList.add('hidden');
+        container.innerHTML += `<div class="text-rose-400 text-[10px] italic">Failed to connect to PathWise Assistance. Check your connection.</div>`;
+      }
+    }
+
+    window.onload = loadResults;
+  </script>
+</body>

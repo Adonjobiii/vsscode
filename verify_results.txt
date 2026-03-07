@@ -1,0 +1,11 @@
+  PASS 200 GET /
+  PASS 200 GET /signin.html
+  PASS 200 GET /homepage.html
+  PASS 401 GET /api/user_profile
+  PASS 200 GET /api/profile_options
+  PASS 200 GET /api/v2/course_catalogue
+  PASS 200 GET /api/engineering_tasks
+  PASS 200 GET /api/aptitude_questions
+  PASS 200 GET /api/personality_questions
+  FAIL 404 GET /homepage
+  FAIL 404 GET /favicon.ico
