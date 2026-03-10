@@ -138,6 +138,20 @@
       #category-sidebar.show {
         transform: translateX(0);
       }
+
+      /* Sidebar Overlay */
+      #sidebar-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+        z-index: 90;
+      }
+
+      #sidebar-overlay.show {
+        display: block;
+      }
     }
 
     @media (max-width: 768px) {
@@ -352,6 +366,9 @@
         </div>
       </div>
     </nav>
+
+    <!-- Sidebar Overlay for Mobile -->
+    <div id="sidebar-overlay" onclick="toggleSidebar()"></div>
 
     <!-- Main Content -->
     <main class="flex-grow flex flex-col items-center justify-start p-8 md:p-12 gap-10">
@@ -580,19 +597,21 @@
         </div>
 
         <div class="glass rounded-2xl w-full overflow-hidden">
-          <table class="w-full text-left border-collapse">
-            <thead>
-              <tr class="bg-white/5 text-slate-300 text-xs uppercase tracking-wider border-b border-white/10">
-                <th class="p-4 font-semibold">Test Date</th>
-                <th class="p-4 font-semibold">Aptitude Match</th>
-                <th class="p-4 font-semibold">Interest Match</th>
-                <th class="p-4 font-semibold">Status</th>
-              </tr>
-            </thead>
-            <tbody id="records-table-body">
-              <!-- Populated via JS -->
-            </tbody>
-          </table>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse min-w-[600px]">
+              <thead>
+                <tr class="bg-white/5 text-slate-300 text-xs uppercase tracking-wider border-b border-white/10">
+                  <th class="p-4 font-semibold">Test Date</th>
+                  <th class="p-4 font-semibold">Aptitude Match</th>
+                  <th class="p-4 font-semibold">Interest Match</th>
+                  <th class="p-4 font-semibold">Status</th>
+                </tr>
+              </thead>
+              <tbody id="records-table-body">
+                <!-- Populated via JS -->
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
@@ -783,7 +802,7 @@
       <div id="domain-modal"
         class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-sm flex items-center justify-center">
         <div
-          class="glass max-w-lg w-full rounded-2xl p-8 transform scale-95 transition-transform duration-300 relative border border-white/10 shadow-2xl">
+          class="glass max-md:h-screen max-md:max-w-none max-md:rounded-none max-w-lg w-full rounded-2xl p-6 md:p-8 transform scale-95 transition-transform duration-300 relative border border-white/10 shadow-2xl overflow-y-auto">
           <button onclick="document.getElementById('domain-modal').classList.add('hidden')"
             class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -794,7 +813,7 @@
           <h2 class="text-2xl font-bold text-white mb-2 tracking-tight">Select Assessment Domain</h2>
           <p class="text-slate-400 text-sm mb-6">Which educational pathway are you testing for today?</p>
 
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <!-- Engineering Option -->
             <div onclick="startAssessment('engineering')"
               class="cursor-pointer border border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 rounded-xl p-6 text-center transition-all hover:border-emerald-500/50 group">
@@ -858,7 +877,7 @@
 
             <!-- Gov, Defence & PSU Option -->
             <div onclick="startAssessment('gov')"
-              class="cursor-pointer border border-indigo-500/20 bg-indigo-500/5 hover:bg-indigo-500/10 rounded-xl p-6 text-center transition-all hover:border-indigo-500/50 group col-span-2">
+              class="cursor-pointer border border-indigo-500/20 bg-indigo-500/5 hover:bg-indigo-500/10 rounded-xl p-6 text-center transition-all hover:border-indigo-500/50 group sm:col-span-2">
               <div
                 class="w-12 h-12 mx-auto rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1721,6 +1740,50 @@
         loader.classList.add('hidden');
         container.innerHTML += `<div class="text-rose-400 text-[10px] italic">Failed to connect to PathWise Assistance. Check your connection.</div>`;
       }
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebar-overlay');
+      sidebar.classList.toggle('sidebar-collapsed');
+      overlay.classList.toggle('show');
+    }
+
+    function showView(viewId) {
+      // Hide all views
+      document.querySelectorAll('.spa-view').forEach(view => {
+        view.classList.add('hidden');
+      });
+      // Show requested view
+      document.getElementById(viewId).classList.remove('hidden');
+
+      // Update nav active state
+      document.querySelectorAll('.menu-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      const navId = 'nav-' + viewId.replace('view-', '');
+      const activeNav = document.getElementById(navId);
+      if (activeNav) activeNav.classList.add('active');
+
+      // Close sidebar on mobile after selection
+      if (window.innerWidth < 1024) {
+        toggleSidebar();
+      }
+    }
+
+    function toggleProfileDropdown(e) {
+      e.stopPropagation();
+      document.getElementById('profile-dropdown-menu').classList.toggle('show');
+    }
+
+    // Close dropdowns when clicking outside
+    window.addEventListener('click', () => {
+      document.getElementById('profile-dropdown-menu').classList.remove('show');
+    });
+
+    function toggleCategories() {
+      const sidebar = document.getElementById('category-sidebar');
+      if (sidebar) sidebar.classList.toggle('show');
     }
 
     window.onload = loadResults;

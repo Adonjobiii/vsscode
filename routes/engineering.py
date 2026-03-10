@@ -72,7 +72,12 @@ def recommend_stream():
         from config_data import ENG_STREAMS
         if top_interest in ENG_STREAMS:
             label = ENG_STREAMS.index(top_interest)
-            ML_MODELS.log_and_retrain_career(ratings, label)
+            metadata = {
+                "track": "engineering",
+                "career_priority_list": priority_list,
+                "personality": session.get('personality_result')
+            }
+            ML_MODELS.log_and_retrain_career(ratings, label, metadata=metadata)
         
     return jsonify({
         "recommended_stream": top_recommendations[0]["course"],
@@ -149,8 +154,14 @@ def submit_aptitude():
     }
     session['aptitude_recommendation'] = result
     
-    # LOG FOR RETRAINING: Log features and current prediction
-    ML_MODELS.log_and_retrain_aptitude(user_scores_list, predicted_aptitude_id)
+    # LOG FOR RETRAINING: Log features, current prediction and answering patterns
+    metadata = {
+        "track": "engineering",
+        "detailed_scores": scores,
+        "answering_patterns": answers,
+        "personality": session.get('personality_result')
+    }
+    ML_MODELS.log_and_retrain_aptitude(user_scores_list, predicted_aptitude_id, metadata=metadata)
     
     user_id = session.get('user_id')
     if user_id and assessment_history is not None:

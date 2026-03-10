@@ -122,6 +122,22 @@ def submit_law_aptitude():
     
     session['aptitude_recommendation'] = result
     
+    # LOG FOR RETRAINING: Log features and current prediction
+    from app import ML_MODELS
+    # Using the raw scores as features
+    feature_list = list(result.get('scores', {}).values())
+    if feature_list:
+        ML_MODELS.log_and_retrain_aptitude(
+            feature_list, 
+            0, # Defaulting to 0 for law as there's only one main 'Law' stream predicted
+            track="law", 
+            metadata={
+            "detailed_scores": result.get('scores'), 
+            "answering_patterns": request.json.get('answers', {}),
+            "personality": session.get('personality_result')
+        }
+        )
+
     user_id = session.get('user_id')
     if user_id and assessment_history is not None:
         try:

@@ -28,9 +28,10 @@
       opacity: 1;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
       .main-container {
         flex-direction: column !important;
+        overflow-y: auto;
       }
 
       .side-panel {
@@ -39,6 +40,8 @@
 
       .form-panel {
         width: 100% !important;
+        min-height: 100vh;
+        padding: 2rem 1rem;
       }
     }
   </style>
@@ -48,8 +51,8 @@
   <div class="flex h-screen main-container">
 
     <!-- Left Form Section -->
-    <div class="w-1/2 flex items-center justify-center bg-gray-700 form-panel">
-      <div class="w-3/4 max-w-md">
+    <div class="w-full lg:w-1/2 flex items-center justify-center bg-slate-900 form-panel relative overflow-y-auto">
+      <div class="w-full max-w-md px-4 py-8">
         <h1 class="text-4xl font-bold text-center text-black">WELCOME</h1>
         <p class="text-black text-center mt-2">Start your journey with us </p>
 

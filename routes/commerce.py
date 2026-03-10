@@ -104,6 +104,17 @@ def submit_commerce_interests():
             except Exception as e:
                 print(f"Error saving commerce interests: {e}")
 
+        # LOG FOR RETRAINING: Log interests as career features
+        from app import ML_MODELS
+        metadata = {
+            "track": "commerce",
+            "career_priority_list": priorities,
+            "personality": session.get('personality_result')
+        }
+        # Dummy ratings for now as commerce uses direct matching
+        dummy_ratings = [0] * 10
+        ML_MODELS.log_and_retrain_career(dummy_ratings, 0, metadata=metadata)
+
     return jsonify({"success": True, "recommendation": results})
 
 @commerce_bp.route('/api/submit_commerce_aptitude', methods=['POST'])
@@ -150,6 +161,20 @@ def submit_commerce_aptitude():
     
     session['aptitude_recommendation'] = result
     session['assessment_track'] = 'commerce'
+
+    # LOG FOR RETRAINING: Log features and current prediction
+    from app import ML_MODELS
+    feature_list = [scores.get(cat, 0) for cat in (COMMERCE_THINKING_SKILLS + ["Accountancy", "Economics"])]
+    ML_MODELS.log_and_retrain_aptitude(
+        feature_list, 
+        list(result["probabilities"].keys()).index(result["recommended_stream"]), 
+        track="commerce", 
+        metadata={
+            "detailed_scores": scores, 
+            "answering_patterns": answers or request.json.get('answers', {}),
+            "personality": session.get('personality_result')
+        }
+    )
     
     user_id = session.get('user_id')
     if user_id:

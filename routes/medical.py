@@ -142,6 +142,20 @@ def submit_medical_aptitude():
     session['aptitude_recommendation'] = result
     session['assessment_track'] = 'medical'
 
+    # LOG FOR RETRAINING: Log features and current prediction
+    from app import ML_MODELS
+    feature_list = [scores.get(cat, 0) for cat in (THINKING_SKILLS + CORE_SUBJECTS)]
+    ML_MODELS.log_and_retrain_aptitude(
+        feature_list, 
+        list(probabilities.keys()).index(rec_stream), 
+        track="medical", 
+        metadata={
+            "detailed_scores": scores, 
+            "answering_patterns": answers,
+            "personality": session.get('personality_result')
+        }
+    )
+
     user_id = session.get('user_id')
     if user_id and assessment_history is not None:
         try:

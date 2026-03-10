@@ -18,9 +18,46 @@
             opacity: 1;
         }
 
-        @media (max-width: 768px) {
+        .glass {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        @keyframes blob {
+            0% {
+                transform: translate(0px, 0px) scale(1);
+            }
+
+            33% {
+                transform: translate(30px, -50px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
+
+            100% {
+                transform: translate(0px, 0px) scale(1);
+            }
+        }
+
+        .animate-blob {
+            animation: blob 7s infinite;
+        }
+
+        .animation-delay-2000 {
+            animation-delay: 2s;
+        }
+
+        .animation-delay-4000 {
+            animation-delay: 4s;
+        }
+
+        @media (max-width: 1024px) {
             .main-container {
                 flex-direction: column !important;
+                overflow-y: auto;
             }
 
             .side-panel {
@@ -29,52 +66,95 @@
 
             .form-panel {
                 width: 100% !important;
+                min-height: 100vh;
+                padding: 1.5rem 1rem;
             }
         }
     </style>
 </head>
 
-<body class="h-screen w-screen bg-gray-800">
-    <div class="flex h-screen main-container">
+<body class="h-screen w-screen bg-[#0f172a] text-slate-100 selection:bg-cyan-500/30">
+    <div class="flex h-screen main-container relative bg-[#0f172a]">
+        <!-- Animated Background Blobs -->
+        <div
+            class="absolute top-0 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob">
+        </div>
+        <div
+            class="absolute top-0 -right-4 w-72 h-72 bg-cyan-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000">
+        </div>
+        <div
+            class="absolute -bottom-8 left-20 w-72 h-72 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000">
+        </div>
 
         <!-- Left Form Section -->
-        <div class="w-1/2 flex items-center justify-center bg-gray-700 form-panel">
-            <div class="w-3/4 max-w-md">
-                <h1 class="text-4xl font-bold text-center text-black">WELCOME BACK</h1>
-                <p class="text-black text-center mt-2">Sign in to continue your journey</p>
+        <div
+            class="w-full lg:w-1/2 flex items-center justify-center bg-transparent form-panel relative overflow-y-auto z-10">
+            <div class="w-full max-w-md px-8 py-12 glass rounded-3xl border border-white/10 shadow-2xl">
+                <div class="text-center mb-12">
+                    <h1 class="text-5xl font-black text-white tracking-tight mb-3">
+                        WELCOME BACK
+                    </h1>
+                    <p class="text-slate-300 font-medium text-lg">Sign in to continue your journey</p>
+                </div>
 
                 <!-- Form -->
-                <div class="mt-8">
-                    <a href="/login/google"
-                        class="w-full flex items-center justify-center border border-gray-500 rounded-lg py-2 mt-6 hover:bg-gray-600 text-black transition-colors">
-                        Continue with Google
-                    </a>
-                    <a href="/login/apple"
-                        class="w-full flex items-center justify-center border border-gray-500 rounded-lg py-2 mt-3 hover:bg-gray-600 text-black transition-colors">
-                        Continue with Apple
-                    </a>
-
-                    <div class="flex items-center my-6">
-                        <hr class="flex-grow border-gray-500">
-                        <span class="px-2 text-gray-700 text-sm">or sign in with email</span>
-                        <hr class="flex-grow border-gray-500">
+                <div class="space-y-4">
+                    <div class="grid grid-cols-1 gap-3">
+                        <a href="/login/google"
+                            class="w-full flex items-center justify-center gap-3 bg-white/5 border border-white/10 rounded-xl py-3 hover:bg-white/10 text-white transition-all duration-300 font-semibold group">
+                            <svg class="w-5 h-5 group-hover:scale-110 transition-transform" viewBox="0 0 24 24">
+                                <path fill="currentColor"
+                                    d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                                <path fill="currentColor"
+                                    d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                                <path fill="currentColor"
+                                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" />
+                                <path fill="currentColor"
+                                    d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+                            </svg>
+                            Continue with Google
+                        </a>
+                        <a href="/login/apple"
+                            class="w-full flex items-center justify-center gap-3 bg-white/5 border border-white/10 rounded-xl py-3 hover:bg-white/10 text-white transition-all duration-300 font-semibold group">
+                            <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="currentColor"
+                                viewBox="0 0 24 24">
+                                <path
+                                    d="M17.05 20.28c-.98.95-2.05 1.61-3.22 1.61-1.14 0-1.53-.67-2.81-.67-1.29 0-1.74.65-2.81.65-1.11 0-2.12-.62-3.14-1.59-2.05-1.93-3.04-5.38-3.04-7.58 0-3.56 2.29-5.46 4.45-5.46 1.14 0 2.05.67 2.76.67.66 0 1.76-.74 3.04-.74.5 0 1.94.06 2.91 1.34-2.45 1.44-2.06 4.67.43 5.67-1.02 2.37-2.52 4.14-3.57 5.1zm-3.02-15.63c-.56-.68-.89-1.63-.89-2.58 0-.13.01-.26.03-.39.88.04 1.92.57 2.53 1.28.53.61.94 1.58.94 2.52 0 .14-.02.27-.04.38-.79.03-1.76-.5-2.57-1.21z" />
+                            </svg>
+                            Continue with Apple
+                        </a>
                     </div>
 
-                    <input type="email" id="email" placeholder="Email Address"
-                        class="w-full bg-gray-600 text-black border border-gray-500 rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500">
+                    <div class="flex items-center gap-4 py-2">
+                        <div class="flex-grow h-px bg-white/10"></div>
+                        <span class="text-slate-500 text-xs font-bold uppercase tracking-widest">or email</span>
+                        <div class="flex-grow h-px bg-white/10"></div>
+                    </div>
 
-                    <input type="password" id="password" placeholder="Password"
-                        class="w-full bg-gray-600 text-black border border-gray-500 rounded-lg px-4 py-2 mt-4 focus:ring-2 focus:ring-green-500">
+                    <div class="space-y-4">
+                        <div class="relative group">
+                            <input type="email" id="email" placeholder="Email Address"
+                                class="w-full bg-slate-800/50 text-white border border-white/10 rounded-xl px-5 py-3.5 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all outline-none placeholder:text-slate-500">
+                        </div>
+
+                        <div class="relative group">
+                            <input type="password" id="password" placeholder="Password"
+                                class="w-full bg-slate-800/50 text-white border border-white/10 rounded-xl px-5 py-3.5 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all outline-none placeholder:text-slate-500">
+                        </div>
+                    </div>
 
                     <button onclick="submitSignin()"
-                        class="w-full bg-green-600 text-white rounded-lg py-2 mt-6 hover:bg-green-700 flex items-center justify-center font-semibold tracking-wide">
+                        class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white rounded-xl py-4 mt-6 flex items-center justify-center font-bold tracking-wide shadow-lg shadow-emerald-500/20 transition-all duration-300 transform active:scale-[0.98]">
                         Sign In →
                     </button>
 
-                    <div id="error-message" class="text-red-500 text-sm mt-4 text-center hidden"></div>
+                    <div id="error-message"
+                        class="text-rose-400 text-sm mt-4 text-center hidden bg-rose-500/10 py-3 rounded-lg border border-rose-500/20">
+                    </div>
 
-                    <p class="text-sm text-center mt-6 text-black">
-                        Don't have an account? <a href="/" class="text-green-700 font-medium">Sign up</a>
+                    <p class="text-sm text-center mt-8 text-slate-400">
+                        Don't have an account? <a href="/"
+                            class="text-emerald-400 font-bold hover:text-emerald-300 transition-colors">Sign up</a>
                     </p>
                 </div>
             </div>

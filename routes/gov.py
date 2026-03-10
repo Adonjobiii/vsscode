@@ -117,6 +117,21 @@ def submit_gov_aptitude():
     
     session['aptitude_recommendation'] = result
     session['assessment_track'] = 'government & defence'
+
+    # LOG FOR RETRAINING: Log features and current prediction
+    from app import ML_MODELS
+    feature_list = list(scores.values())
+    if feature_list:
+        ML_MODELS.log_and_retrain_aptitude(
+            feature_list, 
+            list(path_scores.keys()).index(rec_stream), 
+            track="gov", 
+            metadata={
+            "detailed_scores": scores, 
+            "answering_patterns": request.json.get('answers', {}),
+            "personality": session.get('personality_result')
+        }
+        )
     
     user_id = session.get('user_id')
     if user_id and assessment_history is not None:

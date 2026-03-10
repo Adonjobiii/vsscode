@@ -20,7 +20,7 @@ from config_data import (
     APTITUDE_MODEL_CATEGORIES, DUMMY_QUESTIONS, DUMMY_CORRECT_ANSWERS,
     X_data_train_aptitude, y_labels_train_aptitude, 
     X_data_train_career, y_labels_train_career,
-    MONGODB_TIMEOUT_MS, CONNECTION_STRING
+    MONGODB_TIMEOUT_MS, CONNECTION_STRING, db
 )
 
 # --- GLOBAL TRAIN/TEST SPLIT DEFINITION (CRITICAL FOR MODULE SCOPE) ---
@@ -111,43 +111,58 @@ class MLModelTrainer:
         self.career_model = self._load_or_train_career_model()
         self.aptitude_model = self._load_or_train_aptitude_model()
         self.retrain_threshold = 10 
+        self.training_collection = db["training_data"] if db is not None else None
 
-    def log_and_retrain_career(self, features, label):
-        """Logs new data for career model and retrains if threshold met."""
-        log_path = os.path.join(self.MODEL_DIR, 'career_new_data.csv')
+    def log_and_retrain_career(self, features, label, metadata=None):
+        """Logs new data for career model to MongoDB and retrains if threshold met."""
+        if self.training_collection is None:
+            print("[ML] MongoDB not connected. Skipping log.")
+            return
+
+        record = {
+            "type": "career",
+            "features": features,
+            "label": int(label),
+            "timestamp": pd.Timestamp.now().isoformat(),
+            "metadata": metadata or {}
+        }
+        self.training_collection.insert_one(record)
         
-        # Save new data
-        data_line = ",".join(map(str, features)) + f",{label}\n"
-        mode = 'a' if os.path.exists(log_path) else 'w'
-        with open(log_path, mode) as f:
-            if mode == 'w':
-                f.write(",".join([f"f{i}" for i in range(len(features))]) + ",label\n")
-            f.write(data_line)
-            
         # Check if we should retrain
-        df = pd.read_csv(log_path)
-        if len(df) >= self.retrain_threshold:
-            print(f"Triggering automated retraining for Career Model ({len(df)} samples)...")
-            self._retrain_career_model(df)
-            # Clear log after retraining
-            os.remove(log_path)
+        count = self.training_collection.count_documents({"type": "career"})
+        if count % self.retrain_threshold == 0 and count > 0:
+            print(f"Triggering automated retraining for Career Model ({count} total samples)...")
+            all_records = list(self.training_collection.find({"type": "career"}))
+            new_df = pd.DataFrame([{"features": r["features"], "label": r["label"]} for r in all_records])
+            self._retrain_career_model(new_df)
 
-    def log_and_retrain_aptitude(self, features, label):
-        """Logs new data for aptitude model and retrains if threshold met."""
-        log_path = os.path.join(self.MODEL_DIR, 'aptitude_new_data.csv')
+    def log_and_retrain_aptitude(self, features, label, track="engineering", metadata=None):
+        """Logs new data for aptitude model to MongoDB and retrains if threshold met."""
+        if self.training_collection is None:
+            return
+
+        record = {
+            "type": f"aptitude_{track}",
+            "features": features,
+            "label": int(label),
+            "timestamp": pd.Timestamp.now().isoformat(),
+            "metadata": metadata or {}
+        }
+        self.training_collection.insert_one(record)
         
-        data_line = ",".join(map(str, features)) + f",{label}\n"
-        mode = 'a' if os.path.exists(log_path) else 'w'
-        with open(log_path, mode) as f:
-            if mode == 'w':
-                f.write(",".join([f"f{i}" for i in range(len(features))]) + ",label\n")
-            f.write(data_line)
+        count = self.training_collection.count_documents({"type": f"aptitude_{track}"})
+        if count % self.retrain_threshold == 0 and count > 0:
+            print(f"Triggering automated retraining for {track.capitalize()} Aptitude Model ({count} total samples)...")
+            all_records = list(self.training_collection.find({"type": f"aptitude_{track}"}))
+            new_df = pd.DataFrame([{"features": r["features"], "label": r["label"]} for r in all_records])
             
-        df = pd.read_csv(log_path)
-        if len(df) >= self.retrain_threshold:
-            print(f"Triggering automated retraining for Aptitude Model ({len(df)} samples)...")
-            self._retrain_aptitude_model(df)
-            os.remove(log_path)
+            # For now, we mainly retrain the core Engineering model if track is 'engineering'
+            # For other tracks, we log the data which prepared them for future model training
+            if track == "engineering":
+                self._retrain_aptitude_model(new_df)
+            else:
+                # Placeholder for other track-specific models
+                print(f"Data logged for {track}. Track-specific model retraining coming soon.")
 
     def _retrain_career_model(self, new_data=None):
         path = os.path.join(self.MODEL_DIR, 'career_model.joblib')
@@ -157,8 +172,8 @@ class MLModelTrainer:
         y_combined = y_train_career
         
         if new_data is not None:
-            X_new = new_data.iloc[:, :-1].values
-            y_new = new_data.iloc[:, -1].values
+            X_new = np.array(new_data["features"].tolist())
+            y_new = np.array(new_data["label"].tolist())
             X_combined = np.vstack([X_combined, X_new])
             y_combined = np.concatenate([y_combined, y_new])
             
@@ -176,8 +191,8 @@ class MLModelTrainer:
         y_combined = y_train_aptitude
         
         if new_data is not None:
-            X_new = new_data.iloc[:, :-1].values
-            y_new = new_data.iloc[:, -1].values
+            X_new = np.array(new_data["features"].tolist())
+            y_new = np.array(new_data["label"].tolist())
             X_combined = np.vstack([X_combined, X_new])
             y_combined = np.concatenate([y_combined, y_new])
             
